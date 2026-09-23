@@ -1167,28 +1167,591 @@
 
 
 <script>
-  /* =====================================================
-     DATA
-     ===================================================== */
+const DEFAULT_CARGO = [
+  {
+    id: 1,
+    pier: "12-22",
+    category: "비료",
+    name: "BENTONITE",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,800" }
+    ],
+    quantities: [
+      { qty:"3,000", day:"2 day", additional:"할증불가" },
+      { qty:"5,000", day:"3 day", additional:"할증불가" },
+      { qty:"10,000", day:"6 day", additional:"할증불가" }
+    ],
+    remark:"분진이 너무 심함 / 입고지가 경주쪽인데 그쪽 주민들이랑 협의한 내용 확인 필요"
+  },
 
-  const DEFAULT_CARGO = [
-    {
-      id: 1,
-      name: "MAGNESITE",
-      pier: "MAIN PORT",
-      dailyRate: "3,000 MT/DAY",
-      surcharge: "",
-      remark: "CHECK RATE / WORKING CONDITION"
-    },
-    {
-      id: 2,
-      name: "PTA IN BAG",
-      pier: "MAIN PORT",
-      dailyRate: "3,000 MT/DAY",
-      surcharge: "",
-      remark: ""
-    }
-  ];
+  {
+    id: 2,
+    pier: "12-22",
+    category: "비료",
+    name: "MAGNESITE",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,700" },
+      { time:"1800-2200", gang:"", rate:"800" }
+    ],
+    quantities: [
+      { qty:"2,000", day:"1 day", additional:"리시버 컨펌 후 할증가능. 거의 안 됨. 2,900원" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 3,
+    pier: "12-31",
+    category: "사료",
+    name: "CGF",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,500" },
+      { time:"1800-2200", gang:"", rate:"700" },
+      { time:"2200-2400", gang:"", rate:"700" },
+      { time:"1300-1700", gang:"1 gang", rate:"350" }
+    ],
+    quantities: [
+      { qty:"2,200", day:"2 day", additional:"할증 2,900원 / 더블 5,800원" },
+      { qty:"4,400", day:"3 day", additional:"HARBOR 크레인 작업시 2,000톤 야간으로 하루 작업" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 4,
+    pier: "12-31",
+    category: "사료",
+    name: "CANOLA",
+    schedules: [
+      { time:"0800-1700", gang:"", rate:"1,500" }
+    ],
+    quantities: [
+      { qty:"4,000", day:"3 day", additional:"식검 2차 (펠렛은 1차만)" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 5,
+    pier: "12-31",
+    category: "사료",
+    name: "WHEAT BRAN (WBP)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,500" }
+    ],
+    quantities: [
+      { qty:"2,000", day:"2 day", additional:"식검 2차" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 6,
+    pier: "12-31",
+    category: "사료",
+    name: "TIRE CHIP (LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"", rate:"2,000" },
+      { time:"1800-2200", gang:"", rate:"800" }
+    ],
+    quantities: [
+      { qty:"1,800", day:"1 day", additional:"KG는 창고비용 없음, 단 야적/창고인지 확인해야" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 7,
+    pier: "21-82",
+    category: "비료",
+    name: "UREA (BULK)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,700" },
+      { time:"1800-2200", gang:"", rate:"800" },
+      { time:"0800-1700", gang:"1 gang", rate:"800" }
+    ],
+    quantities: [
+      { qty:"3,000", day:"2 day", additional:"할증 2,900원 / 더블 5,800원" },
+      { qty:"6,600", day:"4 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 8,
+    pier: "21-82",
+    category: "비료",
+    name: "UREA (BAG)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,000" },
+      { time:"1800-2200", gang:"", rate:"500" }
+    ],
+    quantities: [
+      { qty:"5,000", day:"5 day", additional:"톤백 3,900원 / 4시간 창고 50만원" },
+      { qty:"3,000", day:"3 day", additional:"" }
+    ],
+    remark:"1,000-1,200"
+  },
+
+  {
+    id: 9,
+    pier: "21-82",
+    category: "비료",
+    name: "NPK FERTILIZER",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,700" },
+      { time:"1800-2200", gang:"", rate:"800" }
+    ],
+    quantities: [
+      { qty:"5,000", day:"3 day", additional:"" }
+    ],
+    remark:"500-600"
+  },
+
+  {
+    id: 10,
+    pier: "21-82",
+    category: "비료",
+    name: "MOP",
+    schedules: [
+      { time:"0800-1700", gang:"", rate:"" }
+    ],
+    quantities: [
+      { qty:"15,000", day:"7 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 11,
+    pier: "21-82",
+    category: "비료",
+    name: "WOOD PULP (BULK)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,500" }
+    ],
+    quantities: [
+      { qty:"3,000", day:"2 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 12,
+    pier: "21-82",
+    category: "비료",
+    name: "WOOD PULP (BAG)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"2,000" }
+    ],
+    quantities: [
+      { qty:"5,500", day:"2 day", additional:"할증 2,800원 / BT CHARGE 발생" },
+      { qty:"15,000", day:"4 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 13,
+    pier: "12-82 & GP",
+    category: "주석",
+    name: "LIMESTONE (BULK)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,300" },
+      { time:"1800-2200", gang:"", rate:"650" }
+    ],
+    quantities: [
+      { qty:"5,000", day:"4 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 14,
+    pier: "12-82 & GP",
+    category: "주석",
+    name: "LIMESTONE (BAG)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,200" },
+      { time:"1800-2200", gang:"", rate:"600" }
+    ],
+    quantities: [
+      { qty:"5,000", day:"3.5 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 15,
+    pier: "21-31 / 82-GP",
+    category: "",
+    name: "AMSUL (BULK) DISCH",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,700" },
+      { time:"1800-2200", gang:"", rate:"800" }
+    ],
+    quantities: [
+      { qty:"3,300", day:"2 day", additional:"리시버 컨펌 후 할증가능" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 16,
+    pier: "64-82",
+    category: "",
+    name: "AMSUL (BULK) LOAD",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,800" },
+      { time:"1800-2200", gang:"", rate:"800" },
+      { time:"0800-1700", gang:"3 gang", rate:"3,000" },
+      { time:"1800-2200", gang:"", rate:"1,000" }
+    ],
+    quantities: [
+      { qty:"6,000", day:"4 day", additional:"" },
+      { qty:"25,000", day:"9 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 17,
+    pier: "71-81",
+    category: "",
+    name: "FLUORSPAR (BAG)",
+    schedules: [
+      { time:"0800-1700", gang:"4 gang", rate:"3,500" }
+    ],
+    quantities: [
+      { qty:"30,000", day:"10 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 18,
+    pier: "GP",
+    category: "",
+    name: "ALUMINUM OXIDE BAG",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,600" }
+    ],
+    quantities: [
+      { qty:"3,000", day:"2 day", additional:"할증 3,900원 / 더블 7,800원" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 19,
+    pier: "GP",
+    category: "",
+    name: "ALUMINA",
+    schedules: [
+      { time:"1800-2200", gang:"1 gang", rate:"1,000" }
+    ],
+    quantities: [
+      { qty:"3,000", day:"3 day", additional:"* 야적 할인 / 산화알루미늄" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 20,
+    pier: "GP",
+    category: "",
+    name: "SALT",
+    schedules: [
+      { time:"0800-1700", gang:"", rate:"" }
+    ],
+    quantities: [],
+    remark:"할증비 확인 필요 · 야간 야적 후 입고 톤당 4,000원"
+  },
+
+  {
+    id: 21,
+    pier: "HHI",
+    category: "철판",
+    name: "STEEL PLATE",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"850" }
+    ],
+    quantities: [
+      { qty:"5,000", day:"7 day", additional:"할증은 주공업 재량" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 22,
+    pier: "COAL",
+    category: "석탄",
+    name: "COAL",
+    schedules: [
+      { time:"0000-2400", gang:"1 gang", rate:"6,700" }
+    ],
+    quantities: [
+      { qty:"44,000", day:"7 day", additional:"24시간 작업, 06-08 휴게시간" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 23,
+    pier: "OP-01",
+    category: "",
+    name: "ILMENITE",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"2,500" },
+      { time:"1800-2200", gang:"", rate:"1,200" }
+    ],
+    quantities: [
+      { qty:"10,000", day:"4 day", additional:"컨펌 후 할증 가능" },
+      { qty:"20,000", day:"8 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 24,
+    pier: "OP-01",
+    category: "",
+    name: "SODIUM SILICATE",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"" }
+    ],
+    quantities: [
+      { qty:"2,000", day:"1 day", additional:"규산소다, 규산나트륨, 물유리" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 25,
+    pier: "OP-01",
+    category: "",
+    name: "POTASHI (LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"" }
+    ],
+    quantities: [
+      { qty:"1,500", day:"1 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 26,
+    pier: "OP-01",
+    category: "",
+    name: "FERROSAND (LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"3,000" }
+    ],
+    quantities: [
+      { qty:"33,000", day:"9 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 27,
+    pier: "OP-01",
+    category: "",
+    name: "NPI (BULK)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"3,000" },
+      { time:"1800-2200", gang:"", rate:"1,500" }
+    ],
+    quantities: [
+      { qty:"25,000", day:"7 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 28,
+    pier: "SP-08",
+    category: "",
+    name: "SILICA SAND (LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"1,500" }
+    ],
+    quantities: [
+      { qty:"2,000", day:"1 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 29,
+    pier: "SP-08",
+    category: "",
+    name: "SILICA SAND (DISCH)",
+    schedules: [
+      { time:"0800-1700", gang:"4 gang", rate:"6,000" },
+      { time:"1800-2200", gang:"", rate:"3,000" }
+    ],
+    quantities: [
+      { qty:"50,000", day:"9 day", additional:"* Ship's gear 아니면 작업 불가?" },
+      { qty:"30,000", day:"5 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 30,
+    pier: "SP-07",
+    category: "",
+    name: "WOOD CHIP (LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"1,000" },
+      { time:"1800-2200", gang:"", rate:"500" }
+    ],
+    quantities: [
+      { qty:"2,000", day:"2 day", additional:"" },
+      { qty:"4,000", day:"4 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 31,
+    pier: "SP-07",
+    category: "",
+    name: "WOOD CHIP (DISCH)",
+    schedules: [
+      { time:"0800-1700", gang:"4 gang", rate:"5,000" },
+      { time:"1800-2200", gang:"", rate:"2,500" }
+    ],
+    quantities: [
+      { qty:"44,000", day:"7 day", additional:"4,000-5,000 * shore unloader" },
+      { qty:"25,000", day:"5 day", additional:"2,000-2,500 * shore unloader" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 32,
+    pier: "SILO",
+    category: "사료",
+    name: "WHEAT (소맥)",
+    schedules: [
+      { time:"0000-2400", gang:"2 gang", rate:"5,000" }
+    ],
+    quantities: [
+      { qty:"20,000", day:"2.5 day", additional:"5,000-25,000 * shore unloader" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 33,
+    pier: "SILO",
+    category: "사료",
+    name: "CORN",
+    schedules: [
+      { time:"0000-2400", gang:"2 gang", rate:"15,000" }
+    ],
+    quantities: [
+      { qty:"60,000", day:"4 day", additional:"24시간 작업이지만 창고용량에 따라 달라짐" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 34,
+    pier: "IP-YY",
+    category: "",
+    name: "SULPHUR (BAG, LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"2 gang", rate:"2,000" }
+    ],
+    quantities: [
+      { qty:"4,400", day:"2 day", additional:"야간할증 포함" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 35,
+    pier: "IP-YY",
+    category: "",
+    name: "PIA (BAG, LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"" }
+    ],
+    quantities: [
+      { qty:"600", day:"1 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 36,
+    pier: "IP-YY",
+    category: "",
+    name: "SODA ASH (BAG)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"900" }
+    ],
+    quantities: [
+      { qty:"5,400", day:"6 day", additional:"BAG수 기준. 할증은 알톤당 6,300원 협의 필요" }
+    ],
+    remark:"주말주간은 됨, 야간안됨"
+  },
+
+  {
+    id: 37,
+    pier: "",
+    category: "",
+    name: "CABLE DRUM",
+    schedules: [],
+    quantities: [],
+    remark:""
+  },
+
+  {
+    id: 38,
+    pier: "",
+    category: "",
+    name: "CORPA (BULK)",
+    schedules: [],
+    quantities: [
+      { qty:"1,850", day:"2 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 39,
+    pier: "64-71",
+    category: "",
+    name: "STEEL PIPE (LOAD)",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"700" }
+    ],
+    quantities: [
+      { qty:"23,592", day:"9 day", additional:"" }
+    ],
+    remark:""
+  },
+
+  {
+    id: 40,
+    pier: "64-71",
+    category: "",
+    name: "SLAB",
+    schedules: [
+      { time:"0800-1700", gang:"1 gang", rate:"78" },
+      { time:"1800-2000", gang:"1 gang", rate:"50" },
+      { time:"2000-2300", gang:"1 gang", rate:"50" }
+    ],
+    quantities: [],
+    remark:"R.TON 당 5,000원 / 주말할증가능. 첫날엔 지게차 작업으로 퍼져야하니까 안됨"
+  }
+];
+</script>
 
 
   const HHI_REFERENCE = [
