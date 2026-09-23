@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Port Working Reference</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --navy:#0b1f33;
+    --blue:#1769ff;
+    --bg:#f3f6fa;
+    --line:#dce3eb;
+    --text:#142033;
+    --sub:#6b7788;
+    --red:#d93025;
+    --red-bg:#fff0ef;
+    --green:#16803c;
+    --green-bg:#eaf8ef;
+    --orange:#b55d00;
+    --orange-bg:#fff4e5;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
+
+.page{
+    width:100%;
+    max-width:760px;
+    margin:auto;
+    padding:18px 14px 60px;
+}
+
+.top-label{
+    display:inline-block;
+    font-size:11px;
+    font-weight:800;
+    color:var(--blue);
+    background:#e9f0ff;
+    padding:6px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+}
+
+h1{
+    margin:0;
+    font-size:25px;
+}
+
+.subtitle{
+    color:var(--sub);
+    font-size:13px;
+    margin-top:5px;
+    margin-bottom:20px;
+}
+
+/* TAB */
+
+.tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    background:#e7ebf0;
+    padding:5px;
+    border-radius:12px;
+    margin-bottom:16px;
+}
+
+.tab{
+    border:0;
+    background:transparent;
+    padding:12px 5px;
+    border-radius:9px;
+    font-weight:800;
+    color:#5b6878;
+    cursor:pointer;
+}
+
+.tab.active{
+    background:white;
+    color:var(--navy);
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+/* SEARCH */
+
+.search{
+    position:relative;
+    margin-bottom:12px;
+}
+
+.search input{
+    width:100%;
+    height:52px;
+    border:1px solid #ccd5df;
+    border-radius:12px;
+    padding:0 15px 0 43px;
+    background:white;
+    font-size:16px;
+    outline:none;
+}
+
+.search input:focus{
+    border-color:var(--blue);
+}
+
+.search-icon{
+    position:absolute;
+    left:15px;
+    top:15px;
+    font-size:18px;
+}
+
+/* FILTER */
+
+.filters{
+    display:flex;
+    gap:7px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar{
+    display:none;
+}
+
+.filter{
+    flex:none;
+    border:1px solid #d4dce5;
+    background:white;
+    padding:8px 13px;
+    border-radius:20px;
+    color:#536173;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.filter.active{
+    background:var(--navy);
+    border-color:var(--navy);
+    color:white;
+}
+
+.count{
+    color:#7a8797;
+    font-size:12px;
+    margin:2px 2px 10px;
+}
+
+/* CARGO CARD */
+
+.cargo-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.cargo-card{
+    background:white;
+    border-radius:13px;
+    border:1px solid #e0e5eb;
+    overflow:hidden;
+}
+
+.cargo-head{
+    padding:14px;
+    cursor:pointer;
+}
+
+.cargo-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+}
+
+.cargo-name{
+    font-size:16px;
+    font-weight:850;
+}
+
+.pier{
+    flex:none;
+    background:#eef2f6;
+    color:#405064;
+    border-radius:7px;
+    padding:5px 8px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.quick-info{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    margin-top:13px;
+    gap:8px;
+}
+
+.quick-box{
+    border-right:1px solid #e5e9ee;
+}
+
+.quick-box:last-child{
+    border-right:0;
+}
+
+.quick-title{
+    font-size:10px;
+    color:#8893a1;
+    font-weight:700;
+    margin-bottom:3px;
+}
+
+.quick-value{
+    font-size:13px;
+    font-weight:800;
+}
+
+.surcharge{
+    margin-top:11px;
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.surcharge.yes{
+    color:var(--green);
+    background:var(--green-bg);
+}
+
+.surcharge.no{
+    color:var(--red);
+    background:var(--red-bg);
+}
+
+.surcharge.check{
+    color:var(--orange);
+    background:var(--orange-bg);
+}
+
+.detail{
+    display:none;
+    border-top:1px solid #e6ebf0;
+    background:#fafbfd;
+    padding:14px;
+}
+
+.cargo-card.open .detail{
+    display:block;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.detail-label{
+    font-size:10px;
+    color:#8490a0;
+    font-weight:800;
+    margin-bottom:4px;
+}
+
+.detail-value{
+    font-size:13px;
+    font-weight:650;
+    line-height:1.5;
+}
+
+.full{
+    grid-column:1 / -1;
+}
+
+.remark{
+    background:#fff8e8;
+    border-left:3px solid #f1b84b;
+    padding:10px;
+    font-size:12px;
+    line-height:1.55;
+    border-radius:5px;
+}
+
+/* PORT REFERENCE */
+
+.location-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:7px;
+    margin-bottom:12px;
+}
+
+.location-btn{
+    height:42px;
+    border:1px solid #d5dde6;
+    background:white;
+    border-radius:9px;
+    font-weight:800;
+    color:#5b6877;
+}
+
+.location-btn.active{
+    background:var(--navy);
+    color:white;
+    border-color:var(--navy);
+}
+
+.ref-card{
+    background:white;
+    border:1px solid #e0e5eb;
+    border-radius:13px;
+    padding:15px;
+    margin-bottom:9px;
+}
+
+.ref-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+.ref-location{
+    font-size:13px;
+    font-weight:900;
+    color:var(--blue);
+}
+
+.ref-grt{
+    font-size:18px;
+    font-weight:900;
+}
+
+.ref-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+}
+
+.ref-box{
+    background:#f5f7fa;
+    padding:10px 6px;
+    border-radius:8px;
+    text-align:center;
+}
+
+.ref-label{
+    color:#7d8997;
+    font-size:9px;
+    font-weight:800;
+    margin-bottom:4px;
+}
+
+.ref-value{
+    font-size:12px;
+    font-weight:850;
+}
+
+.tug-note{
+    margin-top:9px;
+    color:#d93025;
+    font-size:11px;
+    font-weight:800;
+}
+
+.add-button{
+    width:100%;
+    height:48px;
+    margin-top:10px;
+    border:1px dashed #9daaba;
+    background:white;
+    border-radius:10px;
+    color:#445468;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* ADD FORM */
+
+.add-form{
+    display:none;
+    background:white;
+    border-radius:13px;
+    padding:15px;
+    margin-top:10px;
+    border:1px solid #dfe5eb;
+}
+
+.add-form.open{
+    display:block;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.form-group label{
+    display:block;
+    font-size:10px;
+    color:#718094;
+    font-weight:800;
+    margin:0 0 5px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    height:43px;
+    border:1px solid #d2dae3;
+    border-radius:8px;
+    padding:0 10px;
+    font-size:14px;
+}
+
+.save{
+    width:100%;
+    height:46px;
+    margin-top:12px;
+    background:var(--blue);
+    border:0;
+    color:white;
+    border-radius:9px;
+    font-weight:900;
+}
+
+.empty{
+    background:white;
+    text-align:center;
+    color:#8793a1;
+    padding:30px 10px;
+    border-radius:12px;
+}
+
+@media(min-width:650px){
+
+    .cargo-list{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="top-label">
+        QUICK REFERENCE
+    </div>
+
+    <h1>⚓ Port Working Reference</h1>
+
+    <div class="subtitle">
+        Cargo · Working Rate · Surcharge · Port Expense Reference
+    </div>
+
+
+    <!-- TAB -->
+
+    <div class="tabs">
+
+        <button
+            class="tab active"
+            onclick="openTab('cargo',this)"
+        >
+            CARGO
+        </button>
+
+        <button
+            class="tab"
+            onclick="openTab('port',this)"
+        >
+            PILOT · LINE · TUG
+        </button>
+
+    </div>
+
+
+    <!-- ==================================
+         CARGO REFERENCE
+    =================================== -->
+
+    <section
+        id="cargoSection"
+        class="section active"
+    >
+
+        <div class="search">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                id="cargoSearch"
+                type="text"
+                placeholder="Search cargo or pier..."
+                oninput="renderCargo()"
+            >
+
+        </div>
+
+
+        <div class="filters">
+
+            <button
+                class="filter active"
+                data-filter="ALL"
+                onclick="setCargoFilter(this)"
+            >
+                ALL
+            </button>
+
+            <button
+                class="filter"
+                data-filter="SURCHARGE"
+                onclick="setCargoFilter(this)"
+            >
+                SURCHARGE
+            </button>
+
+            <button
+                class="filter"
+                data-filter="NIGHT"
+                onclick="setCargoFilter(this)"
+            >
+                NIGHT RATE
+            </button>
+
+            <button
+                class="filter"
+                data-filter="CHECK"
+                onclick="setCargoFilter(this)"
+            >
+                CHECK
+            </button>
+
+        </div>
+
+
+        <div
+            id="cargoCount"
+            class="count"
+        ></div>
+
+
+        <div
+            id="cargoList"
+            class="cargo-list"
+        ></div>
+
+    </section>
+
+
+
+    <!-- ==================================
+         PILOT / LINE / TUG
+    =================================== -->
+
+    <section
+        id="portSection"
+        class="section"
+    >
+
+        <div class="search">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                id="grtSearch"
+                type="text"
+                inputmode="numeric"
+                placeholder="Search GRT..."
+                oninput="renderReferences()"
+            >
+
+        </div>
+
+
+        <div class="location-buttons">
+
+            <button
+                class="location-btn active"
+                data-location="ALL"
+                onclick="setLocation(this)"
+            >
+                ALL
+            </button>
+
+            <button
+                class="location-btn"
+                data-location="MAIN"
+                onclick="setLocation(this)"
+            >
+                MAIN
+            </button>
+
+            <button
+                class="location-btn"
+                data-location="HHI"
+                onclick="setLocation(this)"
+            >
+                HHI
+            </button>
+
+        </div>
+
+
+        <div id="referenceList"></div>
+
+
+        <button
+            class="add-button"
+            onclick="toggleAddForm()"
+        >
+            ＋ ADD NEW GRT REFERENCE
+        </button>
+
+
+        <div
+            id="addForm"
+            class="add-form"
+        >
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>LOCATION</label>
+
+                    <select id="newLocation">
+                        <option>MAIN</option>
+                        <option>HHI</option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>GRT</label>
+
+                    <input
+                        id="newGRT"
+                        inputmode="numeric"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>PILOT / BOAT</label>
+
+                    <input
+                        id="newPilot"
+                        inputmode="numeric"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>LINE HANDLING</label>
+
+                    <input
+                        id="newLine"
+                        inputmode="numeric"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>TUGGAGE</label>
+
+                    <input
+                        id="newTug"
+                        inputmode="numeric"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>NO. OF TUGS</label>
+
+                    <input
+                        id="newTugCount"
+                        inputmode="numeric"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="save"
+                onclick="saveReference()"
+            >
+                SAVE REFERENCE
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CARGO DATA
+
+   화물 하나 = 하나의 데이터
+===================================================== */
+
+const cargoData = [
+
+{
+    cargo:"BENTONITE",
+    pier:"12-22",
+    dayRate:"1,800",
+    nightRate:"-",
+    gang:"2",
+    time:"0800-1700",
+    qtyDays:"3,000 → 2D · 5,000 → 3D · 10,000 → 6D",
+    surcharge:"NOT AVAILABLE",
+    surchargeType:"no",
+    remark:"분진이 심한 화물. 작업 및 주변 상황 확인 필요."
+},
+
+{
+    cargo:"MAGNESITE",
+    pier:"12-22",
+    dayRate:"1,700",
+    nightRate:"800",
+    gang:"2",
+    time:"0800-1700 / 1800-2200",
+    qtyDays:"2,000 → 1D · 3,000 → 2D",
+    surcharge:"RECEIVER CONFIRM",
+    surchargeType:"check",
+    remark:"Receiver confirm 후 할증 가능. 실제 할증 적용은 거의 없음."
+},
+
+{
+    cargo:"CGF",
+    pier:"12-31",
+    dayRate:"1,500",
+    nightRate:"700",
+    gang:"2",
+    time:"0800-1700 / 1800-2200 / 2200-2400",
+    qtyDays:"2,200 → 2D · 4,400 → 3D",
+    surcharge:"₩2,900 / DOUBLE ₩5,800",
+    surchargeType:"yes",
+    remark:"Harbor crane 작업 시 야간 2,000원으로 작업하는 경우 확인."
+},
+
+{
+    cargo:"CANOLA",
+    pier:"12-31",
+    dayRate:"1,500",
+    nightRate:"-",
+    gang:"2",
+    time:"0800-1700",
+    qtyDays:"4,000 → 3
