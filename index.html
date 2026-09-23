@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,264 +13,882 @@
 
 body {
     margin: 0;
-    background: #f4f7fb;
-    font-family: Arial, sans-serif;
-    color: #172033;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #182230;
+}
+
+.header {
+    background: #0d1b2a;
+    color: white;
+    padding: 24px 20px;
+}
+
+.header-inner {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 25px;
+}
+
+.header p {
+    margin: 7px 0 0;
+    color: #b9c3ce;
+    font-size: 14px;
 }
 
 .container {
-    max-width: 520px;
-    margin: auto;
-    padding: 24px 16px 50px;
-}
-
-h1 {
-    margin: 0;
-    font-size: 26px;
-}
-
-.subtitle {
-    color: #7a8496;
-    font-size: 14px;
-    margin-top: 6px;
-    margin-bottom: 22px;
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 0 16px 50px;
 }
 
 .card {
     background: white;
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 label {
     display: block;
     font-size: 12px;
     font-weight: bold;
-    color: #69758a;
+    color: #52606d;
     margin-bottom: 7px;
 }
 
-input,
-select {
+input, select {
     width: 100%;
-    height: 52px;
-    border: 1px solid #dce2ea;
-    border-radius: 11px;
-    padding: 0 14px;
-    font-size: 17px;
+    height: 43px;
+    padding: 0 12px;
+    border: 1px solid #cfd6dd;
+    border-radius: 5px;
+    font-size: 15px;
     background: white;
-    margin-bottom: 18px;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
     outline: none;
-    border-color: #1769ff;
+    border-color: #1c6ed5;
 }
 
-.two-columns {
+.money-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
-button {
-    width: 100%;
-    height: 55px;
-    border: none;
-    border-radius: 12px;
-    background: #1769ff;
-    color: white;
-    font-size: 17px;
+.btn {
+    border: 0;
+    border-radius: 5px;
+    padding: 12px 18px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
 }
 
-button:active {
-    transform: scale(0.99);
-}
-
-.result-title {
-    font-size: 12px;
-    font-weight: bold;
-    color: #6d788c;
-    margin-bottom: 8px;
-}
-
-.cost-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 14px 0;
-    border-bottom: 1px solid #edf0f4;
-}
-
-.cost-row:last-child {
-    border-bottom: none;
-}
-
-.cost-name {
-    color: #4d586a;
-}
-
-.cost-value {
-    font-weight: bold;
-    text-align: right;
-}
-
-.total-box {
-    background: #101d35;
+.btn-primary {
+    background: #0d1b2a;
     color: white;
-    border-radius: 18px;
-    padding: 22px;
 }
 
-.total-label {
-    font-size: 12px;
-    font-weight: bold;
-    color: #aebbd1;
+.btn-blue {
+    background: #1769d2;
+    color: white;
 }
 
-.total-krw {
-    margin-top: 7px;
-    font-size: 29px;
-    font-weight: bold;
+.btn-light {
+    background: #eef2f6;
+    color: #243342;
 }
 
-.total-usd {
-    margin-top: 7px;
-    color: #65e0a1;
-    font-size: 21px;
-    font-weight: bold;
+.btn-red {
+    background: #fff0f0;
+    color: #c43131;
+    padding: 8px 11px;
 }
 
-.note {
-    text-align: center;
-    font-size: 11px;
-    color: #98a1b1;
-    margin-top: 18px;
+.calculate {
+    width: 100%;
+    margin-top: 20px;
+    height: 48px;
 }
 
-.hidden {
+.add-item-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 45px;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#results {
     display: none;
 }
 
-.badge {
-    display: inline-block;
-    background: #e9f1ff;
-    color: #1769ff;
-    padding: 6px 10px;
-    border-radius: 20px;
-    font-size: 11px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f0f3f6;
+    text-align: left;
+    font-size: 12px;
+    padding: 11px 12px;
+    color: #52606d;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e9ed;
+    font-size: 14px;
+}
+
+.amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.total-row td {
+    background: #0d1b2a;
+    color: white;
     font-weight: bold;
-    margin-bottom: 12px;
+    font-size: 17px;
+    border: none;
+}
+
+.note {
+    font-size: 12px;
+    color: #74808c;
+    margin-top: 8px;
+}
+
+.usd-box {
+    display: none;
+    margin-top: 18px;
+    padding: 18px;
+    background: #f4f8fc;
+    border-radius: 7px;
+}
+
+.usd-controls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.usd-total {
+    margin-top: 18px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #d9e2eb;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+@media(max-width:700px) {
+    .grid,
+    .money-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .add-item-row {
+        grid-template-columns: 1fr;
+    }
+
+    .usd-controls {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
 
-
 <body>
+
+<div class="header">
+    <div class="header-inner">
+        <h1>⚓ PORT COST CALCULATOR</h1>
+        <p>Port Disbursement Estimator</p>
+    </div>
+</div>
 
 <div class="container">
 
-    <div class="badge">
-        PORT DA ESTIMATOR
-    </div>
-
-    <h1>⚓ Port Cost Calculator</h1>
-
-    <div class="subtitle">
-        Estimated Port Disbursement
-    </div>
-
-
+    <!-- BASIC INPUT -->
     <div class="card">
+        <h2>Vessel Information</h2>
 
-        <label>PORT</label>
-
-        <select id="port">
-            <option value="ulsan">Ulsan</option>
-        </select>
-
-
-        <label>GRT</label>
-
-        <input
-            id="grt"
-            type="number"
-            inputmode="numeric"
-            placeholder="Enter vessel GRT"
-        >
-
-
-        <div class="two-columns">
+        <div class="grid">
 
             <div>
+                <label>PORT</label>
+                <select id="port">
+                    <option value="ulsan">Ulsan</option>
+                </select>
+            </div>
 
-                <label>BERTH DAYS</label>
-
+            <div>
+                <label>GRT</label>
                 <input
-                    id="days"
                     type="number"
-                    inputmode="decimal"
-                    value="1"
-                    min="1"
+                    id="grt"
+                    placeholder="e.g. 5611"
+                    min="0"
                 >
+            </div>
+
+            <div>
+                <label>BERTH DAYS</label>
+                <input
+                    type="number"
+                    id="days"
+                    placeholder="e.g. 4"
+                    min="0"
+                    step="0.1"
+                >
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- MANUAL COST -->
+    <div class="card">
+
+        <h2>Manual Port Expenses</h2>
+
+        <div class="money-grid">
+
+            <div>
+                <label>PILOTAGE (KRW)</label>
+                <input
+                    type="number"
+                    id="pilotage"
+                    placeholder="0"
+                    min="0"
+                >
+            </div>
+
+            <div>
+                <label>LINE HANDLING (KRW)</label>
+                <input
+                    type="number"
+                    id="line"
+                    placeholder="0"
+                    min="0"
+                >
+            </div>
+
+            <div>
+                <label>TUGGAGE (KRW)</label>
+                <input
+                    type="number"
+                    id="tug"
+                    placeholder="0"
+                    min="0"
+                >
+            </div>
+
+        </div>
+
+        <p class="note">
+            Enter actual or estimated amount manually.
+        </p>
+
+    </div>
+
+
+    <!-- ADDITIONAL ITEMS -->
+    <div class="card">
+
+        <h2>Additional Expenses</h2>
+
+        <div id="additionalItems"></div>
+
+        <button
+            type="button"
+            class="btn btn-light"
+            onclick="addItem()"
+        >
+            + ADD ITEM
+        </button>
+
+        <p class="note">
+            Add any additional expense to be included in the total.
+        </p>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="btn btn-primary calculate"
+        onclick="calculateCost()"
+    >
+        CALCULATE
+    </button>
+
+
+    <!-- RESULTS -->
+    <div class="card" id="results">
+
+        <h2>Estimated Port Disbursement</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ITEM</th>
+                    <th class="amount">AMOUNT (KRW)</th>
+                </tr>
+            </thead>
+
+            <tbody id="resultBody"></tbody>
+
+            <tfoot>
+                <tr class="total-row">
+                    <td>TOTAL</td>
+                    <td
+                        class="amount"
+                        id="totalKRW"
+                    >
+                        ₩0
+                    </td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+
+        <button
+            type="button"
+            class="btn btn-blue"
+            style="margin-top:20px;"
+            onclick="showUSD()"
+        >
+            CONVERT TO USD
+        </button>
+
+
+        <!-- USD CONVERSION -->
+        <div class="usd-box" id="usdBox">
+
+            <div class="usd-controls">
+
+                <div>
+                    <label>EXCHANGE RATE (KRW / USD)</label>
+
+                    <input
+                        type="number"
+                        id="exchangeRate"
+                        placeholder="e.g. 1400"
+                        min="1"
+                    >
+                </div>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="convertUSD()"
+                >
+                    CONVERT
+                </button>
 
             </div>
 
+            <div
+                id="usdResultArea"
+                style="display:none;"
+            >
 
-            <div>
+                <table style="margin-top:18px;">
 
-                <label>USD / KRW</label>
+                    <thead>
+                        <tr>
+                            <th>ITEM</th>
+                            <th class="amount">
+                                AMOUNT (USD)
+                            </th>
+                        </tr>
+                    </thead>
 
-                <input
-                    id="exchange"
-                    type="number"
-                    inputmode="decimal"
-                    value="1400"
-                >
+                    <tbody id="usdBody"></tbody>
+
+                </table>
+
+                <div class="usd-total">
+                    <span>TOTAL USD</span>
+                    <span id="totalUSD">$0.00</span>
+                </div>
 
             </div>
 
         </div>
 
-
-        <button onclick="calculateCost()">
-            CALCULATE
-        </button>
-
     </div>
 
+</div>
 
 
-    <div id="resultArea" class="hidden">
+<script>
 
-        <div class="card">
-
-            <div class="result-title">
-                ESTIMATED CHARGES
-            </div>
+let currentResults = [];
+let currentTotal = 0;
 
 
-            <div class="cost-row">
-                <div class="cost-name">Port Dues</div>
-                <div class="cost-value" id="portDues">₩0</div>
-            </div>
+/* =========================================
+   ADD CUSTOM ITEM
+========================================= */
+
+function addItem() {
+
+    const container =
+        document.getElementById("additionalItems");
+
+    const row = document.createElement("div");
+
+    row.className = "add-item-row";
+
+    row.innerHTML = `
+        <input
+            type="text"
+            class="custom-name"
+            placeholder="Item name"
+        >
+
+        <input
+            type="number"
+            class="custom-amount"
+            placeholder="Amount (KRW)"
+            min="0"
+        >
+
+        <button
+            type="button"
+            class="btn btn-red"
+            onclick="this.parentElement.remove()"
+        >
+            ×
+        </button>
+    `;
+
+    container.appendChild(row);
+}
 
 
-            <div class="cost-row">
-                <div class="cost-name">Security</div>
-                <div class="cost-value" id="security">₩0</div>
-            </div>
+/* =========================================
+   SAFE NUMBER
+========================================= */
+
+function getNumber(id) {
+
+    const value =
+        parseFloat(
+            document.getElementById(id).value
+        );
+
+    return isNaN(value) ? 0 : value;
+}
 
 
-            <div class="cost-row">
-                <div class="cost-name">Dockage</div>
-                <div class="cost-value" id="dockage">₩0</div>
-            </div>
+/* =========================================
+   PORT TARIFF CALCULATION
+
+   !!! IMPORTANT !!!
+
+   아래 4개 계산식은 기존에 사용하던
+   정확한 울산항 계산식으로 교체해야 합니다.
+========================================= */
 
 
+function calculatePortDues(grt) {
+
+    /*
+       여기에 기존 PORT DUES 계산식 입력
+    */
+
+    return 0;
+}
+
+
+function calculateSecurity(grt) {
+
+    /*
+       여기에 기존 SECURITY 계산식 입력
+    */
+
+    return 0;
+}
+
+
+function calculateDockage(grt, days) {
+
+    /*
+       여기에 기존 DOCKAGE 계산식 입력
+    */
+
+    return 0;
+}
+
+
+function calculateOilPrevention(grt) {
+
+    /*
+       ★ GRT 10,000 초과일 때만
+       이 함수가 실행됩니다.
+
+       여기에 기존 OIL PREVENTION
+       계산식을 입력하세요.
+    */
+
+    return 0;
+}
+
+
+/* =========================================
+   MAIN CALCULATION
+========================================= */
+
+function calculateCost() {
+
+    const grt = getNumber("grt");
+    const days = getNumber("days");
+
+    if (grt <= 0) {
+        alert("Please enter GRT.");
+        return;
+    }
+
+    if (days <= 0) {
+        alert("Please enter Berth Days.");
+        return;
+    }
+
+
+    currentResults = [];
+
+
+    /* AUTOMATIC COSTS */
+
+    const portDues =
+        calculatePortDues(grt);
+
+    const security =
+        calculateSecurity(grt);
+
+    const dockage =
+        calculateDockage(grt, days);
+
+
+    currentResults.push({
+        name: "Port Dues",
+        amount: portDues
+    });
+
+    currentResults.push({
+        name: "Security",
+        amount: security
+    });
+
+    currentResults.push({
+        name: "Dockage",
+        amount: dockage
+    });
+
+
+    /* =====================================
+       OIL PREVENTION
+
+       GRT 10,000 = 적용 안 함
+       GRT 10,001 이상 = 자동 적용
+    ===================================== */
+
+    if (grt > 10000) {
+
+        const oil =
+            calculateOilPrevention(grt);
+
+        currentResults.push({
+            name: "Oil Prevention",
+            amount: oil
+        });
+    }
+
+
+    /* MANUAL COSTS */
+
+    const pilotage =
+        getNumber("pilotage");
+
+    const line =
+        getNumber("line");
+
+    const tug =
+        getNumber("tug");
+
+
+    currentResults.push({
+        name: "Pilotage",
+        amount: pilotage
+    });
+
+    currentResults.push({
+        name: "Line Handling",
+        amount: line
+    });
+
+    currentResults.push({
+        name: "Tuggage",
+        amount: tug
+    });
+
+
+    /* CUSTOM ITEMS */
+
+    const customRows =
+        document.querySelectorAll(
+            ".add-item-row"
+        );
+
+    customRows.forEach(row => {
+
+        const name =
+            row.querySelector(
+                ".custom-name"
+            ).value.trim();
+
+        const amount =
+            parseFloat(
+                row.querySelector(
+                    ".custom-amount"
+                ).value
+            ) || 0;
+
+
+        if (name !== "") {
+
+            currentResults.push({
+                name: name,
+                amount: amount
+            });
+
+        }
+
+    });
+
+
+    /* TOTAL */
+
+    currentTotal =
+        currentResults.reduce(
+            (sum, item) =>
+                sum + item.amount,
+            0
+        );
+
+
+    renderKRW();
+
+
+    /* RESET USD */
+
+    document.getElementById(
+        "usdBox"
+    ).style.display = "none";
+
+    document.getElementById(
+        "usdResultArea"
+    ).style.display = "none";
+
+
+    /* SHOW RESULT */
+
+    document.getElementById(
+        "results"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "results"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================
+   KRW RESULT
+========================================= */
+
+function renderKRW() {
+
+    const body =
+        document.getElementById(
+            "resultBody"
+        );
+
+    body.innerHTML = "";
+
+
+    currentResults.forEach(item => {
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${escapeHTML(item.name)}</td>
+
+            <td class="amount">
+                ₩${Math.round(item.amount)
+                    .toLocaleString("ko-KR")}
+            </td>
+        `;
+
+        body.appendChild(row);
+
+    });
+
+
+    document.getElementById(
+        "totalKRW"
+    ).textContent =
+        "₩" +
+        Math.round(currentTotal)
+            .toLocaleString("ko-KR");
+}
+
+
+/* =========================================
+   SHOW USD OPTION
+========================================= */
+
+function showUSD() {
+
+    document.getElementById(
+        "usdBox"
+    ).style.display = "block";
+
+    document.getElementById(
+        "exchangeRate"
+    ).focus();
+}
+
+
+/* =========================================
+   USD CONVERSION
+========================================= */
+
+function convertUSD() {
+
+    const rate =
+        getNumber("exchangeRate");
+
+
+    if (rate <= 0) {
+
+        alert(
+            "Please enter exchange rate."
+        );
+
+        return;
+    }
+
+
+    const usdBody =
+        document.getElementById(
+            "usdBody"
+        );
+
+    usdBody.innerHTML = "";
+
+
+    currentResults.forEach(item => {
+
+        const usd =
+            item.amount / rate;
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${escapeHTML(item.name)}</td>
+
+            <td class="amount">
+                $${usd.toLocaleString(
+                    "en-US",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )}
+            </td>
+        `;
+
+        usdBody.appendChild(row);
+
+    });
+
+
+    const totalUSD =
+        currentTotal / rate;
+
+
+    document.getElementById(
+        "totalUSD"
+    ).textContent =
+        "$" +
+        totalUSD.toLocaleString(
+            "en-US",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
+
+
+    document.getElementById(
+        "usdResultArea"
+    ).style.display = "block";
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+</script>
+
+</body>
+</html>
       
