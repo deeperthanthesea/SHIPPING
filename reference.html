@@ -1,1475 +1,2168 @@
-"use client";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-import { useEffect, useState } from "react";
+  <title>Ulsan Shipping Reference</title>
 
-/* =========================================================
-   1. DEFAULT CARGO DATA
-   ========================================================= */
+  <style>
+    :root {
+      --bg: #f4f5f6;
+      --card: #ffffff;
+      --text: #20262e;
+      --muted: #858d96;
+      --line: #dfe3e6;
+      --soft: #eef0f2;
+      --dark: #202730;
 
-const DEFAULT_CARGO = [
-  {
-    id: 1,
-    name: "MAGNESITE",
-    pier: "MAIN PORT",
-    dailyRate: "3,000 MT/DAY",
-    surcharge: "",
-    remark: "CHECK RATE / WORKING CONDITION",
-  },
-  {
-    id: 2,
-    name: "PTA IN BAG",
-    pier: "MAIN PORT",
-    dailyRate: "3,000 MT/DAY",
-    surcharge: "",
-    remark: "",
-  },
-];
+      --remark-bg: #fff5d8;
+      --remark-border: #e7ac2e;
+      --remark-text: #644900;
 
-/* =========================================================
-   2. PILOT · LINE · TUG
-   ========================================================= */
+      --radius: 15px;
+    }
 
-const HHI_REFERENCE = [
-  {
-    grt: "1,400",
-    pilot: "₩1,700,000",
-    line: "₩500,000",
-    tug: "₩2,000,000",
-    tugCount: "",
-  },
-  {
-    grt: "2,900",
-    pilot: "₩2,000,000",
-    line: "₩550,000",
-    tug: "₩2,200,000",
-    tugCount: "",
-  },
-  {
-    grt: "4,000",
-    pilot: "₩2,200,000",
-    line: "₩600,000",
-    tug: "₩4,200,000",
-    tugCount: "2 TUGS",
-  },
-  {
-    grt: "8,000",
-    pilot: "₩2,800,000",
-    line: "₩650,000",
-    tug: "₩5,000,000",
-    tugCount: "2 TUGS",
-  },
-];
+    * {
+      box-sizing: border-box;
+    }
 
-/* =========================================================
-   3. PORT SERVICES
-   ========================================================= */
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
 
-const LAUNCH_AREAS = [
-  {
-    area: 1,
-    price: "₩127,000",
-    groups: [
-      {
-        title: "PORT / PIER",
-        items: [
-          "JANGSAENGPO PORT",
-          "S.K PIER NO.1,2",
-        ],
-      },
-    ],
-  },
-  {
-    area: 2,
-    price: "₩196,000",
-    groups: [
-      {
-        title: "PORT / PIER",
-        items: [
-          "S.K PIER NO.3 · GRAIN PIER",
-          "YONGJAM PIER NO.1,2,3",
-          "GENERAL PIER",
-        ],
-      },
-    ],
-  },
-  {
-    area: 3,
-    price: "₩274,000",
-    groups: [
-      {
-        title: "ANCHORAGE",
-        items: ["M 1–7"],
-      },
-      {
-        title: "PORT / PIER",
-        items: [
-          "HMC · HMD PIER · YEOMPO PIER",
-          "S.K PIER NO.4–8",
-          "MAIN PORT PIER NO.1–9",
-          "HWA-AM PIER",
-        ],
-      },
-    ],
-  },
-  {
-    area: 4,
-    price: "₩357,000",
-    groups: [
-      {
-        title: "PORT / PIER",
-        items: ["S.K GAS PIER NO.1,2,3"],
-      },
-    ],
-  },
-  {
-    area: 5,
-    price: "₩439,000",
-    groups: [
-      {
-        title: "ANCHORAGE",
-        items: ["E-1"],
-      },
-      {
-        title: "PORT / PIER",
-        items: ["ULSAN NORTH NEW PORT"],
-      },
-    ],
-  },
-  {
-    area: 6,
-    price: "₩516,000",
-    groups: [
-      {
-        title: "ANCHORAGE",
-        items: ["E-2"],
-      },
-      {
-        title: "PORT / PIER",
-        items: [
-          "ULSAN SOUTH NEW PORT (1ST PHASE)",
-          "ONSAN PORT",
-          "S.K BUOY NO.2 & 3",
-        ],
-      },
-    ],
-  },
-];
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+    }
 
-/* =========================================================
-   MAIN
-   ========================================================= */
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
 
-export default function ShippingReference() {
-  const [mainTab, setMainTab] = useState("cargo");
+    button {
+      cursor: pointer;
+    }
 
-  return (
-    <main className="shipping-page">
+    .app {
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 18px;
+    }
 
-      <div className="main-tabs">
-        <button
-          className={mainTab === "cargo" ? "active" : ""}
-          onClick={() => setMainTab("cargo")}
-        >
-          CARGO
-        </button>
+    /* =====================================================
+       MAIN TABS
+       ===================================================== */
 
-        <button
-          className={mainTab === "pilot" ? "active" : ""}
-          onClick={() => setMainTab("pilot")}
-        >
-          PILOT · LINE · TUG
-        </button>
+    .main-tabs {
+      position: sticky;
+      top: 0;
+      z-index: 20;
 
-        <button
-          className={mainTab === "services" ? "active" : ""}
-          onClick={() => setMainTab("services")}
-        >
-          PORT SERVICES
-        </button>
-      </div>
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
 
-      {mainTab === "cargo" && <CargoPage />}
-      {mainTab === "pilot" && <PilotPage />}
-      {mainTab === "services" && <PortServices />}
+      padding: 5px;
+      margin-bottom: 25px;
 
-      <GlobalStyles />
-    </main>
-  );
-}
+      background: #e7e9eb;
+      border-radius: 14px;
+    }
 
-/* =========================================================
-   CARGO PAGE
-   ========================================================= */
+    .main-tab {
+      min-width: 0;
+      height: 49px;
 
-function CargoPage() {
-  const [cargo, setCargo] = useState(DEFAULT_CARGO);
-  const [editing, setEditing] = useState(null);
+      border: 0;
+      border-radius: 11px;
 
-  useEffect(() => {
-    const saved = localStorage.getItem("ulsan-cargo-data");
+      background: transparent;
+      color: #6f7780;
 
-    if (saved) {
-      try {
-        setCargo(JSON.parse(saved));
-      } catch {
-        setCargo(DEFAULT_CARGO);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .main-tab.active {
+      background: #fff;
+      color: var(--text);
+
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* =====================================================
+       COMMON
+       ===================================================== */
+
+    .page-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .page-title {
+      margin: 0;
+
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      margin: 4px 0 0;
+
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .primary-btn {
+      flex: 0 0 auto;
+
+      border: 0;
+      border-radius: 10px;
+
+      padding: 11px 14px;
+
+      background: var(--dark);
+      color: #fff;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    /* =====================================================
+       PAGE 1 — CARGO
+       ===================================================== */
+
+    #cargoList {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .cargo-card {
+      overflow: hidden;
+
+      background: var(--card);
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .cargo-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 17px 18px 14px;
+    }
+
+    .eyebrow {
+      margin-bottom: 5px;
+
+      color: #9299a1;
+
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+    }
+
+    .cargo-name {
+      margin: 0;
+
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .cargo-actions {
+      display: flex;
+      gap: 5px;
+
+      flex: 0 0 auto;
+    }
+
+    .small-btn {
+      border: 0;
+      border-radius: 7px;
+
+      padding: 7px 9px;
+
+      background: #edf0f2;
+      color: #59616a;
+
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .small-btn.delete {
+      background: #fff0f0;
+      color: #ad4a4a;
+    }
+
+    .cargo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      border-top: 1px solid var(--line);
+    }
+
+    .cargo-cell {
+      min-width: 0;
+      padding: 14px 16px;
+    }
+
+    .cargo-cell + .cargo-cell {
+      border-left: 1px solid var(--line);
+    }
+
+    .cell-label {
+      margin-bottom: 5px;
+
+      color: #9198a0;
+
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+    }
+
+    .cell-value {
+      color: var(--text);
+
+      font-size: 15px;
+      font-weight: 850;
+      line-height: 1.35;
+
+      overflow-wrap: anywhere;
+    }
+
+    /*
+      DAILY RATE:
+      Currency symbol is NOT added anywhere.
+      Whatever you enter is shown exactly as entered.
+    */
+
+    .remark {
+      margin: 0 14px 14px;
+      padding: 13px 14px;
+
+      background: var(--remark-bg);
+
+      border: 1px solid #f0d68d;
+      border-left: 5px solid var(--remark-border);
+      border-radius: 10px;
+
+      color: var(--remark-text);
+    }
+
+    .remark-label {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #a66f00;
+
+      font-size: 10px;
+      font-weight: 950;
+      letter-spacing: 0.5px;
+    }
+
+    .remark-text {
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.45;
+    }
+
+    .empty {
+      padding: 35px 15px;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* =====================================================
+       MODAL
+       ===================================================== */
+
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(19, 24, 29, 0.55);
+    }
+
+    .modal-bg.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+
+      overflow-y: auto;
+
+      padding: 20px;
+
+      background: #fff;
+      border-radius: 17px;
+    }
+
+    .modal h2 {
+      margin: 0 0 19px;
+
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .field {
+      display: block;
+      margin-bottom: 13px;
+    }
+
+    .field span {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #747c84;
+
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .field input,
+    .field textarea {
+      display: block;
+
+      width: 100%;
+
+      padding: 12px;
+
+      border: 1px solid #d8dde1;
+      border-radius: 9px;
+
+      outline: none;
+
+      color: var(--text);
+      background: #fff;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #77818b;
+    }
+
+    .field textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
+    .modal-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .modal-buttons button {
+      border: 0;
+      border-radius: 10px;
+
+      padding: 13px;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .cancel-btn {
+      background: #eceff1;
+      color: #596169;
+    }
+
+    .save-btn {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    /* =====================================================
+       PAGE 2 — PILOT / LINE / TUG
+       ===================================================== */
+
+    .section-name {
+      margin: 25px 4px 12px;
+
+      font-size: 23px;
+      font-weight: 900;
+    }
+
+    .reference-card {
+      overflow: hidden;
+
+      margin-bottom: 12px;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+
+    .reference-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 15px 18px;
+
+      background: #fafafa;
+
+      border-bottom: 1px solid var(--line);
+    }
+
+    .reference-grt {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .reference-tag {
+      color: #8a9199;
+
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .reference-values {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .reference-value {
+      min-width: 0;
+
+      padding: 15px 8px;
+
+      text-align: center;
+    }
+
+    .reference-value + .reference-value {
+      border-left: 1px solid var(--line);
+    }
+
+    .reference-label {
+      margin-bottom: 7px;
+
+      color: #9299a1;
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .reference-amount {
+      color: var(--text);
+
+      font-size: 16px;
+      font-weight: 900;
+
+      line-height: 1.15;
+    }
+
+    /*
+      IMPORTANT MOBILE FIX
+
+      Amount and "2 TUGS" are two separate block elements,
+      so they can NEVER become:
+      ₩550,000 · 2 TUGS
+
+      on one clipped line.
+    */
+
+    .tug-wrap {
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 4px;
+    }
+
+    .tug-amount {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .tug-count {
+      display: block;
+
+      white-space: nowrap;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .reference-info {
+      margin: 18px 0 13px;
+      padding: 15px 17px;
+
+      background: #f0f2f3;
+      border-radius: 11px;
+
+      color: #333a42;
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .reference-info strong {
+      display: block;
+
+      margin-bottom: 4px;
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .add-reference {
+      width: 100%;
+
+      padding: 14px 16px;
+
+      border: 1px solid var(--line);
+      border-radius: 12px;
+
+      background: #fff;
+      color: var(--text);
+
+      text-align: left;
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    #referenceNotes {
+      display: flex;
+      flex-direction: column;
+
+      gap: 8px;
+
+      margin-top: 9px;
+    }
+
+    .user-reference {
+      position: relative;
+
+      padding: 13px 42px 13px 14px;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+      border-radius: 10px;
+
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .remove-reference {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+
+      width: 27px;
+      height: 27px;
+
+      border: 0;
+      border-radius: 6px;
+
+      background: #f1f2f3;
+      color: #858c93;
+
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    /* =====================================================
+       PAGE 3 — PORT SERVICES
+       ===================================================== */
+
+    .service-scroll {
+      display: flex;
+      gap: 9px;
+
+      overflow-x: auto;
+
+      padding-bottom: 3px;
+      margin-bottom: 20px;
+
+      scrollbar-width: none;
+    }
+
+    .service-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .service-btn {
+      flex: 0 0 auto;
+
+      padding: 12px 20px;
+
+      border: 1px solid #dfe3e6;
+      border-radius: 25px;
+
+      background: #fff;
+      color: #737b83;
+
+      font-size: 12px;
+      font-weight: 900;
+
+      white-space: nowrap;
+    }
+
+    .service-btn.active {
+      border-color: var(--dark);
+
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .service-title {
+      margin: 0 3px 17px;
+
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .area-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .area-card {
+      overflow: hidden;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+
+    /*
+      AREA is intentionally much stronger than before.
+    */
+
+    .area-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 15px 17px;
+
+      background: #f0f2f3;
+
+      border-bottom: 1px solid #e2e5e8;
+    }
+
+    .area-number {
+      color: #1e2730;
+
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: -0.3px;
+    }
+
+    .area-price {
+      flex: 0 0 auto;
+
+      color: #20262e;
+
+      font-size: 19px;
+      font-weight: 950;
+
+      white-space: nowrap;
+    }
+
+    .area-body {
+      padding: 14px 17px 17px;
+    }
+
+    .port-group + .port-group {
+      margin-top: 15px;
+    }
+
+    .port-type {
+      margin-bottom: 6px;
+
+      color: #9299a1;
+
+      font-size: 10px;
+      font-weight: 950;
+      letter-spacing: 0.8px;
+    }
+
+    .port-item {
+      position: relative;
+
+      padding-left: 11px;
+
+      color: #252c34;
+
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .port-item::before {
+      content: "";
+
+      position: absolute;
+      left: 0;
+      top: 10px;
+
+      width: 4px;
+      height: 4px;
+
+      background: #8d959d;
+      border-radius: 50%;
+    }
+
+    .service-placeholder {
+      padding: 35px 15px;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+      border-radius: 15px;
+
+      color: #8a9299;
+      text-align: center;
+    }
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 600px) {
+      .app {
+        padding: 12px;
+      }
+
+      .main-tab {
+        height: 46px;
+
+        padding: 0 4px;
+
+        font-size: 10px;
+      }
+
+      .page-title {
+        font-size: 23px;
+      }
+
+      .primary-btn {
+        padding: 10px 11px;
+        font-size: 10px;
+      }
+
+      /* Cargo remains readable on mobile */
+
+      .cargo-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cargo-cell:nth-child(3) {
+        grid-column: 1 / -1;
+
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .cargo-cell {
+        padding: 12px 13px;
+      }
+
+      .cargo-name {
+        font-size: 18px;
+      }
+
+      /* HHI */
+
+      .reference-top {
+        padding: 14px 15px;
+      }
+
+      .reference-grt {
+        font-size: 18px;
+      }
+
+      .reference-value {
+        padding: 14px 5px;
+      }
+
+      .reference-label {
+        font-size: 10px;
+      }
+
+      .reference-amount {
+        font-size: 14px;
+      }
+
+      .tug-amount {
+        font-size: 14px;
+      }
+
+      .tug-count {
+        margin-top: 1px;
+        font-size: 11px;
+      }
+
+      /* PORT SERVICES */
+
+      .area-number {
+        font-size: 21px;
+      }
+
+      .area-price {
+        font-size: 18px;
+      }
+
+      .port-item {
+        font-size: 14px;
       }
     }
-  }, []);
 
-  const saveCargo = (nextCargo) => {
-    setCargo(nextCargo);
-    localStorage.setItem(
-      "ulsan-cargo-data",
-      JSON.stringify(nextCargo)
-    );
-  };
+    @media (max-width: 370px) {
+      .reference-amount,
+      .tug-amount {
+        font-size: 12px;
+      }
 
-  const startAdd = () => {
-    setEditing({
-      id: Date.now(),
-      name: "",
-      pier: "",
-      dailyRate: "",
+      .reference-label {
+        font-size: 9px;
+      }
+
+      .area-number {
+        font-size: 19px;
+      }
+
+      .area-price {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- ===================================================
+       MAIN NAVIGATION
+       =================================================== -->
+
+  <nav class="main-tabs">
+
+    <button
+      class="main-tab active"
+      data-page="cargoPage"
+      type="button"
+    >
+      CARGO
+    </button>
+
+    <button
+      class="main-tab"
+      data-page="pilotPage"
+      type="button"
+    >
+      PILOT · LINE · TUG
+    </button>
+
+    <button
+      class="main-tab"
+      data-page="servicesPage"
+      type="button"
+    >
+      PORT SERVICES
+    </button>
+
+  </nav>
+
+
+  <!-- ===================================================
+       PAGE 1
+       CARGO
+       =================================================== -->
+
+  <section
+    id="cargoPage"
+    class="page active"
+  >
+
+    <div class="page-title-row">
+
+      <div>
+        <h1 class="page-title">Cargo</h1>
+        <p class="page-subtitle">
+          Working reference
+        </p>
+      </div>
+
+      <button
+        id="addCargoBtn"
+        class="primary-btn"
+        type="button"
+      >
+        + ADD CARGO
+      </button>
+
+    </div>
+
+    <div id="cargoList"></div>
+
+  </section>
+
+
+  <!-- ===================================================
+       PAGE 2
+       PILOT · LINE · TUG
+       =================================================== -->
+
+  <section
+    id="pilotPage"
+    class="page"
+  >
+
+    <h1 class="page-title">
+      Pilot · Line · Tug
+    </h1>
+
+    <h2 class="section-name">
+      HHI
+    </h2>
+
+    <div id="hhiList"></div>
+
+
+    <div class="reference-info">
+
+      <strong>REFERENCE</strong>
+
+      HHI 기준 GRT 3,000 이상 사례는
+      Tug 2척 사용 자료가 포함되어 있습니다.<br>
+
+      실제 작업 조건·선박 제원·현장 상황에 따라
+      비용은 달라질 수 있으므로 참고용으로 사용하세요.
+
+    </div>
+
+
+    <button
+      id="addReferenceBtn"
+      class="add-reference"
+      type="button"
+    >
+      ▶ + ADD NEW REFERENCE
+    </button>
+
+    <div id="referenceNotes"></div>
+
+  </section>
+
+
+  <!-- ===================================================
+       PAGE 3
+       PORT SERVICES
+       =================================================== -->
+
+  <section
+    id="servicesPage"
+    class="page"
+  >
+
+    <div class="service-scroll">
+
+      <button
+        class="service-btn active"
+        data-service="launch"
+        type="button"
+      >
+        LAUNCH
+      </button>
+
+      <button
+        class="service-btn"
+        data-service="workboat"
+        type="button"
+      >
+        WORK BOAT
+      </button>
+
+      <button
+        class="service-btn"
+        data-service="water"
+        type="button"
+      >
+        WATER
+      </button>
+
+      <button
+        class="service-btn"
+        data-service="garbage"
+        type="button"
+      >
+        GARBAGE
+      </button>
+
+      <button
+        class="service-btn"
+        data-service="line"
+        type="button"
+      >
+        LINE HANDLING
+      </button>
+
+    </div>
+
+
+    <div id="serviceContent"></div>
+
+  </section>
+
+</div>
+
+
+<!-- =====================================================
+     CARGO EDITOR
+     ===================================================== -->
+
+<div
+  id="cargoModal"
+  class="modal-bg"
+>
+
+  <div class="modal">
+
+    <h2 id="modalTitle">
+      ADD CARGO
+    </h2>
+
+
+    <label class="field">
+      <span>CARGO NAME</span>
+
+      <input
+        id="cargoNameInput"
+        type="text"
+        placeholder="e.g. MAGNESITE"
+      />
+    </label>
+
+
+    <label class="field">
+      <span>PIER</span>
+
+      <input
+        id="cargoPierInput"
+        type="text"
+        placeholder="e.g. MAIN PORT NO.6"
+      />
+    </label>
+
+
+    <label class="field">
+      <span>DAILY RATE</span>
+
+      <input
+        id="cargoRateInput"
+        type="text"
+        placeholder="e.g. 3,000 MT/DAY"
+      />
+    </label>
+
+
+    <label class="field">
+      <span>SURCHARGE</span>
+
+      <input
+        id="cargoSurchargeInput"
+        type="text"
+        placeholder="e.g. 10%"
+      />
+    </label>
+
+
+    <label class="field">
+      <span>CHECK REMARK</span>
+
+      <textarea
+        id="cargoRemarkInput"
+        placeholder="Enter remark..."
+      ></textarea>
+    </label>
+
+
+    <div class="modal-buttons">
+
+      <button
+        id="cancelCargoBtn"
+        class="cancel-btn"
+        type="button"
+      >
+        CANCEL
+      </button>
+
+      <button
+        id="saveCargoBtn"
+        class="save-btn"
+        type="button"
+      >
+        SAVE
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+  /* =====================================================
+     DATA
+     ===================================================== */
+
+  const DEFAULT_CARGO = [
+    {
+      id: 1,
+      name: "MAGNESITE",
+      pier: "MAIN PORT",
+      dailyRate: "3,000 MT/DAY",
       surcharge: "",
-      remark: "",
-      isNew: true,
-    });
-  };
+      remark: "CHECK RATE / WORKING CONDITION"
+    },
+    {
+      id: 2,
+      name: "PTA IN BAG",
+      pier: "MAIN PORT",
+      dailyRate: "3,000 MT/DAY",
+      surcharge: "",
+      remark: ""
+    }
+  ];
 
-  const startEdit = (item) => {
-    setEditing({
-      ...item,
-      isNew: false,
-    });
-  };
 
-  const handleSave = () => {
-    if (!editing.name.trim()) {
-      alert("Please enter cargo name.");
+  const HHI_REFERENCE = [
+    {
+      grt: "1,400",
+      pilot: "₩1,700,000",
+      line: "₩500,000",
+      tug: "₩2,000,000",
+      tugCount: ""
+    },
+    {
+      grt: "2,900",
+      pilot: "₩2,000,000",
+      line: "₩550,000",
+      tug: "₩2,200,000",
+      tugCount: ""
+    },
+    {
+      grt: "4,000",
+      pilot: "₩2,200,000",
+      line: "₩600,000",
+      tug: "₩4,200,000",
+      tugCount: "2 TUGS"
+    },
+    {
+      grt: "8,000",
+      pilot: "₩2,800,000",
+      line: "₩650,000",
+      tug: "₩5,000,000",
+      tugCount: "2 TUGS"
+    }
+  ];
+
+
+  const LAUNCH_AREAS = [
+    {
+      area: 1,
+      price: "₩127,000",
+      groups: [
+        {
+          title: "PORT / PIER",
+          items: [
+            "JANGSAENGPO PORT",
+            "S.K PIER NO.1,2"
+          ]
+        }
+      ]
+    },
+
+    {
+      area: 2,
+      price: "₩196,000",
+      groups: [
+        {
+          title: "PORT / PIER",
+          items: [
+            "S.K PIER NO.3 · GRAIN PIER",
+            "YONGJAM PIER NO.1,2,3",
+            "GENERAL PIER"
+          ]
+        }
+      ]
+    },
+
+    {
+      area: 3,
+      price: "₩274,000",
+      groups: [
+        {
+          title: "ANCHORAGE",
+          items: [
+            "M 1–7"
+          ]
+        },
+        {
+          title: "PORT / PIER",
+          items: [
+            "HMC · HMD PIER · YEOMPO PIER",
+            "S.K PIER NO.4–8",
+            "MAIN PORT PIER NO.1–9",
+            "HWA-AM PIER"
+          ]
+        }
+      ]
+    },
+
+    {
+      area: 4,
+      price: "₩357,000",
+      groups: [
+        {
+          title: "PORT / PIER",
+          items: [
+            "S.K GAS PIER NO.1,2,3"
+          ]
+        }
+      ]
+    },
+
+    {
+      area: 5,
+      price: "₩439,000",
+      groups: [
+        {
+          title: "ANCHORAGE",
+          items: [
+            "E-1"
+          ]
+        },
+        {
+          title: "PORT / PIER",
+          items: [
+            "ULSAN NORTH NEW PORT"
+          ]
+        }
+      ]
+    },
+
+    {
+      area: 6,
+      price: "₩516,000",
+      groups: [
+        {
+          title: "ANCHORAGE",
+          items: [
+            "E-2"
+          ]
+        },
+        {
+          title: "PORT / PIER",
+          items: [
+            "ULSAN SOUTH NEW PORT (1ST PHASE)",
+            "ONSAN PORT",
+            "S.K BUOY NO.2 & 3"
+          ]
+        }
+      ]
+    }
+  ];
+
+
+  /* =====================================================
+     HELPERS
+     ===================================================== */
+
+  function escapeHTML(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+
+  function loadJSON(key, fallback) {
+    try {
+      const saved = localStorage.getItem(key);
+
+      if (!saved) {
+        return fallback;
+      }
+
+      return JSON.parse(saved);
+
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+
+  function saveJSON(key, value) {
+    localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
+  }
+
+
+  /* =====================================================
+     MAIN TAB NAVIGATION
+     ===================================================== */
+
+  const mainTabs =
+    document.querySelectorAll(".main-tab");
+
+  const pages =
+    document.querySelectorAll(".page");
+
+
+  mainTabs.forEach(function(tab) {
+
+    tab.addEventListener(
+      "click",
+      function() {
+
+        mainTabs.forEach(function(item) {
+          item.classList.remove("active");
+        });
+
+        pages.forEach(function(page) {
+          page.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+
+        document
+          .getElementById(tab.dataset.page)
+          .classList
+          .add("active");
+
+      }
+    );
+
+  });
+
+
+  /* =====================================================
+     CARGO
+     ===================================================== */
+
+  let cargoData =
+    loadJSON(
+      "shipping-cargo-data",
+      DEFAULT_CARGO
+    );
+
+
+  let editingCargoId = null;
+
+
+  const cargoList =
+    document.getElementById("cargoList");
+
+  const cargoModal =
+    document.getElementById("cargoModal");
+
+  const modalTitle =
+    document.getElementById("modalTitle");
+
+  const nameInput =
+    document.getElementById("cargoNameInput");
+
+  const pierInput =
+    document.getElementById("cargoPierInput");
+
+  const rateInput =
+    document.getElementById("cargoRateInput");
+
+  const surchargeInput =
+    document.getElementById(
+      "cargoSurchargeInput"
+    );
+
+  const remarkInput =
+    document.getElementById(
+      "cargoRemarkInput"
+    );
+
+
+  function renderCargo() {
+
+    if (!cargoData.length) {
+
+      cargoList.innerHTML =
+        '<div class="empty">' +
+        'No cargo registered.' +
+        '</div>';
+
       return;
     }
 
-    let nextCargo;
 
-    if (editing.isNew) {
-      const { isNew, ...newCargo } = editing;
-      nextCargo = [...cargo, newCargo];
-    } else {
-      nextCargo = cargo.map((item) =>
-        item.id === editing.id
-          ? {
-              id: editing.id,
-              name: editing.name,
-              pier: editing.pier,
-              dailyRate: editing.dailyRate,
-              surcharge: editing.surcharge,
-              remark: editing.remark,
-            }
-          : item
-      );
-    }
+    cargoList.innerHTML =
+      cargoData.map(function(item) {
 
-    saveCargo(nextCargo);
-    setEditing(null);
-  };
+        const remarkHTML =
+          item.remark
+            ? `
+              <div class="remark">
+                <span class="remark-label">
+                  CHECK REMARK
+                </span>
 
-  const handleDelete = (id) => {
-    if (!window.confirm("Delete this cargo?")) return;
+                <div class="remark-text">
+                  ${escapeHTML(item.remark)}
+                </div>
+              </div>
+            `
+            : "";
 
-    const nextCargo = cargo.filter(
-      (item) => item.id !== id
-    );
 
-    saveCargo(nextCargo);
-  };
+        return `
+          <article class="cargo-card">
 
-  return (
-    <section>
-      <div className="page-heading">
-        <div>
-          <h1>CARGO</h1>
-          <p>Cargo working reference</p>
-        </div>
+            <div class="cargo-head">
 
-        <button
-          className="add-button"
-          onClick={startAdd}
-        >
-          + ADD CARGO
-        </button>
-      </div>
-
-      <div className="cargo-list">
-        {cargo.map((item) => (
-          <article
-            className="cargo-card"
-            key={item.id}
-          >
-            <div className="cargo-top">
               <div>
-                <div className="small-label">
+
+                <div class="eyebrow">
                   CARGO
                 </div>
 
-                <h2>{item.name}</h2>
+                <h2 class="cargo-name">
+                  ${escapeHTML(item.name)}
+                </h2>
+
               </div>
 
-              <div className="cargo-actions">
+
+              <div class="cargo-actions">
+
                 <button
-                  onClick={() => startEdit(item)}
+                  class="small-btn"
+                  type="button"
+                  onclick="editCargo(${item.id})"
                 >
                   EDIT
                 </button>
 
                 <button
-                  className="delete"
-                  onClick={() =>
-                    handleDelete(item.id)
-                  }
+                  class="small-btn delete"
+                  type="button"
+                  onclick="deleteCargo(${item.id})"
                 >
                   DELETE
                 </button>
+
               </div>
-            </div>
-
-            <div className="cargo-info-grid">
-
-              <InfoBox
-                label="PIER"
-                value={item.pier || "—"}
-              />
-
-              <InfoBox
-                label="DAILY RATE"
-                value={item.dailyRate || "—"}
-              />
-
-              <InfoBox
-                label="SURCHARGE"
-                value={item.surcharge || "—"}
-              />
 
             </div>
 
-            {item.remark && (
-              <div className="check-remark">
-                <span>CHECK REMARK</span>
-                <strong>{item.remark}</strong>
+
+            <div class="cargo-grid">
+
+              <div class="cargo-cell">
+
+                <div class="cell-label">
+                  PIER
+                </div>
+
+                <div class="cell-value">
+                  ${escapeHTML(item.pier || "—")}
+                </div>
+
               </div>
-            )}
+
+
+              <div class="cargo-cell">
+
+                <div class="cell-label">
+                  DAILY RATE
+                </div>
+
+                <div class="cell-value">
+                  ${escapeHTML(
+                    item.dailyRate || "—"
+                  )}
+                </div>
+
+              </div>
+
+
+              <div class="cargo-cell">
+
+                <div class="cell-label">
+                  SURCHARGE
+                </div>
+
+                <div class="cell-value">
+                  ${escapeHTML(
+                    item.surcharge || "—"
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+
+            ${remarkHTML}
+
           </article>
-        ))}
-      </div>
+        `;
 
-      {editing && (
-        <div className="modal-overlay">
-          <div className="edit-modal">
+      }).join("");
+  }
 
-            <h2>
-              {editing.isNew
-                ? "ADD CARGO"
-                : "EDIT CARGO"}
-            </h2>
 
-            <EditField
-              label="CARGO NAME"
-              value={editing.name}
-              onChange={(value) =>
-                setEditing({
-                  ...editing,
-                  name: value,
-                })
-              }
-            />
+  function openCargoModal(item) {
 
-            <EditField
-              label="PIER"
-              value={editing.pier}
-              onChange={(value) =>
-                setEditing({
-                  ...editing,
-                  pier: value,
-                })
-              }
-            />
+    if (item) {
 
-            <EditField
-              label="DAILY RATE"
-              value={editing.dailyRate}
-              placeholder="e.g. 3,000 MT/DAY"
-              onChange={(value) =>
-                setEditing({
-                  ...editing,
-                  dailyRate: value,
-                })
-              }
-            />
+      editingCargoId = item.id;
 
-            <EditField
-              label="SURCHARGE"
-              value={editing.surcharge}
-              placeholder="e.g. 10%"
-              onChange={(value) =>
-                setEditing({
-                  ...editing,
-                  surcharge: value,
-                })
-              }
-            />
+      modalTitle.textContent =
+        "EDIT CARGO";
 
-            <label className="edit-field">
-              <span>CHECK REMARK</span>
+      nameInput.value =
+        item.name || "";
 
-              <textarea
-                value={editing.remark}
-                onChange={(e) =>
-                  setEditing({
-                    ...editing,
-                    remark: e.target.value,
-                  })
-                }
-              />
-            </label>
+      pierInput.value =
+        item.pier || "";
 
-            <div className="modal-buttons">
-              <button
-                className="cancel-button"
-                onClick={() => setEditing(null)}
-              >
-                CANCEL
-              </button>
+      rateInput.value =
+        item.dailyRate || "";
 
-              <button
-                className="save-button"
-                onClick={handleSave}
-              >
-                SAVE
-              </button>
-            </div>
+      surchargeInput.value =
+        item.surcharge || "";
 
-          </div>
-        </div>
-      )}
-    </section>
-  );
-}
+      remarkInput.value =
+        item.remark || "";
 
-function InfoBox({ label, value }) {
-  return (
-    <div className="info-box">
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </div>
-  );
-}
+    } else {
 
-function EditField({
-  label,
-  value,
-  onChange,
-  placeholder = "",
-}) {
-  return (
-    <label className="edit-field">
-      <span>{label}</span>
+      editingCargoId = null;
 
-      <input
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) =>
-          onChange(e.target.value)
-        }
-      />
-    </label>
-  );
-}
+      modalTitle.textContent =
+        "ADD CARGO";
 
-/* =========================================================
-   PILOT / LINE / TUG
-   ========================================================= */
+      nameInput.value = "";
+      pierInput.value = "";
+      rateInput.value = "";
+      surchargeInput.value = "";
+      remarkInput.value = "";
 
-function PilotPage() {
-  const [references, setReferences] = useState([]);
-
-  useEffect(() => {
-    const saved = localStorage.getItem(
-      "ulsan-reference-notes"
-    );
-
-    if (saved) {
-      try {
-        setReferences(JSON.parse(saved));
-      } catch {
-        setReferences([]);
-      }
     }
-  }, []);
 
-  const addReference = () => {
-    const text = window.prompt(
-      "Enter reference / memo"
-    );
+    cargoModal.classList.add("show");
 
-    if (!text) return;
+    setTimeout(function() {
+      nameInput.focus();
+    }, 50);
+  }
 
-    const next = [
-      ...references,
-      {
-        id: Date.now(),
-        text,
-      },
-    ];
 
-    setReferences(next);
+  function closeCargoModal() {
+    cargoModal.classList.remove("show");
+  }
 
-    localStorage.setItem(
-      "ulsan-reference-notes",
-      JSON.stringify(next)
-    );
+
+  window.editCargo = function(id) {
+
+    const item =
+      cargoData.find(function(cargo) {
+        return cargo.id === id;
+      });
+
+    if (item) {
+      openCargoModal(item);
+    }
   };
 
-  return (
-    <section>
 
-      <div className="page-heading">
-        <div>
-          <h1>PILOT · LINE · TUG</h1>
-          <p>HHI cost reference</p>
-        </div>
-      </div>
+  window.deleteCargo = function(id) {
 
-      <div className="table-card">
+    const item =
+      cargoData.find(function(cargo) {
+        return cargo.id === id;
+      });
 
-        <div className="cost-table header">
-          <div>GRT</div>
-          <div>PILOT / BOAT</div>
-          <div>LINE</div>
-          <div>TUG</div>
-        </div>
+    if (!item) {
+      return;
+    }
 
-        {HHI_REFERENCE.map((item) => (
-          <div
-            className="cost-table row"
-            key={item.grt}
-          >
-            <div className="grt">
-              {item.grt}
-            </div>
+    const confirmed =
+      confirm(
+        "Delete " +
+        item.name +
+        "?"
+      );
 
-            <div>{item.pilot}</div>
+    if (!confirmed) {
+      return;
+    }
 
-            <div>{item.line}</div>
+    cargoData =
+      cargoData.filter(function(cargo) {
+        return cargo.id !== id;
+      });
 
-            <div className="tug-price">
-              <span className="price">
-                {item.tug}
+    saveJSON(
+      "shipping-cargo-data",
+      cargoData
+    );
+
+    renderCargo();
+  };
+
+
+  document
+    .getElementById("addCargoBtn")
+    .addEventListener(
+      "click",
+      function() {
+        openCargoModal(null);
+      }
+    );
+
+
+  document
+    .getElementById("cancelCargoBtn")
+    .addEventListener(
+      "click",
+      closeCargoModal
+    );
+
+
+  document
+    .getElementById("saveCargoBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        const name =
+          nameInput.value.trim();
+
+        if (!name) {
+
+          alert(
+            "Please enter cargo name."
+          );
+
+          nameInput.focus();
+
+          return;
+        }
+
+
+        const newData = {
+          id:
+            editingCargoId !== null
+              ? editingCargoId
+              : Date.now(),
+
+          name: name,
+
+          pier:
+            pierInput.value.trim(),
+
+          dailyRate:
+            rateInput.value.trim(),
+
+          surcharge:
+            surchargeInput.value.trim(),
+
+          remark:
+            remarkInput.value.trim()
+        };
+
+
+        if (editingCargoId !== null) {
+
+          cargoData =
+            cargoData.map(function(item) {
+
+              if (
+                item.id === editingCargoId
+              ) {
+                return newData;
+              }
+
+              return item;
+
+            });
+
+        } else {
+
+          cargoData.push(newData);
+
+        }
+
+
+        saveJSON(
+          "shipping-cargo-data",
+          cargoData
+        );
+
+        renderCargo();
+
+        closeCargoModal();
+
+      }
+    );
+
+
+  cargoModal.addEventListener(
+    "click",
+    function(event) {
+
+      if (event.target === cargoModal) {
+        closeCargoModal();
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     HHI REFERENCE
+     ===================================================== */
+
+  const hhiList =
+    document.getElementById("hhiList");
+
+
+  function renderHHI() {
+
+    hhiList.innerHTML =
+      HHI_REFERENCE.map(function(item) {
+
+        const tugCount =
+          item.tugCount
+            ? `
+              <span class="tug-count">
+                ${escapeHTML(item.tugCount)}
               </span>
+            `
+            : "";
 
-              {item.tugCount && (
-                <span className="tug-count">
-                  {item.tugCount}
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
 
-      </div>
+        return `
+          <article class="reference-card">
 
-      <button
-        className="reference-button"
-        onClick={addReference}
-      >
-        + ADD REFERENCE
-      </button>
+            <div class="reference-top">
 
-      {references.length > 0 && (
-        <div className="reference-list">
-          {references.map((ref) => (
-            <div
-              className="reference-note"
-              key={ref.id}
-            >
-              {ref.text}
-            </div>
-          ))}
-        </div>
-      )}
+              <div class="reference-grt">
+                GRT ${escapeHTML(item.grt)}
+              </div>
 
-    </section>
-  );
-}
+              <div class="reference-tag">
+                REFERENCE
+              </div>
 
-/* =========================================================
-   PORT SERVICES
-   ========================================================= */
-
-function PortServices() {
-  const [serviceTab, setServiceTab] =
-    useState("launch");
-
-  return (
-    <section>
-
-      <div className="page-heading">
-        <div>
-          <h1>PORT SERVICES</h1>
-          <p>Ulsan service tariff reference</p>
-        </div>
-      </div>
-
-      <div className="service-tabs">
-
-        <button
-          className={
-            serviceTab === "launch"
-              ? "active"
-              : ""
-          }
-          onClick={() =>
-            setServiceTab("launch")
-          }
-        >
-          Launch Service
-        </button>
-
-        <button
-          className={
-            serviceTab === "work"
-              ? "active"
-              : ""
-          }
-          onClick={() =>
-            setServiceTab("work")
-          }
-        >
-          Work Boat
-        </button>
-
-        <button
-          className={
-            serviceTab === "water"
-              ? "active"
-              : ""
-          }
-          onClick={() =>
-            setServiceTab("water")
-          }
-        >
-          Water
-        </button>
-
-      </div>
-
-      {serviceTab === "launch" && (
-        <LaunchService />
-      )}
-
-      {serviceTab === "work" && (
-        <div className="empty-service">
-          Work Boat tariff
-        </div>
-      )}
-
-      {serviceTab === "water" && (
-        <div className="empty-service">
-          Water tariff
-        </div>
-      )}
-
-    </section>
-  );
-}
-
-function LaunchService() {
-  return (
-    <div className="area-list">
-
-      {LAUNCH_AREAS.map((item) => (
-        <article
-          className="area-card"
-          key={item.area}
-        >
-
-          <div className="area-header">
-
-            <div className="area-title">
-              AREA {item.area}
             </div>
 
-            <div className="area-price">
-              {item.price}
-            </div>
 
-          </div>
+            <div class="reference-values">
 
-          <div className="area-content">
+              <div class="reference-value">
 
-            {item.groups.map(
-              (group, index) => (
-                <div
-                  className="port-group"
-                  key={index}
-                >
-                  <div className="port-group-title">
-                    {group.title}
-                  </div>
-
-                  <div className="port-list">
-                    {group.items.map(
-                      (port, portIndex) => (
-                        <div
-                          className="port-name"
-                          key={portIndex}
-                        >
-                          {port}
-                        </div>
-                      )
-                    )}
-                  </div>
+                <div class="reference-label">
+                  PILOT / BOAT
                 </div>
-              )
-            )}
 
-          </div>
+                <div class="reference-amount">
+                  ${escapeHTML(item.pilot)}
+                </div>
 
-        </article>
-      ))}
+              </div>
 
-    </div>
+
+              <div class="reference-value">
+
+                <div class="reference-label">
+                  LINE
+                </div>
+
+                <div class="reference-amount">
+                  ${escapeHTML(item.line)}
+                </div>
+
+              </div>
+
+
+              <div class="reference-value">
+
+                <div class="reference-label">
+                  TUG
+                </div>
+
+                <div class="reference-amount tug-wrap">
+
+                  <span class="tug-amount">
+                    ${escapeHTML(item.tug)}
+                  </span>
+
+                  ${tugCount}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+        `;
+
+      }).join("");
+  }
+
+
+  /* =====================================================
+     USER REFERENCE NOTES
+     ===================================================== */
+
+  let referenceNotes =
+    loadJSON(
+      "shipping-reference-notes",
+      []
+    );
+
+
+  const referenceNotesElement =
+    document.getElementById(
+      "referenceNotes"
+    );
+
+
+  function renderReferenceNotes() {
+
+    referenceNotesElement.innerHTML =
+      referenceNotes.map(
+        function(note, index) {
+
+          return `
+            <div class="user-reference">
+
+              ${escapeHTML(note)}
+
+              <button
+                class="remove-reference"
+                type="button"
+                onclick="removeReference(${index})"
+              >
+                ×
+              </button>
+
+            </div>
+          `;
+
+        }
+      ).join("");
+  }
+
+
+  document
+    .getElementById("addReferenceBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        const value =
+          prompt(
+            "Enter new reference / memo"
+          );
+
+        if (!value) {
+          return;
+        }
+
+        referenceNotes.push(
+          value.trim()
+        );
+
+        saveJSON(
+          "shipping-reference-notes",
+          referenceNotes
+        );
+
+        renderReferenceNotes();
+
+      }
+    );
+
+
+  window.removeReference =
+    function(index) {
+
+      referenceNotes.splice(
+        index,
+        1
+      );
+
+      saveJSON(
+        "shipping-reference-notes",
+        referenceNotes
+      );
+
+      renderReferenceNotes();
+
+    };
+
+
+  /* =====================================================
+     PORT SERVICES
+     ===================================================== */
+
+  const serviceContent =
+    document.getElementById(
+      "serviceContent"
+    );
+
+
+  const serviceButtons =
+    document.querySelectorAll(
+      ".service-btn"
+    );
+
+
+  function renderLaunchService() {
+
+    const cards =
+      LAUNCH_AREAS.map(
+        function(area) {
+
+          const groups =
+            area.groups.map(
+              function(group) {
+
+                const ports =
+                  group.items.map(
+                    function(port) {
+
+                      return `
+                        <div class="port-item">
+                          ${escapeHTML(port)}
+                        </div>
+                      `;
+
+                    }
+                  ).join("");
+
+
+                return `
+                  <div class="port-group">
+
+                    <div class="port-type">
+                      ${escapeHTML(group.title)}
+                    </div>
+
+                    ${ports}
+
+                  </div>
+                `;
+
+              }
+            ).join("");
+
+
+          return `
+            <article class="area-card">
+
+              <div class="area-head">
+
+                <div class="area-number">
+                  AREA ${area.area}
+                </div>
+
+                <div class="area-price">
+                  ${escapeHTML(area.price)}
+                </div>
+
+              </div>
+
+
+              <div class="area-body">
+                ${groups}
+              </div>
+
+            </article>
+          `;
+
+        }
+      ).join("");
+
+
+    serviceContent.innerHTML = `
+      <h2 class="service-title">
+        Launch Service
+      </h2>
+
+      <div class="area-list">
+        ${cards}
+      </div>
+    `;
+  }
+
+
+  function renderPlaceholder(title) {
+
+    serviceContent.innerHTML = `
+      <h2 class="service-title">
+        ${escapeHTML(title)}
+      </h2>
+
+      <div class="service-placeholder">
+        Tariff data can be added here.
+      </div>
+    `;
+  }
+
+
+  serviceButtons.forEach(
+    function(button) {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          serviceButtons.forEach(
+            function(item) {
+              item.classList.remove(
+                "active"
+              );
+            }
+          );
+
+          button.classList.add(
+            "active"
+          );
+
+
+          const service =
+            button.dataset.service;
+
+
+          if (service === "launch") {
+
+            renderLaunchService();
+
+          } else if (
+            service === "workboat"
+          ) {
+
+            renderPlaceholder(
+              "Work Boat"
+            );
+
+          } else if (
+            service === "water"
+          ) {
+
+            renderPlaceholder(
+              "Water"
+            );
+
+          } else if (
+            service === "garbage"
+          ) {
+
+            renderPlaceholder(
+              "Garbage"
+            );
+
+          } else if (
+            service === "line"
+          ) {
+
+            renderPlaceholder(
+              "Line Handling"
+            );
+
+          }
+
+        }
+      );
+
+    }
   );
-}
 
-/* =========================================================
-   STYLES
-   ========================================================= */
 
-function GlobalStyles() {
-  return (
-    <style jsx global>{`
+  /* =====================================================
+     INITIAL RENDER
+     ===================================================== */
 
-      * {
-        box-sizing: border-box;
-      }
+  renderCargo();
 
-      body {
-        margin: 0;
-        background: #f5f6f7;
-        color: #202731;
-        font-family:
-          Arial,
-          Helvetica,
-          sans-serif;
-      }
+  renderHHI();
 
-      button,
-      input,
-      textarea {
-        font: inherit;
-      }
+  renderReferenceNotes();
 
-      button {
-        cursor: pointer;
-      }
+  renderLaunchService();
 
-      .shipping-page {
-        width: 100%;
-        max-width: 820px;
-        margin: 0 auto;
-        padding: 20px;
-      }
+</script>
 
-      /* =========================
-         MAIN NAVIGATION
-      ========================= */
-
-      .main-tabs {
-        display: grid;
-        grid-template-columns:
-          repeat(3, 1fr);
-        gap: 4px;
-
-        background: #e7e9ec;
-        padding: 4px;
-        border-radius: 12px;
-
-        margin-bottom: 26px;
-      }
-
-      .main-tabs button {
-        min-height: 46px;
-        border: 0;
-        border-radius: 9px;
-
-        background: transparent;
-
-        color: #6d747c;
-        font-size: 13px;
-        font-weight: 800;
-      }
-
-      .main-tabs button.active {
-        background: #fff;
-        color: #202731;
-
-        box-shadow:
-          0 1px 5px
-          rgba(0,0,0,.08);
-      }
-
-      /* =========================
-         HEADING
-      ========================= */
-
-      .page-heading {
-        display: flex;
-        justify-content:
-          space-between;
-        align-items: center;
-
-        gap: 15px;
-
-        margin-bottom: 18px;
-      }
-
-      .page-heading h1 {
-        margin: 0 0 4px;
-        font-size: 24px;
-        font-weight: 900;
-      }
-
-      .page-heading p {
-        margin: 0;
-        color: #858c94;
-        font-size: 13px;
-      }
-
-      /* =========================
-         CARGO
-      ========================= */
-
-      .add-button {
-        border: 0;
-        border-radius: 9px;
-
-        padding: 10px 13px;
-
-        background: #202731;
-        color: white;
-
-        font-size: 12px;
-        font-weight: 800;
-
-        white-space: nowrap;
-      }
-
-      .cargo-list {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-
-      .cargo-card {
-        background: white;
-
-        border:
-          1px solid #e4e7ea;
-
-        border-radius: 14px;
-
-        padding: 18px;
-
-        box-shadow:
-          0 2px 8px
-          rgba(0,0,0,.035);
-      }
-
-      .cargo-top {
-        display: flex;
-        justify-content:
-          space-between;
-        align-items:
-          flex-start;
-
-        gap: 12px;
-
-        margin-bottom: 16px;
-      }
-
-      .small-label {
-        color: #9299a1;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: .8px;
-
-        margin-bottom: 5px;
-      }
-
-      .cargo-top h2 {
-        margin: 0;
-
-        font-size: 20px;
-        font-weight: 900;
-      }
-
-      .cargo-actions {
-        display: flex;
-        gap: 6px;
-      }
-
-      .cargo-actions button {
-        border: 0;
-
-        padding: 7px 9px;
-
-        border-radius: 7px;
-
-        background: #edf0f2;
-        color: #59616a;
-
-        font-size: 10px;
-        font-weight: 800;
-      }
-
-      .cargo-actions .delete {
-        color: #b34a4a;
-        background: #fff0f0;
-      }
-
-      .cargo-info-grid {
-        display: grid;
-
-        grid-template-columns:
-          repeat(3, 1fr);
-
-        gap: 8px;
-      }
-
-      .info-box {
-        background: #f6f7f8;
-        border-radius: 9px;
-
-        padding: 11px;
-      }
-
-      .info-box span {
-        display: block;
-
-        color: #969da5;
-
-        font-size: 9px;
-        font-weight: 800;
-
-        margin-bottom: 5px;
-      }
-
-      .info-box strong {
-        display: block;
-
-        color: #252b31;
-
-        font-size: 13px;
-        line-height: 1.3;
-
-        word-break: break-word;
-      }
-
-      /* DAILY RATE IS NOT CURRENCY */
-
-      .check-remark {
-        margin-top: 12px;
-
-        padding: 12px 14px;
-
-        border-radius: 9px;
-
-        background: #fff4cf;
-        border-left:
-          4px solid #e8aa24;
-
-        color: #684b00;
-      }
-
-      .check-remark span {
-        display: block;
-
-        color: #b27800;
-
-        font-size: 9px;
-        font-weight: 900;
-
-        letter-spacing: .5px;
-
-        margin-bottom: 4px;
-      }
-
-      .check-remark strong {
-        font-size: 13px;
-        line-height: 1.4;
-      }
-
-      /* =========================
-         EDIT MODAL
-      ========================= */
-
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-
-        z-index: 100;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 20px;
-
-        background:
-          rgba(20,25,30,.55);
-      }
-
-      .edit-modal {
-        width: 100%;
-        max-width: 480px;
-
-        max-height: 90vh;
-        overflow-y: auto;
-
-        background: white;
-
-        border-radius: 16px;
-
-        padding: 20px;
-      }
-
-      .edit-modal h2 {
-        margin: 0 0 18px;
-
-        font-size: 20px;
-      }
-
-      .edit-field {
-        display: block;
-        margin-bottom: 13px;
-      }
-
-      .edit-field > span {
-        display: block;
-
-        margin-bottom: 6px;
-
-        color: #747b83;
-
-        font-size: 10px;
-        font-weight: 800;
-      }
-
-      .edit-field input,
-      .edit-field textarea {
-        width: 100%;
-
-        border:
-          1px solid #d9dde1;
-
-        border-radius: 9px;
-
-        padding: 11px 12px;
-
-        color: #202731;
-
-        outline: none;
-      }
-
-      .edit-field textarea {
-        min-height: 90px;
-        resize: vertical;
-      }
-
-      .edit-field input:focus,
-      .edit-field textarea:focus {
-        border-color: #68727d;
-      }
-
-      .modal-buttons {
-        display: grid;
-
-        grid-template-columns:
-          1fr 1fr;
-
-        gap: 8px;
-
-        margin-top: 18px;
-      }
-
-      .modal-buttons button {
-        border: 0;
-        border-radius: 9px;
-
-        padding: 12px;
-
-        font-size: 12px;
-        font-weight: 900;
-      }
-
-      .cancel-button {
-        background: #eceff1;
-        color: #555d65;
-      }
-
-      .save-button {
-        background: #202731;
-        color: white;
-      }
-
-      /* =========================
-         PILOT / LINE / TUG
-      ========================= */
-
-      .table-card {
-        overflow: hidden;
-
-        background: white;
-
-        border:
-          1px solid #e2e5e8;
-
-        border-radius: 12px;
-      }
-
-      .cost-table {
-        display: grid;
-
-        grid-template-columns:
-          .7fr 1.3fr 1fr 1.25fr;
-
-        align-items: center;
-      }
-
-      .cost-table.header {
-        background: #eef0f2;
-
-        color: #727980;
-
-        font-size: 10px;
-        font-weight: 900;
-      }
-
-      .cost-table.header > div,
-      .cost-table.row > div {
-        padding: 12px 8px;
-        text-align: center;
-      }
-
-      .cost-table.row {
-        min-height: 58px;
-
-        border-top:
-          1px solid #eceeef;
-
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .grt {
-        font-weight: 900;
-      }
-
-      /*
-       IMPORTANT:
-       Tug amount and tug count are intentionally
-       separated into two lines.
-      */
-
-      .tug-price {
-        display: flex;
-        flex-direction: column;
-
-        justify-content: center;
-        align-items: center;
-
-        gap: 3px;
-
-        min-width: 0;
-
-        line-height: 1.15;
-      }
-
-      .tug-price .price {
-        display: block;
-        white-space: nowrap;
-      }
-
-      .tug-price .tug-count {
-        display: block;
-
-        white-space: nowrap;
-
-        color: #737b83;
-
-        font-size: 9px;
-        font-weight: 900;
-      }
-
-      .reference-button {
-        width: 100%;
-
-        margin-top: 12px;
-
-        border:
-          1px dashed #c9ced3;
-
-        border-radius: 10px;
-
-        padding: 12px;
-
-        background: transparent;
-
-        color: #656d75;
-
-        font-size: 11px;
-        font-weight: 800;
-      }
-
-      .reference-list {
-        display: flex;
-        flex-direction: column;
-
-        gap: 8px;
-
-        margin-top: 10px;
-      }
-
-      .reference-note {
-        background: #fff;
-
-        border:
-          1px solid #e1e4e7;
-
-        border-radius: 9px;
-
-        padding: 11px 12px;
-
-        font-size: 12px;
-        line-height: 1.4;
-      }
-
-      /* =========================
-         PORT SERVICES
-      ========================= */
-
-      .service-tabs {
-        display: grid;
-
-        grid-template-columns:
-          repeat(3, 1fr);
-
-        gap: 5px;
-
-        margin-bottom: 15px;
-      }
-
-      .service-tabs button {
-        border: 0;
-        border-radius: 8px;
-
-        padding: 10px 5px;
-
-        background: #e8eaec;
-
-        color: #757c83;
-
-        font-size: 11px;
-        font-weight: 800;
-      }
-
-      .service-tabs button.active {
-        background: #202731;
-        color: white;
-      }
-
-      .area-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .area-card {
-        overflow: hidden;
-
-        background: #fff;
-
-        border:
-          1px solid #e1e4e7;
-
-        border-radius: 12px;
-      }
-
-      /*
-       AREA is intentionally the strongest
-       visual element in each card.
-      */
-
-      .area-header {
-        display: flex;
-
-        justify-content:
-          space-between;
-
-        align-items: center;
-
-        gap: 15px;
-
-        padding: 15px 16px;
-
-        background: #f0f2f4;
-
-        border-bottom:
-          1px solid #e3e6e8;
-      }
-
-      .area-title {
-        color: #18212a;
-
-        font-size: 21px;
-        font-weight: 900;
-
-        letter-spacing: -.3px;
-      }
-
-      .area-price {
-        color: #202731;
-
-        font-size: 18px;
-        font-weight: 900;
-
-        white-space: nowrap;
-      }
-
-      .area-content {
-        padding: 14px 16px 16px;
-      }
-
-      .port-group + .port-group {
-        margin-top: 14px;
-      }
-
-      .port-group-title {
-        color: #9299a0;
-
-        font-size: 9px;
-        font-weight: 900;
-
-        letter-spacing: .7px;
-
-        margin-bottom: 6px;
-      }
-
-      .port-list {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-
-      .port-name {
-        color: #252c33;
-
-        font-size: 14px;
-        font-weight: 700;
-
-        line-height: 1.4;
-      }
-
-      .empty-service {
-        padding: 30px;
-
-        text-align: center;
-
-        background: white;
-
-        border:
-          1px solid #e2e5e8;
-
-        border-radius: 12px;
-
-        color: #8a9198;
-      }
-
-      /* =========================
-         MOBILE
-      ========================= */
-
-      @media (max-width: 600px) {
-
-        .shipping-page {
-          padding: 14px;
-        }
-
-        .main-tabs button {
-          font-size: 10px;
-          padding: 0 4px;
-        }
-
-        .page-heading h1 {
-          font-size: 21px;
-        }
-
-        .add-button {
-          font-size: 10px;
-          padding: 9px 10px;
-        }
-
-        .cargo-info-grid {
-          grid-template-columns:
-            repeat(2, 1fr);
-        }
-
-        .cost-table {
-          grid-template-columns:
-            .62fr 1.15fr .9fr 1.2fr;
-        }
-
-        .cost-table.header > div,
-        .cost-table.row > div {
-          padding:
-            11px 4px;
-        }
-
-        .cost-table.row {
-          font-size: 10px;
-        }
-
-        .tug-price {
-          /*
-           This prevents:
-           ₩4,200,000 · 2 TUGS
-           from becoming one clipped line.
-          */
-
-          flex-direction: column;
-        }
-
-        .tug-price .price {
-          font-size: 10px;
-        }
-
-        .tug-price .tug-count {
-          font-size: 8px;
-        }
-
-        .area-title {
-          font-size: 20px;
-        }
-
-        .area-price {
-          font-size: 17px;
-        }
-
-        .port-name {
-          font-size: 13px;
-        }
-      }
-
-    `}</style>
-  );
-}
+</body>
+</html>
