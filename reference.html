@@ -1,1700 +1,1475 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Port Working Reference</title>
+"use client";
 
-<style>
-:root{
-  --bg:#f4f5f6;
-  --card:#ffffff;
-  --text:#1d252d;
-  --muted:#737b84;
-  --border:#dfe3e6;
-  --soft:#f0f2f3;
-  --dark:#202a33;
-  --dark2:#35404a;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-}
-
-.app{
-  width:100%;
-  max-width:900px;
-  margin:auto;
-  padding:20px 14px 60px;
-}
-
-.header{
-  margin-bottom:18px;
-}
-
-.kicker{
-  font-size:10px;
-  font-weight:800;
-  color:#7c858d;
-  letter-spacing:1px;
-}
-
-h1{
-  font-size:23px;
-  margin:5px 0 3px;
-}
-
-.subtitle{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* MAIN TABS */
-
-.main-tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:4px;
-  padding:4px;
-  background:#e7e9eb;
-  border-radius:11px;
-  margin-bottom:14px;
-}
-
-.main-tab{
-  border:0;
-  background:transparent;
-  color:#69717a;
-  padding:11px 4px;
-  border-radius:8px;
-  font-size:11px;
-  font-weight:800;
-  cursor:pointer;
-}
-
-.main-tab.active{
-  background:#fff;
-  color:#17202a;
-  box-shadow:0 1px 4px rgba(0,0,0,.08);
-}
-
-.page{display:none}
-.page.active{display:block}
-
-/* SEARCH */
-
-.search{
-  position:relative;
-  margin-bottom:10px;
-}
-
-.search input{
-  width:100%;
-  height:47px;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:0 14px 0 40px;
-  font-size:15px;
-  outline:none;
-}
-
-.search input:focus{
-  border-color:#8b949c;
-}
-
-.search span{
-  position:absolute;
-  left:14px;
-  top:13px;
-  color:#6e7780;
-}
-
-/* OPTION TOGGLES */
-
-.option-box{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:11px;
-  margin-bottom:12px;
-}
-
-.option-title{
-  font-size:10px;
-  color:#858d95;
-  font-weight:800;
-  margin-bottom:8px;
-}
-
-.options{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-}
-
-.toggle{
-  position:relative;
-}
-
-.toggle input{
-  display:none;
-}
-
-.toggle label{
-  display:block;
-  border:1px solid #d9dde1;
-  background:#fff;
-  padding:7px 10px;
-  border-radius:18px;
-  font-size:10px;
-  font-weight:800;
-  color:#7a828a;
-  cursor:pointer;
-}
-
-.toggle input:checked + label{
-  background:var(--dark);
-  color:#fff;
-  border-color:var(--dark);
-}
-
-.count{
-  font-size:11px;
-  color:#818990;
-  margin:5px 2px 9px;
-}
-
-/* CARGO */
-
-.cargo-list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.cargo-card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:13px;
-}
-
-.cargo-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:8px;
-  margin-bottom:11px;
-}
-
-.cargo-name{
-  font-size:15px;
-  font-weight:850;
-}
-
-.pier{
-  background:#eef0f2;
-  padding:4px 7px;
-  border-radius:5px;
-  font-size:10px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.info-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  border-top:1px solid #edf0f2;
-}
-
-.info{
-  padding:10px 7px 7px 0;
-}
-
-.info + .info{
-  padding-left:9px;
-  border-left:1px solid #edf0f2;
-}
-
-.label{
-  font-size:9px;
-  font-weight:800;
-  color:#90979e;
-  margin-bottom:3px;
-}
-
-.value{
-  font-size:12px;
-  font-weight:750;
-  line-height:1.45;
-}
-
-.detail{
-  margin-top:9px;
-  background:#f5f6f7;
-  padding:9px 10px;
-  border-radius:7px;
-}
-
-.detail .label{
-  margin-bottom:4px;
-}
-
-.detail .value{
-  font-weight:600;
-}
-
-.warning{
-  border-left:3px solid #69727b;
-}
-
-/* REFERENCE */
-
-.section-title{
-  font-size:16px;
-  font-weight:850;
-  margin:18px 2px 10px;
-}
-
-.section-title:first-child{
-  margin-top:0;
-}
-
-.ref-card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  margin-bottom:9px;
-  overflow:hidden;
-}
-
-.ref-head{
-  padding:12px 13px;
-  background:#f8f9f9;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.ref-head strong{
-  font-size:14px;
-}
-
-.grt{
-  font-size:11px;
-  color:#747d85;
-}
-
-.ref-row{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-}
-
-.ref-cell{
-  padding:11px 8px;
-  text-align:center;
-}
-
-.ref-cell + .ref-cell{
-  border-left:1px solid #edf0f2;
-}
-
-.ref-label{
-  font-size:9px;
-  color:#8b939b;
-  font-weight:800;
-  margin-bottom:4px;
-}
-
-.ref-price{
-  font-size:12px;
-  font-weight:850;
-}
-
-.note{
-  background:#f1f3f4;
-  padding:10px 12px;
-  border-radius:8px;
-  font-size:11px;
-  line-height:1.6;
-  margin-bottom:12px;
-}
-
-/* ADD REFERENCE */
-
-.add-box{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:13px;
-  margin-top:14px;
-}
-
-.add-box summary{
-  cursor:pointer;
-  font-size:12px;
-  font-weight:850;
-}
-
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-top:12px;
-}
-
-.form-grid input,
-.form-grid select{
-  width:100%;
-  height:40px;
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:0 9px;
-  background:#fff;
-}
-
-.add-btn{
-  grid-column:1/-1;
-  border:0;
-  height:40px;
-  border-radius:7px;
-  background:var(--dark);
-  color:#fff;
-  font-weight:800;
-}
-
-/* SERVICES */
-
-.service-nav{
-  display:flex;
-  gap:6px;
-  overflow-x:auto;
-  padding-bottom:10px;
-  scrollbar-width:none;
-}
-
-.service-nav::-webkit-scrollbar{display:none}
-
-.service-btn{
-  flex:none;
-  border:1px solid var(--border);
-  background:#fff;
-  color:#6c747c;
-  border-radius:18px;
-  padding:8px 12px;
-  font-size:10px;
-  font-weight:800;
-}
-
-.service-btn.active{
-  background:var(--dark);
-  color:#fff;
-  border-color:var(--dark);
-}
-
-.service-panel{display:none}
-.service-panel.active{display:block}
-
-.service-card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:9px;
-  margin-bottom:7px;
-  padding:12px;
-}
-
-.service-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.area{
-  font-size:10px;
-  color:#7d858d;
-  font-weight:800;
-  margin-bottom:4px;
-}
-
-.area-name{
-  font-size:12px;
-  font-weight:700;
-  line-height:1.55;
-}
-
-.amount{
-  font-size:14px;
-  font-weight:850;
-  white-space:nowrap;
-}
-
-.basic-time{
-  font-size:10px;
-  color:#777f87;
-  margin-top:4px;
-  text-align:right;
-}
-
-.charge-box{
-  margin-top:13px;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.charge-box summary{
-  padding:12px;
-  cursor:pointer;
-  font-size:12px;
-  font-weight:850;
-  background:#f5f6f7;
-}
-
-.charge-row{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding:9px 12px;
-  border-top:1px solid #edf0f2;
-  font-size:11px;
-}
-
-.charge-row span:last-child{
-  font-weight:850;
-  text-align:right;
-}
-
-.table-wrap{
-  overflow-x:auto;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:9px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:480px;
-}
-
-th{
-  background:#f0f2f3;
-  color:#69727a;
-  font-size:9px;
-  text-align:left;
-  padding:9px;
-}
-
-td{
-  font-size:11px;
-  padding:9px;
-  border-top:1px solid #e6e9eb;
-}
-
-td.num{
-  text-align:right;
-  font-weight:750;
-}
-
-/* MOBILE */
-
-@media(max-width:500px){
-  .app{padding:16px 10px 50px}
-  h1{font-size:21px}
-  .main-tab{font-size:9px}
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<header class="header">
-  <div class="kicker">QUICK REFERENCE</div>
-  <h1>Port Working Reference</h1>
-  <div class="subtitle">Cargo · Working Rate · Port Service Charges</div>
-</header>
-
-<div class="main-tabs">
-  <button class="main-tab active" onclick="openPage('cargo',this)">CARGO</button>
-  <button class="main-tab" onclick="openPage('pilot',this)">PILOT · LINE · TUG</button>
-  <button class="main-tab" onclick="openPage('service',this)">PORT SERVICES</button>
-</div>
-
-
-<!-- ================= CARGO ================= -->
-
-<section id="cargo" class="page active">
-
-<div class="search">
-  <span>⌕</span>
-  <input id="cargoSearch" placeholder="Search cargo or pier..." oninput="renderCargo()">
-</div>
-
-<div class="option-box">
-  <div class="option-title">DISPLAY</div>
-
-  <div class="options">
-
-    <div class="toggle">
-      <input id="showDay" type="checkbox" checked onchange="renderCargo()">
-      <label for="showDay">DAILY RATE</label>
-    </div>
-
-    <div class="toggle">
-      <input id="showNight" type="checkbox" checked onchange="renderCargo()">
-      <label for="showNight">NIGHT RATE</label>
-    </div>
-
-    <div class="toggle">
-      <input id="showGang" type="checkbox" checked onchange="renderCargo()">
-      <label for="showGang">GANG</label>
-    </div>
-
-    <div class="toggle">
-      <input id="showQty" type="checkbox" checked onchange="renderCargo()">
-      <label for="showQty">QTY / DAYS</label>
-    </div>
-
-    <div class="toggle">
-      <input id="showSurcharge" type="checkbox" checked onchange="renderCargo()">
-      <label for="showSurcharge">SURCHARGE</label>
-    </div>
-
-    <div class="toggle">
-      <input id="showCheck" type="checkbox" checked onchange="renderCargo()">
-      <label for="showCheck">CHECK</label>
-    </div>
-
-  </div>
-</div>
-
-<div class="count" id="cargoCount"></div>
-<div id="cargoList" class="cargo-list"></div>
-
-</section>
-
-
-<!-- ================= PILOT ================= -->
-
-<section id="pilot" class="page">
-
-<div class="section-title">MAIN / ONSAN</div>
-<div id="mainRef"></div>
-
-<div class="section-title">HHI</div>
-<div id="hhiRef"></div>
-
-<div class="note">
-<strong>REFERENCE</strong><br>
-HHI 기준 GRT 3,000 이상 사례는 Tug 2척 사용 자료가 포함되어 있습니다.<br>
-실제 작업 조건·선박 제원·현장 상황에 따라 비용은 달라질 수 있으므로 참고용으로 사용하세요.
-</div>
-
-<details class="add-box">
-<summary>＋ ADD NEW REFERENCE</summary>
-
-<div class="form-grid">
-
-<select id="newLocation">
-<option value="MAIN / ONSAN">MAIN / ONSAN</option>
-<option value="HHI">HHI</option>
-</select>
-
-<input id="newGrt" placeholder="GRT">
-
-<input id="newPilot" placeholder="Pilot / Boat">
-
-<input id="newLine" placeholder="Line">
-
-<input id="newTug" placeholder="Tug">
-
-<input id="newTugCount" placeholder="Tug count">
-
-<button class="add-btn" onclick="addReference()">ADD</button>
-
-</div>
-</details>
-
-</section>
-
-
-<!-- ================= SERVICES ================= -->
-
-<section id="service" class="page">
-
-<div class="service-nav">
-  <button class="service-btn active" onclick="openService('launch',this)">LAUNCH</button>
-  <button class="service-btn" onclick="openService('workboat',this)">WORK BOAT</button>
-  <button class="service-btn" onclick="openService('water',this)">WATER</button>
-  <button class="service-btn" onclick="openService('garbage',this)">GARBAGE</button>
-  <button class="service-btn" onclick="openService('line',this)">LINE HANDLING</button>
-</div>
-
-
-<!-- LAUNCH -->
-
-<div id="launch" class="service-panel active">
-
-<div class="section-title">Launch Service</div>
-<div id="launchList"></div>
-
-<details class="charge-box">
-<summary>ADDITIONAL CHARGES</summary>
-
-<div class="charge-row">
-<span>Waiting Time / half hour</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Winter (Dec–Mar)</span>
-<span>+15%</span>
-</div>
-
-<div class="charge-row">
-<span>Non Office Hours<br>18:00–24:00 / 04:00–08:00</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Midnight<br>24:00–04:00</span>
-<span>+100%</span>
-</div>
-
-<div class="charge-row">
-<span>Holiday / Saturday / Sunday</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Bad Weather</span>
-<span>+50%</span>
-</div>
-
-</details>
-
-<div class="note" style="margin-top:10px">
-Waiting time is computed when more than 30 minutes have passed after arrival alongside the vessel.
-</div>
-
-</div>
-
-
-<!-- WORK BOAT -->
-
-<div id="workboat" class="service-panel">
-
-<div class="section-title">Work Boat Service</div>
-<div id="workBoatList"></div>
-
-<details class="charge-box">
-<summary>ADDITIONAL CHARGES</summary>
-
-<div class="charge-row">
-<span>Over / Waiting Time</span>
-<span>₩260,000 / hour</span>
-</div>
-
-<div class="charge-row">
-<span>Non Office Hours<br>18:00–24:00 / 04:00–08:00</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Midnight<br>24:00–04:00</span>
-<span>+100%</span>
-</div>
-
-<div class="charge-row">
-<span>Holiday / Saturday / Sunday</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Winter (Dec–Mar)</span>
-<span>+15%</span>
-</div>
-
-<div class="charge-row">
-<span>Bad Weather</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Rental / Day<br>8 hours basic</span>
-<span>₩1,800,000 + Fuel</span>
-</div>
-
-</details>
-
-<div class="note" style="margin-top:10px">
-Maximum loadable quantity: 10 pallets / trip.<br>
-More than 10 pallets: +10% of basic amount for each additional pallet.
-</div>
-
-</div>
-
-
-<!-- WATER -->
-
-<div id="water" class="service-panel">
-
-<div class="section-title">Water Supply by Barge</div>
-<div id="waterList"></div>
-
-<details class="charge-box">
-<summary>ADDITIONAL CHARGES</summary>
-
-<div class="charge-row">
-<span>Non Office Hours</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Midnight</span>
-<span>+100%</span>
-</div>
-
-<div class="charge-row">
-<span>Saturday / Sunday / Holiday</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Bad Weather</span>
-<span>+50%</span>
-</div>
-
-<div class="charge-row">
-<span>Winter (Dec–Mar)</span>
-<span>+15%</span>
-</div>
-
-</details>
-
-<div class="note" style="margin-top:10px">
-<strong>Minimum quantity</strong><br>
-Area 1 → 30 tons<br>
-Area 2–3 → 50 tons<br>
-Area 4–5 → 70 tons<br>
-Area 6–8 → 100 tons
-</div>
-
-</div>
-
-
-<!-- GARBAGE -->
-
-<div id="garbage" class="service-panel">
-
-<div class="section-title">Garbage Removal</div>
-
-<div class="service-card">
-<div class="service-top">
-<div>
-<div class="area">AREA 1</div>
-<div class="area-name">MAIN PORT · GENERAL PORT</div>
-</div>
-<div class="amount">₩300,000</div>
-</div>
-</div>
-
-<div class="service-card">
-<div class="service-top">
-<div>
-<div class="area">AREA 2</div>
-<div class="area-name">LAUNCH AREA 2, 3<br>S.K PIER NO.1, 2</div>
-</div>
-<div class="amount">₩480,000</div>
-</div>
-</div>
-
-<div class="service-card">
-<div class="service-top">
-<div>
-<div class="area">AREA 3</div>
-<div class="area-name">LAUNCH AREA 4</div>
-</div>
-<div class="amount">₩560,000</div>
-</div>
-</div>
-
-<div class="service-card">
-<div class="service-top">
-<div>
-<div class="area">AREA 4</div>
-<div class="area-name">LAUNCH AREA 5 · S.K BUOY</div>
-</div>
-<div class="amount">₩650,000</div>
-</div>
-</div>
-
-<div class="service-card">
-<div class="service-top">
-<div>
-<div class="area">AREA 5</div>
-<div class="area-name">LAUNCH AREA 6, 7, 8</div>
-</div>
-<div class="amount">₩750,000</div>
-</div>
-</div>
-
-<div class="note">
-Government tax for garbage burying ashore:<br>
-<strong>75L / 1 BAG → ₩8,000</strong><br><br>
-
-Additional charge: Same as Launch Service except waiting charge.<br><br>
-
-Chamber Pot / Portable Toilet Service: <strong>Subject to negotiation</strong>
-</div>
-
-</div>
-
-
-<!-- LINE -->
-
-<div id="line" class="service-panel">
-
-<div class="section-title">Line Handling — Ulsan Port</div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>G/T</th>
-<th>Mooring</th>
-<th>Unmooring</th>
-</tr>
-</thead>
-<tbody id="lineNormal"></tbody>
-</table>
-</div>
-
-<div class="section-title">SBM Buoy</div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>Area / G/T</th>
-<th>Mooring</th>
-<th>Unmooring</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>SK / Under 100,000</td><td class="num">₩1,784,000</td><td class="num">₩1,061,000</td></tr>
-<tr><td>SK / 150,000</td><td class="num">₩2,479,000</td><td class="num">₩1,490,000</td></tr>
-<tr><td>SK / Over 150,000</td><td class="num">₩2,863,000</td><td class="num">₩1,713,000</td></tr>
-
-<tr><td>S-OIL / KNOC / Under 100,000</td><td class="num">₩1,989,000</td><td class="num">₩1,190,000</td></tr>
-<tr><td>S-OIL / KNOC / 150,000</td><td class="num">₩2,702,000</td><td class="num">₩1,610,000</td></tr>
-<tr><td>S-OIL / KNOC / Over 150,000</td><td class="num">₩3,093,000</td><td class="num">₩1,851,000</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="section-title">Dolphin Pier</div>
-
-<div class="note">
-S.K #3–8 · S-OIL · KPIC · YONGJAM #2 · SILO · JSTT · OTK · SBTS
-</div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>G/T</th>
-<th>Mooring</th>
-<th>Unmooring</th>
-</tr>
-</thead>
-<tbody id="lineDolphin"></tbody>
-</table>
-</div>
-
-</div>
-
-</section>
-
-</div>
-
-
-<script>
+import { useEffect, useState } from "react";
 
 /* =========================================================
-   CARGO DATA
-========================================================= */
+   1. DEFAULT CARGO DATA
+   ========================================================= */
 
-const cargoData = [
-
-{
- name:"BENTONITE",
- pier:"12-22",
- day:"₩1,800",
- night:"-",
- gang:"2",
- qty:"3,000 MT → 2 DAYS<br>5,000 MT → 3 DAYS<br>10,000 MT → 6 DAYS",
- surcharge:"할증 불가",
- check:"분진이 매우 심함 / 작업 조건 확인 필요"
-},
-
-{
- name:"MAGNESITE",
- pier:"12-22",
- day:"₩1,700",
- night:"₩800",
- gang:"2",
- qty:"2,000 MT → 1 DAY<br>3,000 MT → 2 DAYS",
- surcharge:"리시버 컨펌 후 할증 가능 · 거의 안 됨 · ₩2,900",
- check:""
-},
-
-{
- name:"CGF",
- pier:"12-31",
- day:"₩1,500",
- night:"₩700",
- gang:"2",
- qty:"2,200 MT → 2 DAYS<br>4,400 MT → 3 DAYS",
- surcharge:"₩2,900 / DOUBLE ₩5,800",
- check:"Harbor Crane 작업 시 야간 ₩2,000"
-},
-
-{
- name:"CANOLA",
- pier:"12-31",
- day:"₩1,500",
- night:"-",
- gang:"2",
- qty:"4,000 MT → 3 DAYS",
- surcharge:"-",
- check:"식검 2차"
-},
-
-{
- name:"WHEAT BRAN (WBP)",
- pier:"12-31",
- day:"₩1,500",
- night:"-",
- gang:"2",
- qty:"2,000 MT → 2 DAYS",
- surcharge:"-",
- check:"식검 2차"
-},
-
-{
- name:"TIRE CHIP (LOAD)",
- pier:"12-31",
- day:"₩2,000",
- night:"₩800",
- gang:"2",
- qty:"1,800 MT → 1 DAY",
- surcharge:"-",
- check:"KG는 창고비용 없음. 야적/창고 여부 확인"
-},
-
-{
- name:"UREA (BULK)",
- pier:"21-82",
- day:"₩1,700",
- night:"₩800",
- gang:"2",
- qty:"3,000 MT → 2 DAYS<br>6,600 MT → 4 DAYS",
- surcharge:"₩2,900 / DOUBLE ₩5,800",
- check:""
-},
-
-{
- name:"UREA (BAG)",
- pier:"21-82",
- day:"₩1,000",
- night:"₩500",
- gang:"2",
- qty:"5,000 MT → 5 DAYS<br>3,000 MT → 3 DAYS",
- surcharge:"-",
- check:"톤백 ₩3,900 / 4시간 창고 ₩500,000"
-},
-
-{
- name:"NPK FERTILIZER",
- pier:"21-82",
- day:"₩1,700",
- night:"₩800",
- gang:"2",
- qty:"5,000 MT → 3 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"MOP",
- pier:"21-82",
- day:"-",
- night:"-",
- gang:"-",
- qty:"15,000 MT → 7 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"WOOD PULP (BULK)",
- pier:"21-82",
- day:"₩1,500",
- night:"-",
- gang:"2",
- qty:"3,000 MT → 2 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"WOOD PULP (BAG)",
- pier:"21-82",
- day:"₩2,000 / ₩8,000",
- night:"-",
- gang:"1 / 4",
- qty:"5,500 MT → 2 DAYS<br>15,600 MT → 4 DAYS",
- surcharge:"₩2,800 / BT CHARGE",
- check:""
-},
-
-{
- name:"LIMESTONE (BULK)",
- pier:"12-82 & GP",
- day:"₩1,300",
- night:"₩650",
- gang:"2",
- qty:"5,000 MT → 4 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"LIMESTONE (BAG)",
- pier:"12-82 & GP",
- day:"₩1,200",
- night:"₩600",
- gang:"2",
- qty:"5,000 MT → 3.5 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"AMSUL (BULK) DISCH",
- pier:"21-31 / 82-GP",
- day:"₩1,700",
- night:"₩800",
- gang:"2",
- qty:"3,300 MT → 2 DAYS",
- surcharge:"리시버 컨펌 후 할증 가능",
- check:""
-},
-
-{
- name:"AMSUL (BULK) LOAD",
- pier:"64-82",
- day:"₩1,800 / ₩3,000",
- night:"₩800 / ₩1,000",
- gang:"2 / 3",
- qty:"6,000 MT → 4 DAYS<br>25,000 MT → 9 DAYS",
- surcharge:"-",
- check:"Ship's gear"
-},
-
-{
- name:"FLUORSPAR (BAG)",
- pier:"71-81",
- day:"₩3,500",
- night:"-",
- gang:"4",
- qty:"30,000 MT → 10 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"ALUMINIUM OXIDE BAG / ALUMINA",
- pier:"GP",
- day:"₩1,600",
- night:"₩1,000",
- gang:"2 / 1",
- qty:"3,000 MT → 2 DAYS<br>3,000 MT → 3 DAYS",
- surcharge:"₩3,900 / DOUBLE ₩7,800",
- check:"야적 확인 / 산화알루미늄"
-},
-
-{
- name:"SALT",
- pier:"GP",
- day:"-",
- night:"-",
- gang:"-",
- qty:"-",
- surcharge:"할증비 확인 필요",
- check:"야간/야적 후 입고 톤당 ₩4,000"
-},
-
-{
- name:"STEEL PLATE",
- pier:"HHI",
- day:"₩850",
- night:"-",
- gang:"1",
- qty:"5,000 MT → 7 DAYS",
- surcharge:"할증은 중공업 제공",
- check:""
-},
-
-{
- name:"COAL",
- pier:"COAL",
- day:"₩6,700",
- night:"24H",
- gang:"1",
- qty:"44,000 MT → 7 DAYS",
- surcharge:"-",
- check:"24시간 작업 / 06-08 휴게시간"
-},
-
-{
- name:"ILMENITE",
- pier:"OP-01",
- day:"₩2,500",
- night:"₩1,200",
- gang:"1",
- qty:"10,000 MT → 4 DAYS<br>20,000 MT → 8 DAYS",
- surcharge:"컨펌 후 할증 가능",
- check:""
-},
-
-{
- name:"SODIUM SILICATE",
- pier:"OP-01",
- day:"-",
- night:"-",
- gang:"1",
- qty:"2,000 MT → 1 DAY",
- surcharge:"-",
- check:"규산소다 / 규산나트륨 / 물유리"
-},
-
-{
- name:"POTASH (LOAD)",
- pier:"OP-01",
- day:"-",
- night:"-",
- gang:"1",
- qty:"1,500 MT → 1 DAY",
- surcharge:"-",
- check:""
-},
-
-{
- name:"FERROSAND (LOAD)",
- pier:"OP-01",
- day:"₩3,000",
- night:"-",
- gang:"1",
- qty:"33,000 MT → 9 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"NPI (BULK)",
- pier:"OP-01",
- day:"₩3,000",
- night:"₩1,500",
- gang:"1",
- qty:"25,000 MT → 7 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"SILICA SAND (LOAD)",
- pier:"SP-08",
- day:"-",
- night:"-",
- gang:"1",
- qty:"2,000 MT → 1 DAY",
- surcharge:"-",
- check:""
-},
-
-{
- name:"SILICA SAND (DISCH)",
- pier:"SP-08",
- day:"₩6,000",
- night:"₩3,000",
- gang:"4",
- qty:"50,000 MT → 9 DAYS<br>30,000 MT → 5 DAYS",
- surcharge:"-",
- check:"Ship's gear 아니면 작업 가능 여부 확인"
-},
-
-{
- name:"WOOD CHIP (LOAD)",
- pier:"SP-07",
- day:"₩1,000",
- night:"₩500",
- gang:"2",
- qty:"2,000 MT → 2 DAYS<br>4,000 MT → 4 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"WOOD CHIP (DISCH)",
- pier:"SP-07",
- day:"₩5,000",
- night:"₩2,500",
- gang:"4",
- qty:"44,000 MT → 7 DAYS<br>25,000 MT → 5 DAYS",
- surcharge:"-",
- check:"₩4,000–5,000 Shore Unloader"
-},
-
-{
- name:"WHEAT (BULK)",
- pier:"SILO",
- day:"₩5,000",
- night:"24H",
- gang:"2",
- qty:"20,000 MT → 2.5 DAYS",
- surcharge:"-",
- check:"₩5,000–25,000 / Shore Unloader"
-},
-
-{
- name:"CORN",
- pier:"SILO",
- day:"₩15,000",
- night:"24H",
- gang:"2",
- qty:"60,000 MT → 4 DAYS",
- surcharge:"-",
- check:"24시간 작업 / 창고용량에 따라 변동"
-},
-
-{
- name:"SULPHUR (BAG LOAD)",
- pier:"IP-YY",
- day:"₩2,000",
- night:"-",
- gang:"2",
- qty:"4,400 MT → 2 DAYS",
- surcharge:"야간할증 포함",
- check:""
-},
-
-{
- name:"PIA (BAG LOAD)",
- pier:"IP-YY",
- day:"-",
- night:"-",
- gang:"1",
- qty:"600 MT → 1 DAY",
- surcharge:"-",
- check:""
-},
-
-{
- name:"SODA ASH (BAG)",
- pier:"IP-YY",
- day:"₩900",
- night:"-",
- gang:"1",
- qty:"5,400 MT → 6 DAYS",
- surcharge:"알톤당 ₩6,300 협의 필요",
- check:"주말 주간 가능 / 야간 불가"
-},
-
-{
- name:"COPRA (BULK)",
- pier:"64-71",
- day:"-",
- night:"-",
- gang:"-",
- qty:"1,850 MT → 2 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"STEEL PIPE (LOAD)",
- pier:"64-71",
- day:"₩700",
- night:"-",
- gang:"1",
- qty:"23,592 MT → 9 DAYS",
- surcharge:"-",
- check:""
-},
-
-{
- name:"SLAB",
- pier:"64-71",
- day:"₩78 / ₩50",
- night:"₩50",
- gang:"1",
- qty:"-",
- surcharge:"주말 할증 가능",
- check:"R.TON 당 ₩5,000 / 첫날 지게차 작업 조건 확인"
-}
-
+const DEFAULT_CARGO = [
+  {
+    id: 1,
+    name: "MAGNESITE",
+    pier: "MAIN PORT",
+    dailyRate: "3,000 MT/DAY",
+    surcharge: "",
+    remark: "CHECK RATE / WORKING CONDITION",
+  },
+  {
+    id: 2,
+    name: "PTA IN BAG",
+    pier: "MAIN PORT",
+    dailyRate: "3,000 MT/DAY",
+    surcharge: "",
+    remark: "",
+  },
 ];
 
+/* =========================================================
+   2. PILOT · LINE · TUG
+   ========================================================= */
+
+const HHI_REFERENCE = [
+  {
+    grt: "1,400",
+    pilot: "₩1,700,000",
+    line: "₩500,000",
+    tug: "₩2,000,000",
+    tugCount: "",
+  },
+  {
+    grt: "2,900",
+    pilot: "₩2,000,000",
+    line: "₩550,000",
+    tug: "₩2,200,000",
+    tugCount: "",
+  },
+  {
+    grt: "4,000",
+    pilot: "₩2,200,000",
+    line: "₩600,000",
+    tug: "₩4,200,000",
+    tugCount: "2 TUGS",
+  },
+  {
+    grt: "8,000",
+    pilot: "₩2,800,000",
+    line: "₩650,000",
+    tug: "₩5,000,000",
+    tugCount: "2 TUGS",
+  },
+];
+
+/* =========================================================
+   3. PORT SERVICES
+   ========================================================= */
+
+const LAUNCH_AREAS = [
+  {
+    area: 1,
+    price: "₩127,000",
+    groups: [
+      {
+        title: "PORT / PIER",
+        items: [
+          "JANGSAENGPO PORT",
+          "S.K PIER NO.1,2",
+        ],
+      },
+    ],
+  },
+  {
+    area: 2,
+    price: "₩196,000",
+    groups: [
+      {
+        title: "PORT / PIER",
+        items: [
+          "S.K PIER NO.3 · GRAIN PIER",
+          "YONGJAM PIER NO.1,2,3",
+          "GENERAL PIER",
+        ],
+      },
+    ],
+  },
+  {
+    area: 3,
+    price: "₩274,000",
+    groups: [
+      {
+        title: "ANCHORAGE",
+        items: ["M 1–7"],
+      },
+      {
+        title: "PORT / PIER",
+        items: [
+          "HMC · HMD PIER · YEOMPO PIER",
+          "S.K PIER NO.4–8",
+          "MAIN PORT PIER NO.1–9",
+          "HWA-AM PIER",
+        ],
+      },
+    ],
+  },
+  {
+    area: 4,
+    price: "₩357,000",
+    groups: [
+      {
+        title: "PORT / PIER",
+        items: ["S.K GAS PIER NO.1,2,3"],
+      },
+    ],
+  },
+  {
+    area: 5,
+    price: "₩439,000",
+    groups: [
+      {
+        title: "ANCHORAGE",
+        items: ["E-1"],
+      },
+      {
+        title: "PORT / PIER",
+        items: ["ULSAN NORTH NEW PORT"],
+      },
+    ],
+  },
+  {
+    area: 6,
+    price: "₩516,000",
+    groups: [
+      {
+        title: "ANCHORAGE",
+        items: ["E-2"],
+      },
+      {
+        title: "PORT / PIER",
+        items: [
+          "ULSAN SOUTH NEW PORT (1ST PHASE)",
+          "ONSAN PORT",
+          "S.K BUOY NO.2 & 3",
+        ],
+      },
+    ],
+  },
+];
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+export default function ShippingReference() {
+  const [mainTab, setMainTab] = useState("cargo");
+
+  return (
+    <main className="shipping-page">
+
+      <div className="main-tabs">
+        <button
+          className={mainTab === "cargo" ? "active" : ""}
+          onClick={() => setMainTab("cargo")}
+        >
+          CARGO
+        </button>
+
+        <button
+          className={mainTab === "pilot" ? "active" : ""}
+          onClick={() => setMainTab("pilot")}
+        >
+          PILOT · LINE · TUG
+        </button>
+
+        <button
+          className={mainTab === "services" ? "active" : ""}
+          onClick={() => setMainTab("services")}
+        >
+          PORT SERVICES
+        </button>
+      </div>
+
+      {mainTab === "cargo" && <CargoPage />}
+      {mainTab === "pilot" && <PilotPage />}
+      {mainTab === "services" && <PortServices />}
+
+      <GlobalStyles />
+    </main>
+  );
+}
+
+/* =========================================================
+   CARGO PAGE
+   ========================================================= */
+
+function CargoPage() {
+  const [cargo, setCargo] = useState(DEFAULT_CARGO);
+  const [editing, setEditing] = useState(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("ulsan-cargo-data");
+
+    if (saved) {
+      try {
+        setCargo(JSON.parse(saved));
+      } catch {
+        setCargo(DEFAULT_CARGO);
+      }
+    }
+  }, []);
+
+  const saveCargo = (nextCargo) => {
+    setCargo(nextCargo);
+    localStorage.setItem(
+      "ulsan-cargo-data",
+      JSON.stringify(nextCargo)
+    );
+  };
+
+  const startAdd = () => {
+    setEditing({
+      id: Date.now(),
+      name: "",
+      pier: "",
+      dailyRate: "",
+      surcharge: "",
+      remark: "",
+      isNew: true,
+    });
+  };
+
+  const startEdit = (item) => {
+    setEditing({
+      ...item,
+      isNew: false,
+    });
+  };
+
+  const handleSave = () => {
+    if (!editing.name.trim()) {
+      alert("Please enter cargo name.");
+      return;
+    }
+
+    let nextCargo;
+
+    if (editing.isNew) {
+      const { isNew, ...newCargo } = editing;
+      nextCargo = [...cargo, newCargo];
+    } else {
+      nextCargo = cargo.map((item) =>
+        item.id === editing.id
+          ? {
+              id: editing.id,
+              name: editing.name,
+              pier: editing.pier,
+              dailyRate: editing.dailyRate,
+              surcharge: editing.surcharge,
+              remark: editing.remark,
+            }
+          : item
+      );
+    }
+
+    saveCargo(nextCargo);
+    setEditing(null);
+  };
+
+  const handleDelete = (id) => {
+    if (!window.confirm("Delete this cargo?")) return;
+
+    const nextCargo = cargo.filter(
+      (item) => item.id !== id
+    );
+
+    saveCargo(nextCargo);
+  };
+
+  return (
+    <section>
+      <div className="page-heading">
+        <div>
+          <h1>CARGO</h1>
+          <p>Cargo working reference</p>
+        </div>
+
+        <button
+          className="add-button"
+          onClick={startAdd}
+        >
+          + ADD CARGO
+        </button>
+      </div>
+
+      <div className="cargo-list">
+        {cargo.map((item) => (
+          <article
+            className="cargo-card"
+            key={item.id}
+          >
+            <div className="cargo-top">
+              <div>
+                <div className="small-label">
+                  CARGO
+                </div>
+
+                <h2>{item.name}</h2>
+              </div>
+
+              <div className="cargo-actions">
+                <button
+                  onClick={() => startEdit(item)}
+                >
+                  EDIT
+                </button>
+
+                <button
+                  className="delete"
+                  onClick={() =>
+                    handleDelete(item.id)
+                  }
+                >
+                  DELETE
+                </button>
+              </div>
+            </div>
+
+            <div className="cargo-info-grid">
+
+              <InfoBox
+                label="PIER"
+                value={item.pier || "—"}
+              />
+
+              <InfoBox
+                label="DAILY RATE"
+                value={item.dailyRate || "—"}
+              />
+
+              <InfoBox
+                label="SURCHARGE"
+                value={item.surcharge || "—"}
+              />
+
+            </div>
+
+            {item.remark && (
+              <div className="check-remark">
+                <span>CHECK REMARK</span>
+                <strong>{item.remark}</strong>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+
+      {editing && (
+        <div className="modal-overlay">
+          <div className="edit-modal">
+
+            <h2>
+              {editing.isNew
+                ? "ADD CARGO"
+                : "EDIT CARGO"}
+            </h2>
+
+            <EditField
+              label="CARGO NAME"
+              value={editing.name}
+              onChange={(value) =>
+                setEditing({
+                  ...editing,
+                  name: value,
+                })
+              }
+            />
+
+            <EditField
+              label="PIER"
+              value={editing.pier}
+              onChange={(value) =>
+                setEditing({
+                  ...editing,
+                  pier: value,
+                })
+              }
+            />
+
+            <EditField
+              label="DAILY RATE"
+              value={editing.dailyRate}
+              placeholder="e.g. 3,000 MT/DAY"
+              onChange={(value) =>
+                setEditing({
+                  ...editing,
+                  dailyRate: value,
+                })
+              }
+            />
+
+            <EditField
+              label="SURCHARGE"
+              value={editing.surcharge}
+              placeholder="e.g. 10%"
+              onChange={(value) =>
+                setEditing({
+                  ...editing,
+                  surcharge: value,
+                })
+              }
+            />
+
+            <label className="edit-field">
+              <span>CHECK REMARK</span>
+
+              <textarea
+                value={editing.remark}
+                onChange={(e) =>
+                  setEditing({
+                    ...editing,
+                    remark: e.target.value,
+                  })
+                }
+              />
+            </label>
+
+            <div className="modal-buttons">
+              <button
+                className="cancel-button"
+                onClick={() => setEditing(null)}
+              >
+                CANCEL
+              </button>
+
+              <button
+                className="save-button"
+                onClick={handleSave}
+              >
+                SAVE
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function InfoBox({ label, value }) {
+  return (
+    <div className="info-box">
+      <span>{label}</span>
+      <strong>{value}</strong>
+    </div>
+  );
+}
+
+function EditField({
+  label,
+  value,
+  onChange,
+  placeholder = "",
+}) {
+  return (
+    <label className="edit-field">
+      <span>{label}</span>
+
+      <input
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) =>
+          onChange(e.target.value)
+        }
+      />
+    </label>
+  );
+}
 
 /* =========================================================
    PILOT / LINE / TUG
-========================================================= */
+   ========================================================= */
 
-let mainReference = [
- {grt:"1,400",pilot:"₩1,200,000",line:"₩500,000",tug:"₩1,100,000"},
- {grt:"2,900",pilot:"₩1,200,000",line:"₩500,000",tug:"₩1,100,000"},
- {grt:"4,000",pilot:"₩1,300,000",line:"₩550,000",tug:"₩1,200,000"},
- {grt:"8,000",pilot:"₩1,500,000",line:"₩650,000",tug:"₩2,500,000 · 2 TUGS"}
-];
+function PilotPage() {
+  const [references, setReferences] = useState([]);
 
-let hhiReference = [
- {grt:"1,400",pilot:"₩1,700,000",line:"₩500,000",tug:"₩2,000,000"},
- {grt:"2,900",pilot:"₩2,000,000",line:"₩550,000",tug:"₩2,200,000"},
- {grt:"4,000",pilot:"₩2,200,000",line:"₩600,000",tug:"₩4,200,000 · 2 TUGS"},
- {grt:"8,000",pilot:"₩2,800,000",line:"₩650,000",tug:"₩5,000,000 · 2 TUGS"}
-];
+  useEffect(() => {
+    const saved = localStorage.getItem(
+      "ulsan-reference-notes"
+    );
 
+    if (saved) {
+      try {
+        setReferences(JSON.parse(saved));
+      } catch {
+        setReferences([]);
+      }
+    }
+  }, []);
+
+  const addReference = () => {
+    const text = window.prompt(
+      "Enter reference / memo"
+    );
+
+    if (!text) return;
+
+    const next = [
+      ...references,
+      {
+        id: Date.now(),
+        text,
+      },
+    ];
+
+    setReferences(next);
+
+    localStorage.setItem(
+      "ulsan-reference-notes",
+      JSON.stringify(next)
+    );
+  };
+
+  return (
+    <section>
+
+      <div className="page-heading">
+        <div>
+          <h1>PILOT · LINE · TUG</h1>
+          <p>HHI cost reference</p>
+        </div>
+      </div>
+
+      <div className="table-card">
+
+        <div className="cost-table header">
+          <div>GRT</div>
+          <div>PILOT / BOAT</div>
+          <div>LINE</div>
+          <div>TUG</div>
+        </div>
+
+        {HHI_REFERENCE.map((item) => (
+          <div
+            className="cost-table row"
+            key={item.grt}
+          >
+            <div className="grt">
+              {item.grt}
+            </div>
+
+            <div>{item.pilot}</div>
+
+            <div>{item.line}</div>
+
+            <div className="tug-price">
+              <span className="price">
+                {item.tug}
+              </span>
+
+              {item.tugCount && (
+                <span className="tug-count">
+                  {item.tugCount}
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+
+      </div>
+
+      <button
+        className="reference-button"
+        onClick={addReference}
+      >
+        + ADD REFERENCE
+      </button>
+
+      {references.length > 0 && (
+        <div className="reference-list">
+          {references.map((ref) => (
+            <div
+              className="reference-note"
+              key={ref.id}
+            >
+              {ref.text}
+            </div>
+          ))}
+        </div>
+      )}
+
+    </section>
+  );
+}
 
 /* =========================================================
-   SERVICE DATA
-========================================================= */
+   PORT SERVICES
+   ========================================================= */
 
-const launchData = [
-["AREA 1","JANGSAENGPO PORT<br>S.K PIER NO.1,2","127000"],
-["AREA 2","S.K PIER NO.3 · GRAIN PIER<br>YONGJAM PIER NO.1,2,3<br>GENERAL PIER","196000"],
-["AREA 3","ANCHORAGE M 1–7<br>HMC & HMD PIER · YEOMPO PIER<br>S.K PIER NO.4–8<br>MAIN PORT PIER 1–9 · HWA-AM PIER","274000"],
-["AREA 4","S.K GAS PIER NO.1,2,3","357000"],
-["AREA 5","ANCHORAGE E-1<br>ULSAN NORTH NEW PORT","439000"],
-["AREA 6","ANCHORAGE E-2<br>ULSAN SOUTH NEW PORT (1ST PHASE)<br>ONSAN PORT · S.K BUOY NO.2 & 3","516000"],
-["AREA 7","ANCHORAGE E-3<br>ULSAN SOUTH NEW PORT (2ND PHASE)","600000"],
-["AREA 8","S-OIL BUOY · KNOC BUOY","677000"],
-["OTHERS","MIPO PORT · OUTER ANCHORAGE E-3 · ETC","NEGOTIATION"]
-];
+function PortServices() {
+  const [serviceTab, setServiceTab] =
+    useState("launch");
 
-const workBoatData = [
-["AREA 1","JANGSAENGPO PORT<br>S.K PIER NO.1,2<br>GENERAL PIER","390000","1.0 HR"],
-["AREA 2","S.K PIER NO.3<br>YONGJAM PIER NO.1,2,3<br>GRAIN PIER","420000","1.0 HR"],
-["AREA 3","ANCHORAGE M 1–7<br>MAIN PORT PIER 1–9<br>HMC · HMD · HWA-AM · YEOMPO<br>S.K PIER NO.4–8","440000","1.5 HR"],
-["AREA 4","S.K GAS PIER NO.1,2,3","500000","2.0 HR"],
-["AREA 5","ANCHORAGE E-1<br>ULSAN NORTH NEW PORT","570000","2.0 HR"],
-["AREA 6","ANCHORAGE E-2<br>ULSAN SOUTH NEW PORT (1ST PHASE)<br>ONSAN PORT · S.K BUOY NO.2 & 3","680000","2.5 HR"],
-["AREA 7","ANCHORAGE E-3<br>ULSAN SOUTH NEW PORT (2ND PHASE)","810000","3.0 HR"],
-["AREA 8","S-OIL BUOY · KNOC BUOY","960000","4.0 HR"],
-["AREA 9","MIPO PORT","1760000","5.0 HR"],
-["OTHERS","OUTER ANCHORAGE E-3 · ETC","NEGOTIATION",""]
-];
+  return (
+    <section>
 
-const waterData = [
-["AREA 1","JANGSAENGPO PORT<br>S.K PIER NO.1,2","12000"],
-["AREA 2","S.K PIER NO.3 · GRAIN PIER<br>YONGJAM PIER NO.1,2,3<br>GENERAL PIER","14600"],
-["AREA 3","ANCHORAGE M 1–7<br>HMC & HMD PIER · YEOMPO PIER<br>S.K PIER NO.4–8<br>MAIN PORT PIER 1–9 · HWA-AM PIER","17400"],
-["AREA 4","S.K GAS PIER NO.1,2,3","19800"],
-["AREA 5","ANCHORAGE E-1<br>ULSAN NORTH NEW PORT","21000"],
-["AREA 6","ANCHORAGE E-2<br>ULSAN SOUTH NEW PORT (1ST PHASE)<br>ONSAN PORT · S.K BUOY NO.2 & 3","22500"],
-["AREA 7","ANCHORAGE E-3<br>ULSAN SOUTH NEW PORT (2ND PHASE)","27000"],
-["AREA 8","S-OIL BUOY · KNOC BUOY","30500"],
-["OTHERS","MIPO PORT · OUTER ANCHORAGE E-3 · ETC","NEGOTIATION"]
-];
+      <div className="page-heading">
+        <div>
+          <h1>PORT SERVICES</h1>
+          <p>Ulsan service tariff reference</p>
+        </div>
+      </div>
 
-const lineNormalData = [
-["Under 2,000","127000","89000"],
-["4,000","161000","110000"],
-["6,000","187000","132000"],
-["8,000","197000","139000"],
-["10,000","207000","144000"],
-["15,000","275000","192000"],
-["20,000","345000","247000"],
-["30,000","379000","266000"],
-["50,000","526000","367000"],
-["70,000","676000","468000"],
-["Over 70,000","746000","520000"]
-];
+      <div className="service-tabs">
 
-const lineDolphinData = [
-["Under 2,000","190000","133000"],
-["4,000","239000","167000"],
-["10,000","305000","212000"],
-["20,000","542000","379000"],
-["30,000","609000","426000"],
-["50,000","930000","651000"],
-["70,000","1260000","882000"],
-["Over 70,000","1283000","900000"]
-];
+        <button
+          className={
+            serviceTab === "launch"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            setServiceTab("launch")
+          }
+        >
+          Launch Service
+        </button>
 
+        <button
+          className={
+            serviceTab === "work"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            setServiceTab("work")
+          }
+        >
+          Work Boat
+        </button>
+
+        <button
+          className={
+            serviceTab === "water"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            setServiceTab("water")
+          }
+        >
+          Water
+        </button>
+
+      </div>
+
+      {serviceTab === "launch" && (
+        <LaunchService />
+      )}
+
+      {serviceTab === "work" && (
+        <div className="empty-service">
+          Work Boat tariff
+        </div>
+      )}
+
+      {serviceTab === "water" && (
+        <div className="empty-service">
+          Water tariff
+        </div>
+      )}
+
+    </section>
+  );
+}
+
+function LaunchService() {
+  return (
+    <div className="area-list">
+
+      {LAUNCH_AREAS.map((item) => (
+        <article
+          className="area-card"
+          key={item.area}
+        >
+
+          <div className="area-header">
+
+            <div className="area-title">
+              AREA {item.area}
+            </div>
+
+            <div className="area-price">
+              {item.price}
+            </div>
+
+          </div>
+
+          <div className="area-content">
+
+            {item.groups.map(
+              (group, index) => (
+                <div
+                  className="port-group"
+                  key={index}
+                >
+                  <div className="port-group-title">
+                    {group.title}
+                  </div>
+
+                  <div className="port-list">
+                    {group.items.map(
+                      (port, portIndex) => (
+                        <div
+                          className="port-name"
+                          key={portIndex}
+                        >
+                          {port}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              )
+            )}
+
+          </div>
+
+        </article>
+      ))}
+
+    </div>
+  );
+}
 
 /* =========================================================
-   FUNCTIONS
-========================================================= */
+   STYLES
+   ========================================================= */
 
-function money(v){
- if(v==="NEGOTIATION") return "NEGOTIATION";
- return "₩"+Number(v).toLocaleString();
+function GlobalStyles() {
+  return (
+    <style jsx global>{`
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #f5f6f7;
+        color: #202731;
+        font-family:
+          Arial,
+          Helvetica,
+          sans-serif;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .shipping-page {
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* =========================
+         MAIN NAVIGATION
+      ========================= */
+
+      .main-tabs {
+        display: grid;
+        grid-template-columns:
+          repeat(3, 1fr);
+        gap: 4px;
+
+        background: #e7e9ec;
+        padding: 4px;
+        border-radius: 12px;
+
+        margin-bottom: 26px;
+      }
+
+      .main-tabs button {
+        min-height: 46px;
+        border: 0;
+        border-radius: 9px;
+
+        background: transparent;
+
+        color: #6d747c;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .main-tabs button.active {
+        background: #fff;
+        color: #202731;
+
+        box-shadow:
+          0 1px 5px
+          rgba(0,0,0,.08);
+      }
+
+      /* =========================
+         HEADING
+      ========================= */
+
+      .page-heading {
+        display: flex;
+        justify-content:
+          space-between;
+        align-items: center;
+
+        gap: 15px;
+
+        margin-bottom: 18px;
+      }
+
+      .page-heading h1 {
+        margin: 0 0 4px;
+        font-size: 24px;
+        font-weight: 900;
+      }
+
+      .page-heading p {
+        margin: 0;
+        color: #858c94;
+        font-size: 13px;
+      }
+
+      /* =========================
+         CARGO
+      ========================= */
+
+      .add-button {
+        border: 0;
+        border-radius: 9px;
+
+        padding: 10px 13px;
+
+        background: #202731;
+        color: white;
+
+        font-size: 12px;
+        font-weight: 800;
+
+        white-space: nowrap;
+      }
+
+      .cargo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .cargo-card {
+        background: white;
+
+        border:
+          1px solid #e4e7ea;
+
+        border-radius: 14px;
+
+        padding: 18px;
+
+        box-shadow:
+          0 2px 8px
+          rgba(0,0,0,.035);
+      }
+
+      .cargo-top {
+        display: flex;
+        justify-content:
+          space-between;
+        align-items:
+          flex-start;
+
+        gap: 12px;
+
+        margin-bottom: 16px;
+      }
+
+      .small-label {
+        color: #9299a1;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .8px;
+
+        margin-bottom: 5px;
+      }
+
+      .cargo-top h2 {
+        margin: 0;
+
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .cargo-actions {
+        display: flex;
+        gap: 6px;
+      }
+
+      .cargo-actions button {
+        border: 0;
+
+        padding: 7px 9px;
+
+        border-radius: 7px;
+
+        background: #edf0f2;
+        color: #59616a;
+
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .cargo-actions .delete {
+        color: #b34a4a;
+        background: #fff0f0;
+      }
+
+      .cargo-info-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, 1fr);
+
+        gap: 8px;
+      }
+
+      .info-box {
+        background: #f6f7f8;
+        border-radius: 9px;
+
+        padding: 11px;
+      }
+
+      .info-box span {
+        display: block;
+
+        color: #969da5;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        margin-bottom: 5px;
+      }
+
+      .info-box strong {
+        display: block;
+
+        color: #252b31;
+
+        font-size: 13px;
+        line-height: 1.3;
+
+        word-break: break-word;
+      }
+
+      /* DAILY RATE IS NOT CURRENCY */
+
+      .check-remark {
+        margin-top: 12px;
+
+        padding: 12px 14px;
+
+        border-radius: 9px;
+
+        background: #fff4cf;
+        border-left:
+          4px solid #e8aa24;
+
+        color: #684b00;
+      }
+
+      .check-remark span {
+        display: block;
+
+        color: #b27800;
+
+        font-size: 9px;
+        font-weight: 900;
+
+        letter-spacing: .5px;
+
+        margin-bottom: 4px;
+      }
+
+      .check-remark strong {
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      /* =========================
+         EDIT MODAL
+      ========================= */
+
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+
+        z-index: 100;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        background:
+          rgba(20,25,30,.55);
+      }
+
+      .edit-modal {
+        width: 100%;
+        max-width: 480px;
+
+        max-height: 90vh;
+        overflow-y: auto;
+
+        background: white;
+
+        border-radius: 16px;
+
+        padding: 20px;
+      }
+
+      .edit-modal h2 {
+        margin: 0 0 18px;
+
+        font-size: 20px;
+      }
+
+      .edit-field {
+        display: block;
+        margin-bottom: 13px;
+      }
+
+      .edit-field > span {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: #747b83;
+
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .edit-field input,
+      .edit-field textarea {
+        width: 100%;
+
+        border:
+          1px solid #d9dde1;
+
+        border-radius: 9px;
+
+        padding: 11px 12px;
+
+        color: #202731;
+
+        outline: none;
+      }
+
+      .edit-field textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+
+      .edit-field input:focus,
+      .edit-field textarea:focus {
+        border-color: #68727d;
+      }
+
+      .modal-buttons {
+        display: grid;
+
+        grid-template-columns:
+          1fr 1fr;
+
+        gap: 8px;
+
+        margin-top: 18px;
+      }
+
+      .modal-buttons button {
+        border: 0;
+        border-radius: 9px;
+
+        padding: 12px;
+
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .cancel-button {
+        background: #eceff1;
+        color: #555d65;
+      }
+
+      .save-button {
+        background: #202731;
+        color: white;
+      }
+
+      /* =========================
+         PILOT / LINE / TUG
+      ========================= */
+
+      .table-card {
+        overflow: hidden;
+
+        background: white;
+
+        border:
+          1px solid #e2e5e8;
+
+        border-radius: 12px;
+      }
+
+      .cost-table {
+        display: grid;
+
+        grid-template-columns:
+          .7fr 1.3fr 1fr 1.25fr;
+
+        align-items: center;
+      }
+
+      .cost-table.header {
+        background: #eef0f2;
+
+        color: #727980;
+
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      .cost-table.header > div,
+      .cost-table.row > div {
+        padding: 12px 8px;
+        text-align: center;
+      }
+
+      .cost-table.row {
+        min-height: 58px;
+
+        border-top:
+          1px solid #eceeef;
+
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .grt {
+        font-weight: 900;
+      }
+
+      /*
+       IMPORTANT:
+       Tug amount and tug count are intentionally
+       separated into two lines.
+      */
+
+      .tug-price {
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 3px;
+
+        min-width: 0;
+
+        line-height: 1.15;
+      }
+
+      .tug-price .price {
+        display: block;
+        white-space: nowrap;
+      }
+
+      .tug-price .tug-count {
+        display: block;
+
+        white-space: nowrap;
+
+        color: #737b83;
+
+        font-size: 9px;
+        font-weight: 900;
+      }
+
+      .reference-button {
+        width: 100%;
+
+        margin-top: 12px;
+
+        border:
+          1px dashed #c9ced3;
+
+        border-radius: 10px;
+
+        padding: 12px;
+
+        background: transparent;
+
+        color: #656d75;
+
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .reference-list {
+        display: flex;
+        flex-direction: column;
+
+        gap: 8px;
+
+        margin-top: 10px;
+      }
+
+      .reference-note {
+        background: #fff;
+
+        border:
+          1px solid #e1e4e7;
+
+        border-radius: 9px;
+
+        padding: 11px 12px;
+
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      /* =========================
+         PORT SERVICES
+      ========================= */
+
+      .service-tabs {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, 1fr);
+
+        gap: 5px;
+
+        margin-bottom: 15px;
+      }
+
+      .service-tabs button {
+        border: 0;
+        border-radius: 8px;
+
+        padding: 10px 5px;
+
+        background: #e8eaec;
+
+        color: #757c83;
+
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .service-tabs button.active {
+        background: #202731;
+        color: white;
+      }
+
+      .area-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .area-card {
+        overflow: hidden;
+
+        background: #fff;
+
+        border:
+          1px solid #e1e4e7;
+
+        border-radius: 12px;
+      }
+
+      /*
+       AREA is intentionally the strongest
+       visual element in each card.
+      */
+
+      .area-header {
+        display: flex;
+
+        justify-content:
+          space-between;
+
+        align-items: center;
+
+        gap: 15px;
+
+        padding: 15px 16px;
+
+        background: #f0f2f4;
+
+        border-bottom:
+          1px solid #e3e6e8;
+      }
+
+      .area-title {
+        color: #18212a;
+
+        font-size: 21px;
+        font-weight: 900;
+
+        letter-spacing: -.3px;
+      }
+
+      .area-price {
+        color: #202731;
+
+        font-size: 18px;
+        font-weight: 900;
+
+        white-space: nowrap;
+      }
+
+      .area-content {
+        padding: 14px 16px 16px;
+      }
+
+      .port-group + .port-group {
+        margin-top: 14px;
+      }
+
+      .port-group-title {
+        color: #9299a0;
+
+        font-size: 9px;
+        font-weight: 900;
+
+        letter-spacing: .7px;
+
+        margin-bottom: 6px;
+      }
+
+      .port-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .port-name {
+        color: #252c33;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        line-height: 1.4;
+      }
+
+      .empty-service {
+        padding: 30px;
+
+        text-align: center;
+
+        background: white;
+
+        border:
+          1px solid #e2e5e8;
+
+        border-radius: 12px;
+
+        color: #8a9198;
+      }
+
+      /* =========================
+         MOBILE
+      ========================= */
+
+      @media (max-width: 600px) {
+
+        .shipping-page {
+          padding: 14px;
+        }
+
+        .main-tabs button {
+          font-size: 10px;
+          padding: 0 4px;
+        }
+
+        .page-heading h1 {
+          font-size: 21px;
+        }
+
+        .add-button {
+          font-size: 10px;
+          padding: 9px 10px;
+        }
+
+        .cargo-info-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
+        }
+
+        .cost-table {
+          grid-template-columns:
+            .62fr 1.15fr .9fr 1.2fr;
+        }
+
+        .cost-table.header > div,
+        .cost-table.row > div {
+          padding:
+            11px 4px;
+        }
+
+        .cost-table.row {
+          font-size: 10px;
+        }
+
+        .tug-price {
+          /*
+           This prevents:
+           ₩4,200,000 · 2 TUGS
+           from becoming one clipped line.
+          */
+
+          flex-direction: column;
+        }
+
+        .tug-price .price {
+          font-size: 10px;
+        }
+
+        .tug-price .tug-count {
+          font-size: 8px;
+        }
+
+        .area-title {
+          font-size: 20px;
+        }
+
+        .area-price {
+          font-size: 17px;
+        }
+
+        .port-name {
+          font-size: 13px;
+        }
+      }
+
+    `}</style>
+  );
 }
-
-function openPage(id,btn){
-
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.querySelectorAll(".main-tab").forEach(x=>x.classList.remove("active"));
-
- document.getElementById(id).classList.add("active");
- btn.classList.add("active");
-
-}
-
-function openService(id,btn){
-
- document.querySelectorAll(".service-panel").forEach(x=>x.classList.remove("active"));
- document.querySelectorAll(".service-btn").forEach(x=>x.classList.remove("active"));
-
- document.getElementById(id).classList.add("active");
- btn.classList.add("active");
-
-}
-
-function renderCargo(){
-
- const search=document.getElementById("cargoSearch").value.toLowerCase();
-
- const showDay=document.getElementById("showDay").checked;
- const showNight=document.getElementById("showNight").checked;
- const showGang=document.getElementById("showGang").checked;
- const showQty=document.getElementById("showQty").checked;
- const showSurcharge=document.getElementById("showSurcharge").checked;
- const showCheck=document.getElementById("showCheck").checked;
-
- const filtered=cargoData.filter(x=>
-   x.name.toLowerCase().includes(search) ||
-   x.pier.toLowerCase().includes(search)
- );
-
- document.getElementById("cargoCount").innerText=
- filtered.length+" CARGO ITEMS";
-
- document.getElementById("cargoList").innerHTML=filtered.map(c=>{
-
- let info="";
-
- if(showDay)
- info+=`
- <div class="info">
- <div class="label">DAILY RATE</div>
- <div class="value">${c.day}</div>
- </div>`;
-
- if(showNight)
- info+=`
- <div class="info">
- <div class="label">NIGHT RATE</div>
- <div class="value">${c.night}</div>
- </div>`;
-
- if(showGang)
- info+=`
- <div class="info">
- <div class="label">GANG</div>
- <div class="value">${c.gang}</div>
- </div>`;
-
- return `
- <div class="cargo-card">
-
- <div class="cargo-head">
- <div class="cargo-name">${c.name}</div>
- <div class="pier">${c.pier}</div>
- </div>
-
- ${info ? `<div class="info-grid">${info}</div>`:""}
-
- ${showQty ? `
- <div class="detail">
- <div class="label">QTY / DAYS</div>
- <div class="value">${c.qty}</div>
- </div>`:""}
-
- ${showSurcharge && c.surcharge ? `
- <div class="detail">
- <div class="label">SURCHARGE</div>
- <div class="value">${c.surcharge}</div>
- </div>`:""}
-
- ${showCheck && c.check ? `
- <div class="detail warning">
- <div class="label">CHECK / REMARK</div>
- <div class="value">${c.check}</div>
- </div>`:""}
-
- </div>
- `;
-
- }).join("");
-
-}
-
-function renderReference(){
-
- function cards(arr){
-  return arr.map(r=>`
-  <div class="ref-card">
-   <div class="ref-head">
-    <strong>GRT ${r.grt}</strong>
-    <span class="grt">REFERENCE</span>
-   </div>
-
-   <div class="ref-row">
-
-    <div class="ref-cell">
-     <div class="ref-label">PILOT / BOAT</div>
-     <div class="ref-price">${r.pilot}</div>
-    </div>
-
-    <div class="ref-cell">
-     <div class="ref-label">LINE</div>
-     <div class="ref-price">${r.line}</div>
-    </div>
-
-    <div class="ref-cell">
-     <div class="ref-label">TUG</div>
-     <div class="ref-price">${r.tug}</div>
-    </div>
-
-   </div>
-  </div>
-  `).join("");
- }
-
- document.getElementById("mainRef").innerHTML=cards(mainReference);
- document.getElementById("hhiRef").innerHTML=cards(hhiReference);
-
-}
-
-function addReference(){
-
- const loc=document.getElementById("newLocation").value;
- const grt=document.getElementById("newGrt").value.trim();
- const pilot=document.getElementById("newPilot").value.trim();
- const line=document.getElementById("newLine").value.trim();
- const tug=document.getElementById("newTug").value.trim();
- const count=document.getElementById("newTugCount").value.trim();
-
- if(!grt) return alert("GRT를 입력하세요.");
-
- const obj={
-  grt:grt,
-  pilot:pilot||"-",
-  line:line||"-",
-  tug:(tug||"-")+(count ? " · "+count+" TUGS":"")
- };
-
- if(loc==="HHI"){
-   hhiReference.push(obj);
-   localStorage.setItem("hhiRef",JSON.stringify(hhiReference));
- }else{
-   mainReference.push(obj);
-   localStorage.setItem("mainRef",JSON.stringify(mainReference));
- }
-
- renderReference();
-
- document.getElementById("newGrt").value="";
- document.getElementById("newPilot").value="";
- document.getElementById("newLine").value="";
- document.getElementById("newTug").value="";
- document.getElementById("newTugCount").value="";
-
-}
-
-function renderServiceCards(data,target,hasTime=false){
-
- document.getElementById(target).innerHTML=data.map(x=>`
-
- <div class="service-card">
-
-  <div class="service-top">
-
-   <div>
-    <div class="area">${x[0]}</div>
-    <div class="area-name">${x[1]}</div>
-   </div>
-
-   <div>
-    <div class="amount">${money(x[2])}</div>
-    ${hasTime && x[3] ?
-    `<div class="basic-time">Basic ${x[3]}</div>`:""}
-   </div>
-
-  </div>
-
- </div>
-
- `).join("");
-
-}
-
-function renderLine(){
-
- document.getElementById("lineNormal").innerHTML=
- lineNormalData.map(x=>`
- <tr>
-  <td>${x[0]} G/T</td>
-  <td class="num">${money(x[1])}</td>
-  <td class="num">${money(x[2])}</td>
- </tr>
- `).join("");
-
- document.getElementById("lineDolphin").innerHTML=
- lineDolphinData.map(x=>`
- <tr>
-  <td>${x[0]} G/T</td>
-  <td class="num">${money(x[1])}</td>
-  <td class="num">${money(x[2])}</td>
- </tr>
- `).join("");
-
-}
-
-
-/* =========================================================
-   LOAD
-========================================================= */
-
-const savedMain=localStorage.getItem("mainRef");
-const savedHHI=localStorage.getItem("hhiRef");
-
-if(savedMain) mainReference=JSON.parse(savedMain);
-if(savedHHI) hhiReference=JSON.parse(savedHHI);
-
-renderCargo();
-renderReference();
-
-renderServiceCards(launchData,"launchList");
-renderServiceCards(workBoatData,"workBoatList",true);
-renderServiceCards(waterData,"waterList");
-
-renderLine();
-
-</script>
-
-</body>
-</html>
