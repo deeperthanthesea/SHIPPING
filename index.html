@@ -277,9 +277,7 @@ td {
     </div>
 
 
-    <!-- ==============================
-         VESSEL INFORMATION
-    =============================== -->
+    <!-- VESSEL INFORMATION -->
 
     <div class="card">
 
@@ -291,9 +289,11 @@ td {
                 <label>GRT</label>
 
                 <input
-                    type="number"
+                    type="text"
+                    inputmode="numeric"
                     id="grt"
-                    min="0"
+                    class="comma-input"
+                    autocomplete="off"
                 >
             </div>
 
@@ -313,9 +313,7 @@ td {
     </div>
 
 
-    <!-- ==============================
-         MANUAL EXPENSES
-    =============================== -->
+    <!-- MANUAL EXPENSES -->
 
     <div class="card">
 
@@ -327,9 +325,11 @@ td {
                 <label>PILOTAGE / BOAT (KRW)</label>
 
                 <input
-                    type="number"
+                    type="text"
+                    inputmode="numeric"
                     id="pilotage"
-                    min="0"
+                    class="comma-input"
+                    autocomplete="off"
                 >
             </div>
 
@@ -337,9 +337,11 @@ td {
                 <label>LINE HANDLING (KRW)</label>
 
                 <input
-                    type="number"
+                    type="text"
+                    inputmode="numeric"
                     id="line"
-                    min="0"
+                    class="comma-input"
+                    autocomplete="off"
                 >
             </div>
 
@@ -347,9 +349,11 @@ td {
                 <label>TUGGAGE (KRW)</label>
 
                 <input
-                    type="number"
+                    type="text"
+                    inputmode="numeric"
                     id="tug"
-                    min="0"
+                    class="comma-input"
+                    autocomplete="off"
                 >
             </div>
 
@@ -358,9 +362,7 @@ td {
     </div>
 
 
-    <!-- ==============================
-         ADDITIONAL EXPENSES
-    =============================== -->
+    <!-- ADDITIONAL EXPENSES -->
 
     <div class="card">
 
@@ -394,9 +396,7 @@ td {
     </button>
 
 
-    <!-- ==============================
-         KRW RESULT
-    =============================== -->
+    <!-- RESULTS -->
 
     <div class="card" id="results">
 
@@ -431,8 +431,6 @@ td {
         </table>
 
 
-        <!-- USD OPTION -->
-
         <button
             type="button"
             class="convert-btn"
@@ -441,6 +439,8 @@ td {
             CONVERT TO USD
         </button>
 
+
+        <!-- USD CONVERSION -->
 
         <div
             class="usd-box"
@@ -454,9 +454,11 @@ td {
             <div class="usd-controls">
 
                 <input
-                    type="number"
+                    type="text"
+                    inputmode="numeric"
                     id="exchangeRate"
-                    min="1"
+                    class="comma-input"
+                    autocomplete="off"
                 >
 
                 <button
@@ -468,8 +470,6 @@ td {
 
             </div>
 
-
-            <!-- USD RESULT -->
 
             <div id="usdResult">
 
@@ -491,9 +491,7 @@ td {
 
                 <div class="usd-total">
 
-                    <span>
-                        TOTAL USD
-                    </span>
+                    <span>TOTAL USD</span>
 
                     <span id="totalUSD">
                         $0
@@ -512,24 +510,81 @@ td {
 
 <script>
 
-/* ========================================
-   GLOBAL DATA
-======================================== */
-
 let currentResults = [];
 let currentTotal = 0;
 
 
 /* ========================================
+   COMMA FORMAT
+======================================== */
+
+function formatCommaInput(input) {
+
+    let value =
+        input.value.replace(/[^\d]/g, "");
+
+
+    if (value === "") {
+
+        input.value = "";
+
+        return;
+    }
+
+
+    value =
+        value.replace(/^0+(?=\d)/, "");
+
+
+    input.value =
+        Number(value).toLocaleString("en-US");
+}
+
+
+/* Existing comma inputs */
+
+document.querySelectorAll(
+    ".comma-input"
+).forEach(input => {
+
+    input.addEventListener(
+        "input",
+        function() {
+
+            formatCommaInput(this);
+
+        }
+    );
+
+});
+
+
+/* ========================================
    GET NUMBER
+
+   쉼표를 제거한 뒤 숫자로 변환
 ======================================== */
 
 function getNumber(id) {
 
+    const element =
+        document.getElementById(id);
+
+
+    if (!element) {
+        return 0;
+    }
+
+
+    const cleanValue =
+        String(element.value)
+        .replace(/,/g, "")
+        .trim();
+
+
     const value =
-        parseFloat(
-            document.getElementById(id).value
-        );
+        parseFloat(cleanValue);
+
 
     return isNaN(value)
         ? 0
@@ -538,22 +593,20 @@ function getNumber(id) {
 
 
 /* ========================================
-   EXCEL ROUNDDOWN(value, -1)
-
-   1원 단위 절사
-   → 10원 단위로 만듦
+   ROUNDDOWN TO 10 KRW
 ======================================== */
 
 function roundDown10(value) {
 
-    return Math.floor(value / 10) * 10;
+    return Math.floor(
+        value / 10
+    ) * 10;
 }
 
 
 /* ========================================
    PORT DUES
 
-   Excel:
    =ROUNDDOWN(GRT*135,-1)
 ======================================== */
 
@@ -568,7 +621,6 @@ function calculatePortDues(grt) {
 /* ========================================
    SECURITY
 
-   Excel:
    =ROUNDDOWN(GRT*5,-1)
 ======================================== */
 
@@ -583,8 +635,6 @@ function calculateSecurity(grt) {
 /* ========================================
    DOCKAGE
 
-   Excel:
-
    =ROUNDDOWN(
        ROUNDDOWN(GRT/10,0)
        *358
@@ -593,26 +643,34 @@ function calculateSecurity(grt) {
    )
 ======================================== */
 
-function calculateDockage(grt, days) {
+function calculateDockage(
+    grt,
+    days
+) {
 
     const grtUnit =
-        Math.floor(grt / 10);
+        Math.floor(
+            grt / 10
+        );
+
 
     const amount =
         grtUnit *
         358 *
         (days * 2);
 
-    return roundDown10(amount);
+
+    return roundDown10(
+        amount
+    );
 }
 
 
 /* ========================================
    OIL PREVENTIONS
 
-   GRT 10,000 이상만 적용
+   GRT >= 10,000
 
-   Excel:
    =ROUNDDOWN(7.6*GRT,-1)
 ======================================== */
 
@@ -635,8 +693,10 @@ function addItem() {
             "additionalItems"
         );
 
+
     const row =
         document.createElement("div");
+
 
     row.className =
         "additional-row";
@@ -648,13 +708,15 @@ function addItem() {
             type="text"
             class="custom-name"
             placeholder="Item name"
+            autocomplete="off"
         >
 
         <input
-            type="number"
+            type="text"
+            inputmode="numeric"
             class="custom-amount"
             placeholder="Amount (KRW)"
-            min="0"
+            autocomplete="off"
         >
 
         <button
@@ -669,6 +731,24 @@ function addItem() {
 
 
     container.appendChild(row);
+
+
+    /* Newly added amount field */
+
+    const amountInput =
+        row.querySelector(
+            ".custom-amount"
+        );
+
+
+    amountInput.addEventListener(
+        "input",
+        function() {
+
+            formatCommaInput(this);
+
+        }
+    );
 }
 
 
@@ -681,15 +761,16 @@ function calculateCost() {
     const grt =
         getNumber("grt");
 
+
     const days =
         getNumber("days");
 
 
-    /* VALIDATION */
-
     if (grt <= 0) {
 
-        alert("Please enter GRT.");
+        alert(
+            "Please enter GRT."
+        );
 
         return;
     }
@@ -697,7 +778,9 @@ function calculateCost() {
 
     if (days <= 0) {
 
-        alert("Please enter Berth Days.");
+        alert(
+            "Please enter Berth Days."
+        );
 
         return;
     }
@@ -707,29 +790,18 @@ function calculateCost() {
 
 
     /* =====================================
-       AUTOMATIC CALCULATION
+       AUTOMATIC EXPENSES
     ===================================== */
-
-
-    const portDues =
-        calculatePortDues(grt);
-
-
-    const security =
-        calculateSecurity(grt);
-
-
-    const dockage =
-        calculateDockage(
-            grt,
-            days
-        );
 
 
     currentResults.push({
 
         name: "Port Dues",
-        amount: portDues
+
+        amount:
+            calculatePortDues(
+                grt
+            )
 
     });
 
@@ -737,7 +809,11 @@ function calculateCost() {
     currentResults.push({
 
         name: "Security",
-        amount: security
+
+        amount:
+            calculateSecurity(
+                grt
+            )
 
     });
 
@@ -745,7 +821,12 @@ function calculateCost() {
     currentResults.push({
 
         name: "Dockage",
-        amount: dockage
+
+        amount:
+            calculateDockage(
+                grt,
+                days
+            )
 
     });
 
@@ -753,24 +834,21 @@ function calculateCost() {
     /* =====================================
        OIL PREVENTIONS
 
-       GRT 9,999 이하
-       → 표시하지 않음
-
-       GRT 10,000 이상
-       → 자동 계산
+       GRT 10,000 이상만 표시
     ===================================== */
 
 
     if (grt >= 10000) {
 
-        const oil =
-            calculateOilPrevention(grt);
-
-
         currentResults.push({
 
-            name: "Oil Preventions",
-            amount: oil
+            name:
+                "Oil Preventions",
+
+            amount:
+                calculateOilPrevention(
+                    grt
+                )
 
         });
 
@@ -782,44 +860,47 @@ function calculateCost() {
     ===================================== */
 
 
-    const pilotage =
-        getNumber("pilotage");
-
-
-    const line =
-        getNumber("line");
-
-
-    const tug =
-        getNumber("tug");
-
-
     currentResults.push({
 
-        name: "Pilotage / Boat",
-        amount: pilotage
+        name:
+            "Pilotage / Boat",
+
+        amount:
+            getNumber(
+                "pilotage"
+            )
 
     });
 
 
     currentResults.push({
 
-        name: "Line Handling",
-        amount: line
+        name:
+            "Line Handling",
+
+        amount:
+            getNumber(
+                "line"
+            )
 
     });
 
 
     currentResults.push({
 
-        name: "Tuggage",
-        amount: tug
+        name:
+            "Tuggage",
+
+        amount:
+            getNumber(
+                "tug"
+            )
 
     });
 
 
     /* =====================================
-       ADDITIONAL EXPENSES
+       ADDITIONAL ITEMS
     ===================================== */
 
 
@@ -840,13 +921,18 @@ function calculateCost() {
             .trim();
 
 
+        const amountText =
+            row
+            .querySelector(
+                ".custom-amount"
+            )
+            .value
+            .replace(/,/g, "");
+
+
         const amount =
             parseFloat(
-                row
-                .querySelector(
-                    ".custom-amount"
-                )
-                .value
+                amountText
             ) || 0;
 
 
@@ -883,8 +969,6 @@ function calculateCost() {
     renderKRW();
 
 
-    /* SHOW RESULTS */
-
     document.getElementById(
         "results"
     ).style.display =
@@ -905,13 +989,12 @@ function calculateCost() {
         "none";
 
 
-    /* SCROLL TO RESULT */
-
     document.getElementById(
         "results"
     ).scrollIntoView({
 
         behavior: "smooth",
+
         block: "start"
 
     });
@@ -920,7 +1003,7 @@ function calculateCost() {
 
 
 /* ========================================
-   DISPLAY KRW RESULT
+   KRW RESULT
 ======================================== */
 
 function renderKRW() {
@@ -943,7 +1026,9 @@ function renderKRW() {
         row.innerHTML = `
 
             <td>
-                ${escapeHTML(item.name)}
+                ${escapeHTML(
+                    item.name
+                )}
             </td>
 
             <td class="amount">
@@ -959,7 +1044,9 @@ function renderKRW() {
         `;
 
 
-        body.appendChild(row);
+        body.appendChild(
+            row
+        );
 
     });
 
@@ -1001,19 +1088,14 @@ function showUSD() {
 /* ========================================
    KRW → USD
 
-   IMPORTANT:
+   각 항목별 환산 후
+   10 USD 단위 올림
 
-   각 항목을 개별 환산한 후
-   10 USD 단위로 올림
+   194.21 → 200
+   857.14 → 860
+   1,943.01 → 1,950
 
-   예:
-
-   $194.21 → $200
-   $857.14 → $860
-   $1,943.01 → $1,950
-
-   그 후 각 항목을 합산하여
-   TOTAL USD 계산
+   이후 각 항목을 합산
 ======================================== */
 
 function convertUSD() {
@@ -1048,27 +1130,16 @@ function convertUSD() {
 
     currentResults.forEach(item => {
 
-        /* KRW → USD */
-
         const rawUSD =
-            item.amount / rate;
+            item.amount /
+            rate;
 
-
-        /*
-            각 항목을
-            10 USD 단위로 올림
-        */
 
         const roundedUSD =
             Math.ceil(
                 rawUSD / 10
             ) * 10;
 
-
-        /*
-            올림된 금액을
-            TOTAL에 합산
-        */
 
         totalUSD +=
             roundedUSD;
@@ -1081,26 +1152,29 @@ function convertUSD() {
         row.innerHTML = `
 
             <td>
-                ${escapeHTML(item.name)}
+                ${escapeHTML(
+                    item.name
+                )}
             </td>
 
             <td class="amount">
 
-                $${roundedUSD.toLocaleString(
-                    "en-US"
-                )}
+                $${roundedUSD
+                    .toLocaleString(
+                        "en-US"
+                    )}
 
             </td>
 
         `;
 
 
-        body.appendChild(row);
+        body.appendChild(
+            row
+        );
 
     });
 
-
-    /* TOTAL USD */
 
     document.getElementById(
         "totalUSD"
@@ -1122,15 +1196,20 @@ function convertUSD() {
 
 
 /* ========================================
-   SAFE CUSTOM ITEM NAME
+   SAFE TEXT
 ======================================== */
 
 function escapeHTML(text) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
-    div.textContent = text;
+
+    div.textContent =
+        text;
+
 
     return div.innerHTML;
 }
