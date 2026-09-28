@@ -1251,3 +1251,1000 @@
       },
       2200
     );
+
+
+    return result;
+  }
+
+
+  /* ==========================================
+     RENDER CARGO
+     ========================================== */
+
+  function renderCargo() {
+
+    const keyword =
+      searchInput.value
+        .trim()
+        .toLowerCase();
+
+
+    const filtered =
+      cargoData.filter(
+        function(item) {
+
+          if (!keyword) {
+            return true;
+          }
+
+
+          const text = [
+            item.name,
+            item.pier,
+            item.remark
+          ]
+            .join(" ")
+            .toLowerCase();
+
+
+          return text.includes(keyword);
+        }
+      );
+
+
+    if (!filtered.length) {
+
+      cargoList.innerHTML = `
+        <div class="empty">
+          No cargo found.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    cargoList.innerHTML =
+      filtered.map(
+        function(item) {
+
+          return renderCargoCard(item);
+
+        }
+      ).join("");
+  }
+
+
+  function renderCargoCard(item) {
+
+    const working =
+      Array.isArray(item.working)
+        ? item.working
+        : [];
+
+
+    const quantities =
+      Array.isArray(item.quantities)
+        ? item.quantities
+        : [];
+
+
+    let workingHTML;
+
+
+    if (working.length) {
+
+      workingHTML = `
+        <table class="work-table">
+
+          <thead>
+            <tr>
+              <th>TIME</th>
+              <th>GANG</th>
+              <th>RATE</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${
+              working.map(
+                function(row) {
+
+                  return `
+                    <tr>
+
+                      <td>
+                        ${escapeHTML(
+                          row.time || "—"
+                        )}
+                      </td>
+
+                      <td>
+                        ${escapeHTML(
+                          row.gang || "—"
+                        )}
+                      </td>
+
+                      <td>
+                        ${escapeHTML(
+                          row.rate || "—"
+                        )}
+                      </td>
+
+                    </tr>
+                  `;
+
+                }
+              ).join("")
+            }
+
+          </tbody>
+
+        </table>
+      `;
+
+    } else {
+
+      workingHTML = `
+        <div class="empty-work">
+          No working reference
+        </div>
+      `;
+    }
+
+
+    let quantityHTML;
+
+
+    if (quantities.length) {
+
+      quantityHTML = `
+        <div class="quantity-list">
+
+          ${
+            quantities.map(
+              function(row) {
+
+                return `
+                  <div class="quantity-item">
+
+                    <strong>
+                      ${escapeHTML(
+                        row.qty || "—"
+                      )}
+                    </strong>
+
+                    <span class="qty-divider">
+                      /
+                    </span>
+
+                    <span>
+                      ${escapeHTML(
+                        row.day || "—"
+                      )}
+                    </span>
+
+                  </div>
+                `;
+
+              }
+            ).join("")
+          }
+
+        </div>
+      `;
+
+    } else {
+
+      quantityHTML = `
+        <div class="empty-quantity">
+          No QTY / DAY reference
+        </div>
+      `;
+    }
+
+
+    const remarkHTML =
+      item.remark
+        ? `
+          <div class="remark">
+
+            <span class="remark-label">
+              REMARK
+            </span>
+
+            <div class="remark-text">${escapeHTML(
+              item.remark
+            )}</div>
+
+          </div>
+        `
+        : "";
+
+
+    return `
+      <article class="cargo-card">
+
+        <div class="cargo-head">
+
+          <div class="cargo-main">
+
+            <div class="pier-label">
+              PIER · ${escapeHTML(
+                item.pier || "—"
+              )}
+            </div>
+
+            <h2 class="cargo-name">
+              ${escapeHTML(
+                item.name || "UNTITLED"
+              )}
+            </h2>
+
+          </div>
+
+
+          <div class="cargo-actions">
+
+            <button
+              class="small-btn"
+              type="button"
+              onclick="editCargo(${Number(item.id)})"
+            >
+              EDIT
+            </button>
+
+            <button
+              class="small-btn delete"
+              type="button"
+              onclick="deleteCargo(${Number(item.id)})"
+            >
+              DELETE
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="work-section">
+
+          <div class="section-label">
+            WORKING
+          </div>
+
+          ${workingHTML}
+
+        </div>
+
+
+        <div class="quantity-section">
+
+          <div class="quantity-title">
+            QTY / DAY
+          </div>
+
+          ${quantityHTML}
+
+        </div>
+
+
+        ${remarkHTML}
+
+      </article>
+    `;
+  }
+
+
+  /* ==========================================
+     SEARCH
+     ========================================== */
+
+  searchInput.addEventListener(
+    "input",
+    renderCargo
+  );
+
+
+  /* ==========================================
+     MODAL
+     ========================================== */
+
+  function openCargoModal(item) {
+
+    if (item) {
+
+      editingCargoId =
+        Number(item.id);
+
+      modalTitle.textContent =
+        "EDIT CARGO";
+
+      nameInput.value =
+        item.name || "";
+
+      pierInput.value =
+        item.pier || "";
+
+      remarkInput.value =
+        item.remark || "";
+
+      workingDraft =
+        cloneData(
+          Array.isArray(item.working)
+            ? item.working
+            : []
+        );
+
+      quantityDraft =
+        cloneData(
+          Array.isArray(item.quantities)
+            ? item.quantities
+            : []
+        );
+
+
+    } else {
+
+      editingCargoId = null;
+
+      modalTitle.textContent =
+        "ADD CARGO";
+
+      nameInput.value = "";
+
+      pierInput.value = "";
+
+      remarkInput.value = "";
+
+      workingDraft = [
+        {
+          time: "",
+          gang: "",
+          rate: ""
+        }
+      ];
+
+      quantityDraft = [
+        {
+          qty: "",
+          day: ""
+        }
+      ];
+    }
+
+
+    renderWorkingEditor();
+
+    renderQuantityEditor();
+
+    cargoModal.classList.add("show");
+
+
+    setTimeout(
+      function() {
+
+        nameInput.focus();
+
+      },
+      50
+    );
+  }
+
+
+  function closeCargoModal() {
+
+    cargoModal.classList.remove("show");
+  }
+
+
+  /* ==========================================
+     WORKING EDITOR
+     ========================================== */
+
+  function renderWorkingEditor() {
+
+    if (!workingDraft.length) {
+
+      workingEditor.innerHTML = `
+        <div class="empty-quantity">
+          No rows. Press + ADD ROW.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    workingEditor.innerHTML =
+      workingDraft.map(
+        function(row, index) {
+
+          return `
+            <div class="editor-row">
+
+              <input
+                type="text"
+                placeholder="TIME"
+                value="${escapeHTML(
+                  row.time || ""
+                )}"
+                oninput="updateWorking(
+                  ${index},
+                  'time',
+                  this.value
+                )"
+              >
+
+              <input
+                type="text"
+                placeholder="GANG"
+                value="${escapeHTML(
+                  row.gang || ""
+                )}"
+                oninput="updateWorking(
+                  ${index},
+                  'gang',
+                  this.value
+                )"
+              >
+
+              <input
+                type="text"
+                placeholder="RATE"
+                value="${escapeHTML(
+                  row.rate || ""
+                )}"
+                oninput="updateWorking(
+                  ${index},
+                  'rate',
+                  this.value
+                )"
+              >
+
+              <button
+                class="remove-row"
+                type="button"
+                onclick="removeWorking(
+                  ${index}
+                )"
+              >
+                ×
+              </button>
+
+            </div>
+          `;
+
+        }
+      ).join("");
+  }
+
+
+  window.updateWorking =
+    function(
+      index,
+      field,
+      value
+    ) {
+
+      if (!workingDraft[index]) {
+        return;
+      }
+
+      workingDraft[index][field] =
+        value;
+    };
+
+
+  window.removeWorking =
+    function(index) {
+
+      workingDraft.splice(
+        index,
+        1
+      );
+
+      renderWorkingEditor();
+    };
+
+
+  document
+    .getElementById("addWorkingBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        workingDraft.push({
+          time: "",
+          gang: "",
+          rate: ""
+        });
+
+        renderWorkingEditor();
+      }
+    );
+
+
+  /* ==========================================
+     QUANTITY EDITOR
+     ========================================== */
+
+  function renderQuantityEditor() {
+
+    if (!quantityDraft.length) {
+
+      quantityEditor.innerHTML = `
+        <div class="empty-quantity">
+          No rows. Press + ADD ROW.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    quantityEditor.innerHTML =
+      quantityDraft.map(
+        function(row, index) {
+
+          return `
+            <div class="editor-row qty-row">
+
+              <input
+                type="text"
+                placeholder="QTY"
+                value="${escapeHTML(
+                  row.qty || ""
+                )}"
+                oninput="updateQuantity(
+                  ${index},
+                  'qty',
+                  this.value
+                )"
+              >
+
+              <input
+                type="text"
+                placeholder="DAY"
+                value="${escapeHTML(
+                  row.day || ""
+                )}"
+                oninput="updateQuantity(
+                  ${index},
+                  'day',
+                  this.value
+                )"
+              >
+
+              <button
+                class="remove-row"
+                type="button"
+                onclick="removeQuantity(
+                  ${index}
+                )"
+              >
+                ×
+              </button>
+
+            </div>
+          `;
+
+        }
+      ).join("");
+  }
+
+
+  window.updateQuantity =
+    function(
+      index,
+      field,
+      value
+    ) {
+
+      if (!quantityDraft[index]) {
+        return;
+      }
+
+      quantityDraft[index][field] =
+        value;
+    };
+
+
+  window.removeQuantity =
+    function(index) {
+
+      quantityDraft.splice(
+        index,
+        1
+      );
+
+      renderQuantityEditor();
+    };
+
+
+  document
+    .getElementById("addQuantityBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        quantityDraft.push({
+          qty: "",
+          day: ""
+        });
+
+        renderQuantityEditor();
+      }
+    );
+
+
+  /* ==========================================
+     ADD
+     ========================================== */
+
+  document
+    .getElementById("addCargoBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        openCargoModal(null);
+      }
+    );
+
+
+  /* ==========================================
+     EDIT
+     ========================================== */
+
+  window.editCargo =
+    function(id) {
+
+      const item =
+        cargoData.find(
+          function(cargo) {
+
+            return (
+              Number(cargo.id) ===
+              Number(id)
+            );
+          }
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      openCargoModal(item);
+    };
+
+
+  /* ==========================================
+     DELETE
+     ========================================== */
+
+  window.deleteCargo =
+    async function(id) {
+
+      const item =
+        cargoData.find(
+          function(cargo) {
+
+            return (
+              Number(cargo.id) ===
+              Number(id)
+            );
+          }
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const confirmed =
+        confirm(
+          "Delete " +
+          item.name +
+          "?"
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      const backup =
+        cloneData(cargoData);
+
+
+      cargoData =
+        cargoData.filter(
+          function(cargo) {
+
+            return (
+              Number(cargo.id) !==
+              Number(id)
+            );
+          }
+        );
+
+
+      renderCargo();
+
+
+      try {
+
+        await saveAllCargo();
+
+      } catch (error) {
+
+        console.error(error);
+
+        cargoData = backup;
+
+        renderCargo();
+
+
+        showStatus(
+          "Delete failed. " +
+          error.message,
+          "error"
+        );
+
+
+        alert(
+          "DELETE FAILED\n\n" +
+          error.message
+        );
+      }
+    };
+
+
+  /* ==========================================
+     SAVE CARGO
+     ========================================== */
+
+  saveCargoBtn.addEventListener(
+    "click",
+    async function() {
+
+      const name =
+        nameInput.value.trim();
+
+
+      if (!name) {
+
+        alert(
+          "Please enter cargo name."
+        );
+
+        nameInput.focus();
+
+        return;
+      }
+
+
+      const cleanedWorking =
+        workingDraft
+          .map(
+            function(row) {
+
+              return {
+                time:
+                  String(
+                    row.time || ""
+                  ).trim(),
+
+                gang:
+                  String(
+                    row.gang || ""
+                  ).trim(),
+
+                rate:
+                  String(
+                    row.rate || ""
+                  ).trim()
+              };
+
+            }
+          )
+          .filter(
+            function(row) {
+
+              return (
+                row.time ||
+                row.gang ||
+                row.rate
+              );
+            }
+          );
+
+
+      const cleanedQuantities =
+        quantityDraft
+          .map(
+            function(row) {
+
+              return {
+                qty:
+                  String(
+                    row.qty || ""
+                  ).trim(),
+
+                day:
+                  String(
+                    row.day || ""
+                  ).trim()
+              };
+
+            }
+          )
+          .filter(
+            function(row) {
+
+              return (
+                row.qty ||
+                row.day
+              );
+            }
+          );
+
+
+      const newItem = {
+
+        id:
+          editingCargoId !== null
+            ? editingCargoId
+            : nextId(),
+
+        pier:
+          pierInput.value.trim(),
+
+        name: name,
+
+        working:
+          cleanedWorking,
+
+        quantities:
+          cleanedQuantities,
+
+        remark:
+          remarkInput.value.trim()
+      };
+
+
+      const backup =
+        cloneData(cargoData);
+
+
+      if (
+        editingCargoId !== null
+      ) {
+
+        cargoData =
+          cargoData.map(
+            function(item) {
+
+              if (
+                Number(item.id) ===
+                Number(editingCargoId)
+              ) {
+
+                return newItem;
+              }
+
+              return item;
+            }
+          );
+
+      } else {
+
+        cargoData.push(newItem);
+      }
+
+
+      renderCargo();
+
+
+      saveCargoBtn.disabled = true;
+
+      saveCargoBtn.textContent =
+        "SAVING...";
+
+
+      try {
+
+        await saveAllCargo();
+
+        closeCargoModal();
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        cargoData = backup;
+
+        renderCargo();
+
+
+        showStatus(
+          "Save failed. " +
+          error.message,
+          "error"
+        );
+
+
+        alert(
+          "SAVE FAILED\n\n" +
+          error.message
+        );
+
+      } finally {
+
+        saveCargoBtn.disabled = false;
+
+        saveCargoBtn.textContent =
+          "SAVE";
+      }
+    }
+  );
+
+
+  /* ==========================================
+     CANCEL
+     ========================================== */
+
+  document
+    .getElementById("cancelCargoBtn")
+    .addEventListener(
+      "click",
+      closeCargoModal
+    );
+
+
+  cargoModal.addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target === cargoModal
+      ) {
+
+        closeCargoModal();
+      }
+    }
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Escape" &&
+        cargoModal.classList
+          .contains("show")
+      ) {
+
+        closeCargoModal();
+      }
+    }
+  );
+
+
+  /* ==========================================
+     INITIAL LOAD
+     ========================================== */
+
+  loadCargo();
+</script>
+
+</body>
+</html>
