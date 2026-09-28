@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -14,22 +13,22 @@
     :root {
       --bg: #f4f5f6;
       --card: #ffffff;
-      --text: #20262e;
-      --muted: #858d96;
-      --line: #dfe3e6;
-      --soft: #eef0f2;
+      --text: #17202a;
+      --muted: #87919c;
+      --line: #dce1e5;
       --dark: #202730;
 
-      --main: #2f6fed;
-      --main-soft: #edf3ff;
+      --blue: #2865dc;
+      --blue-bg: #eef6ff;
 
-      --onsan: #218739;
-      --onsan-soft: #edf8ef;
+      --green: #368154;
+      --green-bg: #eef9f2;
 
-      --other: #8b5a2b;
-      --other-soft: #fff5e9;
+      --orange: #b56b13;
+      --orange-bg: #fff6e8;
 
-      --red: #b54747;
+      --red: #e23636;
+      --red-bg: #fff0f0;
 
       --radius: 15px;
     }
@@ -73,21 +72,21 @@
       max-width: 900px;
 
       margin: 0 auto;
-      padding: 22px 18px 50px;
+      padding: 20px 13px 50px;
     }
 
-    /* =========================================
+    /* =========================
        HEADER
-       ========================================= */
+       ========================= */
 
     .page-head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
 
-      gap: 15px;
+      gap: 14px;
 
-      margin-bottom: 18px;
+      margin-bottom: 17px;
     }
 
     .page-title {
@@ -95,7 +94,7 @@
 
       font-size: 30px;
       font-weight: 950;
-      letter-spacing: -0.7px;
+      letter-spacing: -0.8px;
     }
 
     .page-subtitle {
@@ -104,27 +103,27 @@
       color: var(--muted);
 
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 650;
     }
 
     .add-btn {
       flex: 0 0 auto;
 
+      padding: 12px 15px;
+
       border: 0;
       border-radius: 11px;
-
-      padding: 12px 15px;
 
       background: var(--dark);
       color: #fff;
 
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 950;
     }
 
-    /* =========================================
+    /* =========================
        STATUS
-       ========================================= */
+       ========================= */
 
     .status {
       display: none;
@@ -144,40 +143,40 @@
     }
 
     .status.loading {
-      background: #eef3f7;
-      color: #53606b;
+      background: #edf3f7;
+      color: #52606c;
     }
 
     .status.success {
-      background: #e9f6ec;
-      color: #28723a;
+      background: #eaf7ed;
+      color: #28713b;
     }
 
     .status.error {
       background: #fff0f0;
-      color: #a13f3f;
+      color: #a13e3e;
     }
 
-    /* =========================================
+    /* =========================
        FILTER
-       ========================================= */
+       ========================= */
 
-    .toolbar {
+    .filter-row {
       display: grid;
-
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr 100px;
 
       gap: 10px;
 
-      margin-bottom: 18px;
+      margin-bottom: 19px;
     }
 
-    .search {
+    .search,
+    .pier-filter {
       width: 100%;
 
       padding: 14px 15px;
 
-      border: 1px solid #ccd2d7;
+      border: 1px solid #cdd3d8;
       border-radius: 11px;
 
       outline: none;
@@ -185,94 +184,79 @@
       background: #fff;
       color: var(--text);
 
-      font-size: 14px;
+      font-size: 13px;
     }
 
-    .search:focus {
-      border-color: #7f8993;
+    .pier-filter {
+      padding-left: 10px;
+      padding-right: 8px;
+
+      font-size: 11px;
+      font-weight: 900;
     }
 
-    .filter {
-      padding: 0 13px;
-
-      border: 1px solid #ccd2d7;
-      border-radius: 11px;
-
-      outline: none;
-
-      background: #fff;
-      color: var(--text);
-
-      font-size: 12px;
-      font-weight: 800;
+    .search:focus,
+    .pier-filter:focus {
+      border-color: #7e8993;
     }
 
-    /* =========================================
-       PIER GROUP
-       ========================================= */
-
-    #sampleList {
-      display: flex;
-      flex-direction: column;
-
-      gap: 22px;
-    }
+    /* =========================
+       GROUP
+       ========================= */
 
     .pier-group {
-      display: flex;
-      flex-direction: column;
-
-      gap: 10px;
+      margin-bottom: 24px;
     }
 
-    .pier-title {
+    .group-title {
       display: flex;
       align-items: center;
 
-      gap: 9px;
+      gap: 7px;
 
-      padding: 0 2px;
-    }
+      margin: 0 2px 9px;
 
-    .pier-title-text {
-      font-size: 14px;
+      color: var(--blue);
+
+      font-size: 15px;
       font-weight: 950;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.2px;
     }
 
-    .pier-count {
-      padding: 3px 7px;
+    .group-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
-      background: #e5e8eb;
+      min-width: 21px;
+      height: 18px;
+
+      padding: 0 6px;
 
       border-radius: 999px;
 
-      color: #737b83;
+      background: #e4e7ea;
+      color: #6e7780;
 
       font-size: 9px;
       font-weight: 950;
     }
 
-    .pier-group.main .pier-title-text {
-      color: var(--main);
+    .card-list {
+      display: flex;
+      flex-direction: column;
+
+      gap: 10px;
     }
 
-    .pier-group.onsan .pier-title-text {
-      color: var(--onsan);
-    }
-
-    .pier-group.other .pier-title-text {
-      color: var(--other);
-    }
-
-    /* =========================================
+    /* =========================
        SAMPLE CARD
-       ========================================= */
+       ========================= */
 
     .sample-card {
       overflow: hidden;
 
-      background: var(--card);
+      background: #fff;
 
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -285,93 +269,126 @@
 
       gap: 12px;
 
-      padding: 15px 17px;
-    }
-
-    .grt-area {
-      min-width: 0;
+      padding: 16px;
     }
 
     .grt-label {
-      margin-bottom: 3px;
+      margin-bottom: 4px;
 
-      color: #949ba2;
+      color: #83909c;
 
       font-size: 9px;
       font-weight: 950;
-      letter-spacing: 0.7px;
+      letter-spacing: 0.6px;
     }
 
-    .grt {
-      margin: 0;
+    .grt-value {
+      color: #101923;
 
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 950;
-      letter-spacing: -0.4px;
+      line-height: 1.1;
     }
 
     .grt-unit {
-      margin-left: 4px;
+      margin-left: 5px;
 
-      color: #8d949b;
+      color: #8c96a0;
 
-      font-size: 10px;
-      font-weight: 800;
+      font-size: 9px;
+      font-weight: 900;
     }
 
-    .sample-actions {
+    .card-actions {
       display: flex;
-      flex: 0 0 auto;
 
       gap: 5px;
     }
 
     .small-btn {
+      padding: 7px 9px;
+
       border: 0;
       border-radius: 7px;
 
-      padding: 7px 9px;
-
       background: #edf0f2;
-      color: #59616a;
+      color: #52606b;
 
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 950;
     }
 
     .small-btn.delete {
-      background: #fff0f0;
+      background: var(--red-bg);
       color: var(--red);
     }
 
-    /* =========================================
-       COST
-       ========================================= */
+    /* =========================
+       COST GRID
+       ========================= */
 
     .cost-grid {
       display: grid;
-
       grid-template-columns: repeat(3, 1fr);
 
       border-top: 1px solid var(--line);
     }
 
-    .cost-item {
+    .cost-box {
       min-width: 0;
+      min-height: 96px;
 
-      padding: 14px 13px;
-
-      border-right: 1px solid var(--line);
+      padding: 14px 13px 15px;
     }
 
-    .cost-item:last-child {
-      border-right: 0;
+    .cost-box + .cost-box {
+      border-left: 1px solid var(--line);
+    }
+
+    /* PILOT */
+
+    .cost-box.pilot {
+      background: var(--blue-bg);
+    }
+
+    .cost-box.pilot .cost-label {
+      color: #4b78aa;
+    }
+
+    .cost-box.pilot .cost-value {
+      color: #173e6a;
+    }
+
+    /* LINE */
+
+    .cost-box.line {
+      background: var(--green-bg);
+    }
+
+    .cost-box.line .cost-label {
+      color: var(--green);
+    }
+
+    .cost-box.line .cost-value {
+      color: #215d38;
+    }
+
+    /* TUG */
+
+    .cost-box.tug {
+      background: var(--orange-bg);
+    }
+
+    .cost-box.tug .cost-label {
+      color: var(--orange);
+    }
+
+    .cost-box.tug .cost-value {
+      color: #75460d;
     }
 
     .cost-label {
-      margin-bottom: 6px;
-
-      color: #8d949b;
+      margin-bottom: 7px;
 
       font-size: 9px;
       font-weight: 950;
@@ -379,96 +396,98 @@
     }
 
     .cost-value {
-      color: #20262e;
-
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 950;
 
       overflow-wrap: anywhere;
     }
 
-    .won {
-      margin-left: 2px;
+    .cost-unit {
+      margin-left: 3px;
 
-      color: #969da4;
+      color: #87939f;
 
-      font-size: 9px;
-      font-weight: 800;
+      font-size: 8px;
+      font-weight: 900;
     }
+
+    /* =========================
+       TUG COUNT
+       ========================= */
 
     .tug-count {
       display: inline-block;
 
-      margin-top: 6px;
+      margin-top: 7px;
       padding: 4px 7px;
-
-      background: #fff0f0;
 
       border-radius: 6px;
 
-      color: #d13c3c;
+      background: #ffe5e5;
+      color: #e12e2e;
 
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 950;
     }
 
-    /* =========================================
+    .tug-count.two {
+      background: #ffd7d7;
+      color: #cf1717;
+    }
+
+    /* =========================
        REMARK
-       ========================================= */
+       ========================= */
 
     .remark {
-      padding: 12px 15px;
+      padding: 11px 14px;
 
-      border-top: 1px solid var(--line);
+      border-top: 1px solid #ead7a0;
 
-      background: #fafafa;
-    }
-
-    .remark-label {
-      display: block;
-
-      margin-bottom: 5px;
-
-      color: #969da4;
-
-      font-size: 9px;
-      font-weight: 950;
-      letter-spacing: 0.6px;
-    }
-
-    .remark-text {
-      color: #626a72;
+      background: #fff8e7;
+      color: #6d520d;
 
       font-size: 11px;
-      font-weight: 650;
+      font-weight: 700;
       line-height: 1.5;
 
       white-space: pre-line;
       overflow-wrap: anywhere;
     }
 
-    /* =========================================
+    .remark-label {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #aa7612;
+
+      font-size: 8px;
+      font-weight: 950;
+      letter-spacing: 0.6px;
+    }
+
+    /* =========================
        EMPTY
-       ========================================= */
+       ========================= */
 
     .empty {
-      padding: 40px 15px;
-
-      background: #fff;
+      padding: 38px 15px;
 
       border: 1px solid var(--line);
       border-radius: var(--radius);
 
+      background: #fff;
       color: var(--muted);
 
       text-align: center;
 
-      font-size: 13px;
+      font-size: 12px;
     }
 
-    /* =========================================
+    /* =========================
        MODAL
-       ========================================= */
+       ========================= */
 
     .modal-bg {
       position: fixed;
@@ -479,9 +498,9 @@
       align-items: center;
       justify-content: center;
 
-      padding: 18px;
+      padding: 16px;
 
-      background: rgba(19, 24, 29, 0.58);
+      background: rgba(20, 25, 30, 0.6);
     }
 
     .modal-bg.show {
@@ -497,22 +516,24 @@
 
       padding: 20px;
 
-      background: #fff;
-
       border-radius: 17px;
+
+      background: #fff;
     }
 
     .modal-title {
-      margin: 0 0 18px;
+      margin: 0 0 19px;
 
-      font-size: 21px;
+      color: #17202a;
+
+      font-size: 22px;
       font-weight: 950;
     }
 
     .field {
       display: block;
 
-      margin-bottom: 13px;
+      margin-bottom: 14px;
     }
 
     .field-label {
@@ -520,10 +541,11 @@
 
       margin-bottom: 6px;
 
-      color: #747c84;
+      color: #69747e;
 
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 950;
+      letter-spacing: 0.4px;
     }
 
     .field input,
@@ -535,17 +557,19 @@
 
       padding: 12px;
 
-      border: 1px solid #d8dde1;
+      border: 1px solid #d5dbe0;
       border-radius: 9px;
 
       outline: none;
 
       background: #fff;
       color: var(--text);
+
+      font-size: 14px;
     }
 
     .field textarea {
-      min-height: 95px;
+      min-height: 90px;
 
       resize: vertical;
     }
@@ -553,52 +577,65 @@
     .field input:focus,
     .field select:focus,
     .field textarea:focus {
-      border-color: #77818b;
+      border-color: #7c8791;
     }
 
-    .money-wrap {
-      position: relative;
-    }
+    /* =========================
+       MODAL COST INPUTS
+       ========================= */
 
-    .money-wrap input {
-      padding-right: 48px;
-    }
-
-    .money-unit {
-      position: absolute;
-
-      top: 50%;
-      right: 13px;
-
-      transform: translateY(-50%);
-
-      color: #999fa5;
-
-      font-size: 10px;
-      font-weight: 900;
-
-      pointer-events: none;
-    }
-
-    /* =========================================
-       TUG
-       ========================================= */
-
-    .tug-box {
+    .cost-input-grid {
       display: grid;
+      grid-template-columns: 1fr 1fr;
 
-      grid-template-columns: 1fr 110px;
-
-      gap: 8px;
+      gap: 10px;
     }
 
-    /* =========================================
-       MODAL BUTTON
-       ========================================= */
+    .cost-input {
+      padding: 12px;
+
+      border-radius: 11px;
+    }
+
+    .cost-input.pilot-input {
+      background: var(--blue-bg);
+    }
+
+    .cost-input.line-input {
+      background: var(--green-bg);
+    }
+
+    .cost-input.tug-input {
+      background: var(--orange-bg);
+    }
+
+    .cost-input .field {
+      margin: 0;
+    }
+
+    .cost-input input,
+    .cost-input select {
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .pilot-input .field-label {
+      color: #4b78aa;
+    }
+
+    .line-input .field-label {
+      color: var(--green);
+    }
+
+    .tug-input .field-label {
+      color: var(--orange);
+    }
+
+    /* =========================
+       BUTTONS
+       ========================= */
 
     .modal-buttons {
       display: grid;
-
       grid-template-columns: 1fr 1fr;
 
       gap: 8px;
@@ -607,18 +644,18 @@
     }
 
     .modal-buttons button {
+      padding: 13px;
+
       border: 0;
       border-radius: 10px;
 
-      padding: 13px;
-
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 950;
     }
 
     .cancel-btn {
       background: #eceff1;
-      color: #596169;
+      color: #59636c;
     }
 
     .save-btn {
@@ -631,25 +668,18 @@
       cursor: wait;
     }
 
-    /* =========================================
+    /* =========================
        MOBILE
-       ========================================= */
+       ========================= */
 
     @media (max-width: 600px) {
-      .app {
-        padding: 17px 11px 40px;
-      }
 
-      .page-head {
-        align-items: center;
+      .app {
+        padding: 16px 12px 40px;
       }
 
       .page-title {
-        font-size: 25px;
-      }
-
-      .page-subtitle {
-        font-size: 11px;
+        font-size: 28px;
       }
 
       .add-btn {
@@ -658,74 +688,51 @@
         font-size: 9px;
       }
 
-      .toolbar {
-        grid-template-columns: 1fr 105px;
-
-        gap: 7px;
-      }
-
-      .search {
-        padding: 12px;
-
-        font-size: 12px;
-      }
-
-      .filter {
-        padding: 0 8px;
-
-        font-size: 10px;
+      .filter-row {
+        grid-template-columns: 1fr 100px;
       }
 
       .sample-head {
+        padding: 15px;
+      }
+
+      .grt-value {
+        font-size: 21px;
+      }
+
+      .cost-box {
+        min-height: 92px;
+
         padding: 13px 12px;
       }
 
-      .grt {
-        font-size: 19px;
-      }
-
-      .small-btn {
-        padding: 6px 7px;
-
-        font-size: 8px;
-      }
-
-      .cost-item {
-        padding: 12px 8px;
-      }
-
-      .cost-label {
-        font-size: 8px;
-      }
-
       .cost-value {
-        font-size: 11px;
-      }
-
-      .won {
-        font-size: 8px;
-      }
-
-      .tug-count {
-        font-size: 8px;
+        font-size: 14px;
       }
 
       .modal {
-        padding: 17px 14px;
-      }
-
-      .tug-box {
-        grid-template-columns: 1fr 100px;
+        padding: 18px 14px;
       }
     }
 
-    @media (max-width: 370px) {
-      .cost-value {
-        font-size: 10px;
+    @media (max-width: 390px) {
+
+      .cost-box {
+        padding: 12px 8px;
       }
 
-      .toolbar {
-        grid-template-columns: 1fr 95px;
+      .cost-value {
+        font-size: 12px;
+      }
+
+      .cost-unit {
+        display: block;
+
+        margin: 3px 0 0;
+      }
+
+      .cost-input-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -749,6 +756,7 @@
 
     </div>
 
+
     <button
       id="addSampleBtn"
       class="add-btn"
@@ -766,21 +774,22 @@
   ></div>
 
 
-  <div class="toolbar">
+  <div class="filter-row">
 
     <input
       id="searchInput"
       class="search"
       type="search"
       placeholder="Search GRT..."
-      inputmode="numeric"
       autocomplete="off"
     >
 
+
     <select
       id="pierFilter"
-      class="filter"
+      class="pier-filter"
     >
+
       <option value="ALL">
         ALL PIER
       </option>
@@ -796,6 +805,7 @@
       <option value="OTHER">
         OTHER
       </option>
+
     </select>
 
   </div>
@@ -812,9 +822,9 @@
 </div>
 
 
-<!-- =========================================
-     SAMPLE MODAL
-     ========================================= -->
+<!-- ==========================================
+     SAMPLE EDITOR
+     ========================================== -->
 
 <div
   id="sampleModal"
@@ -829,6 +839,23 @@
     >
       ADD SAMPLE
     </h2>
+
+
+    <label class="field">
+
+      <span class="field-label">
+        GRT
+      </span>
+
+      <input
+        id="grtInput"
+        type="text"
+        inputmode="numeric"
+        placeholder="e.g. 20,000"
+        autocomplete="off"
+      >
+
+    </label>
 
 
     <label class="field">
@@ -856,82 +883,57 @@
     </label>
 
 
-    <label class="field">
+    <div class="cost-input-grid">
 
-      <span class="field-label">
-        GRT
-      </span>
+      <div class="cost-input pilot-input">
 
-      <input
-        id="grtInput"
-        type="text"
-        inputmode="numeric"
-        placeholder="e.g. 20,000"
-        autocomplete="off"
-      >
+        <label class="field">
 
-    </label>
+          <span class="field-label">
+            PILOT
+          </span>
 
+          <input
+            id="pilotInput"
+            type="text"
+            inputmode="numeric"
+            placeholder="0"
+            autocomplete="off"
+          >
 
-    <label class="field">
-
-      <span class="field-label">
-        PILOT
-      </span>
-
-      <div class="money-wrap">
-
-        <input
-          id="pilotInput"
-          type="text"
-          inputmode="numeric"
-          placeholder="0"
-          autocomplete="off"
-        >
-
-        <span class="money-unit">
-          WON
-        </span>
+        </label>
 
       </div>
 
-    </label>
 
+      <div class="cost-input line-input">
 
-    <label class="field">
+        <label class="field">
 
-      <span class="field-label">
-        LINE
-      </span>
+          <span class="field-label">
+            LINE
+          </span>
 
-      <div class="money-wrap">
+          <input
+            id="lineInput"
+            type="text"
+            inputmode="numeric"
+            placeholder="0"
+            autocomplete="off"
+          >
 
-        <input
-          id="lineInput"
-          type="text"
-          inputmode="numeric"
-          placeholder="0"
-          autocomplete="off"
-        >
-
-        <span class="money-unit">
-          WON
-        </span>
+        </label>
 
       </div>
 
-    </label>
 
+      <div class="cost-input tug-input">
 
-    <label class="field">
+        <label class="field">
 
-      <span class="field-label">
-        TUG
-      </span>
-
-      <div class="tug-box">
-
-        <div class="money-wrap">
+          <span class="field-label">
+            TUG
+          </span>
 
           <input
             id="tugInput"
@@ -941,31 +943,42 @@
             autocomplete="off"
           >
 
-          <span class="money-unit">
-            WON
-          </span>
-
-        </div>
-
-
-        <select id="tugCountInput">
-
-          <option value="1">
-            1 TUG
-          </option>
-
-          <option value="2">
-            2 TUGS
-          </option>
-
-        </select>
+        </label>
 
       </div>
 
-    </label>
+
+      <div class="cost-input tug-input">
+
+        <label class="field">
+
+          <span class="field-label">
+            TUG COUNT
+          </span>
+
+          <select id="tugCountInput">
+
+            <option value="1">
+              1 TUG
+            </option>
+
+            <option value="2">
+              2 TUGS
+            </option>
+
+          </select>
+
+        </label>
+
+      </div>
+
+    </div>
 
 
-    <label class="field">
+    <label
+      class="field"
+      style="margin-top:14px;"
+    >
 
       <span class="field-label">
         REMARK
@@ -1005,30 +1018,30 @@
 
 
 <script>
-  /* =========================================
+  /* ==========================================
      API
 
-     다음 단계에서 만들 Worker 주소.
-     Worker를 만든 뒤 주소가 다르면
-     이 한 줄만 바꾸면 됨.
-     ========================================= */
+     IMPORTANT:
+     sample API Worker 주소가 cargo-api와 같고
+     /api/sample 경로를 사용한다고 가정.
+     ========================================== */
 
   const API_URL =
-    "https://sample-api.makepdaquickly.workers.dev/api/sample";
+    "https://cargo-api.makepdaquickly.workers.dev/api/sample";
 
 
-  /* =========================================
+  /* ==========================================
      STATE
-     ========================================= */
+     ========================================== */
 
   let sampleData = [];
 
-  let editingSampleId = null;
+  let editingId = null;
 
 
-  /* =========================================
+  /* ==========================================
      ELEMENTS
-     ========================================= */
+     ========================================== */
 
   const sampleList =
     document.getElementById("sampleList");
@@ -1048,11 +1061,11 @@
   const modalTitle =
     document.getElementById("modalTitle");
 
-  const pierInput =
-    document.getElementById("pierInput");
-
   const grtInput =
     document.getElementById("grtInput");
+
+  const pierInput =
+    document.getElementById("pierInput");
 
   const pilotInput =
     document.getElementById("pilotInput");
@@ -1073,11 +1086,12 @@
     document.getElementById("saveBtn");
 
 
-  /* =========================================
+  /* ==========================================
      HELPERS
-     ========================================= */
+     ========================================== */
 
   function escapeHTML(value) {
+
     return String(value ?? "")
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
@@ -1088,53 +1102,50 @@
 
 
   function cloneData(value) {
+
     return JSON.parse(
       JSON.stringify(value)
     );
   }
 
 
-  function onlyNumbers(value) {
+  function onlyNumber(value) {
+
     return String(value ?? "")
       .replace(/[^\d]/g, "");
   }
 
 
-  function numberValue(value) {
-    const cleaned =
-      onlyNumbers(value);
+  function toNumber(value) {
 
-    if (!cleaned) {
-      return 0;
-    }
+    const clean =
+      onlyNumber(value);
 
-    return Number(cleaned);
+    return clean
+      ? Number(clean)
+      : 0;
   }
 
 
   function formatNumber(value) {
+
     const number =
-      numberValue(value);
+      toNumber(value);
 
     return number.toLocaleString("en-US");
   }
 
 
   function formatInputValue(value) {
-    const cleaned =
-      onlyNumbers(value);
 
-    if (!cleaned) {
+    const clean =
+      onlyNumber(value);
+
+    if (!clean) {
       return "";
     }
 
-    return Number(cleaned)
-      .toLocaleString("en-US");
-  }
-
-
-  function formatMoney(value) {
-    return Number(value || 0)
+    return Number(clean)
       .toLocaleString("en-US");
   }
 
@@ -1143,6 +1154,7 @@
     message,
     type = "loading"
   ) {
+
     statusElement.textContent =
       message;
 
@@ -1152,6 +1164,7 @@
 
 
   function hideStatus() {
+
     statusElement.className =
       "status";
 
@@ -1160,15 +1173,40 @@
   }
 
 
+  function normalizePier(value) {
+
+    const pier =
+      String(value || "")
+        .trim()
+        .toUpperCase();
+
+
+    if (pier === "MAIN") {
+      return "MAIN";
+    }
+
+
+    if (pier === "ONSAN") {
+      return "ONSAN";
+    }
+
+
+    return "OTHER";
+  }
+
+
   function nextId() {
+
     if (!sampleData.length) {
       return 1;
     }
+
 
     return (
       Math.max(
         ...sampleData.map(
           function(item) {
+
             return Number(item.id) || 0;
           }
         )
@@ -1177,40 +1215,35 @@
   }
 
 
-  function pierOrder(pier) {
-    if (pier === "MAIN") {
-      return 1;
-    }
+  /* ==========================================
+     MONEY INPUT FORMAT
+     ========================================== */
 
-    if (pier === "ONSAN") {
-      return 2;
-    }
+  function attachMoneyFormatter(input) {
 
-    return 3;
-  }
-
-
-  /* =========================================
-     AUTO COMMA INPUT
-     ========================================= */
-
-  function attachNumberFormatter(input) {
     input.addEventListener(
       "input",
       function() {
+
         const cursorAtEnd =
           input.selectionStart ===
           input.value.length;
+
 
         input.value =
           formatInputValue(
             input.value
           );
 
+
         if (cursorAtEnd) {
+
+          const length =
+            input.value.length;
+
           input.setSelectionRange(
-            input.value.length,
-            input.value.length
+            length,
+            length
           );
         }
       }
@@ -1218,15 +1251,18 @@
   }
 
 
-  attachNumberFormatter(grtInput);
-  attachNumberFormatter(pilotInput);
-  attachNumberFormatter(lineInput);
-  attachNumberFormatter(tugInput);
+  attachMoneyFormatter(grtInput);
+
+  attachMoneyFormatter(pilotInput);
+
+  attachMoneyFormatter(lineInput);
+
+  attachMoneyFormatter(tugInput);
 
 
-  /* =========================================
+  /* ==========================================
      LOAD
-     ========================================= */
+     ========================================== */
 
   async function loadSamples() {
 
@@ -1235,11 +1271,14 @@
       "loading"
     );
 
+
     try {
 
       const response =
         await fetch(
-          API_URL + "?t=" + Date.now(),
+          API_URL +
+          "?t=" +
+          Date.now(),
           {
             method: "GET",
             cache: "no-store"
@@ -1247,8 +1286,20 @@
         );
 
 
-      const result =
-        await response.json();
+      let result;
+
+
+      try {
+
+        result =
+          await response.json();
+
+      } catch {
+
+        throw new Error(
+          "Invalid response from server."
+        );
+      }
 
 
       if (
@@ -1256,6 +1307,7 @@
         !result.ok ||
         !Array.isArray(result.data)
       ) {
+
         throw new Error(
           result.error ||
           "Sample data could not be loaded."
@@ -1266,8 +1318,6 @@
       sampleData =
         result.data;
 
-
-      sortSampleData();
 
       renderSamples();
 
@@ -1295,17 +1345,14 @@
   }
 
 
-  /* =========================================
+  /* ==========================================
      SAVE ALL
-     ========================================= */
+     ========================================== */
 
   async function saveAllSamples() {
 
-    sortSampleData();
-
-
     showStatus(
-      "Saving to GitHub...",
+      "Saving...",
       "loading"
     );
 
@@ -1352,13 +1399,13 @@
 
       throw new Error(
         result.error ||
-        "GitHub save failed."
+        "Sample save failed."
       );
     }
 
 
     showStatus(
-      "Saved to GitHub.",
+      "Saved.",
       "success"
     );
 
@@ -1370,11 +1417,12 @@
           statusElement.classList
             .contains("success")
         ) {
+
           hideStatus();
         }
 
       },
-      2200
+      1800
     );
 
 
@@ -1382,45 +1430,33 @@
   }
 
 
-  /* =========================================
+  /* ==========================================
      SORT
-     ========================================= */
+     ========================================== */
 
-  function sortSampleData() {
+  function getSortedData() {
 
-    sampleData.sort(
-      function(a, b) {
+    return [...sampleData]
+      .sort(
+        function(a, b) {
 
-        const pierDifference =
-          pierOrder(a.pier) -
-          pierOrder(b.pier);
-
-
-        if (pierDifference !== 0) {
-          return pierDifference;
+          return (
+            toNumber(a.grt) -
+            toNumber(b.grt)
+          );
         }
-
-
-        return (
-          Number(a.grt || 0) -
-          Number(b.grt || 0)
-        );
-      }
-    );
+      );
   }
 
 
-  /* =========================================
+  /* ==========================================
      RENDER
-     ========================================= */
+     ========================================== */
 
   function renderSamples() {
 
-    sortSampleData();
-
-
     const keyword =
-      onlyNumbers(
+      onlyNumber(
         searchInput.value
       );
 
@@ -1429,36 +1465,48 @@
       pierFilter.value;
 
 
-    const filtered =
-      sampleData.filter(
-        function(item) {
+    let filtered =
+      getSortedData()
+        .filter(
+          function(item) {
 
-          if (
-            selectedPier !== "ALL" &&
-            item.pier !== selectedPier
-          ) {
-            return false;
-          }
-
-
-          if (keyword) {
-
-            const grtText =
-              String(
-                Number(item.grt || 0)
+            const itemPier =
+              normalizePier(
+                item.pier
               );
 
+
             if (
-              !grtText.includes(keyword)
+              selectedPier !== "ALL" &&
+              itemPier !== selectedPier
             ) {
+
               return false;
             }
+
+
+            if (keyword) {
+
+              const grtText =
+                onlyNumber(
+                  item.grt
+                );
+
+
+              if (
+                !grtText.includes(
+                  keyword
+                )
+              ) {
+
+                return false;
+              }
+            }
+
+
+            return true;
           }
-
-
-          return true;
-        }
-      );
+        );
 
 
     if (!filtered.length) {
@@ -1473,88 +1521,79 @@
     }
 
 
-    const groups = {
-      MAIN: [],
-      ONSAN: [],
-      OTHER: []
-    };
-
-
-    filtered.forEach(
-      function(item) {
-
-        const pier =
-          groups[item.pier]
-            ? item.pier
-            : "OTHER";
-
-
-        groups[pier].push(item);
-      }
-    );
-
-
-    const order = [
+    const groups = [
       "MAIN",
       "ONSAN",
       "OTHER"
     ];
 
 
-    sampleList.innerHTML =
-      order
-        .filter(
-          function(pier) {
-            return groups[pier].length;
-          }
-        )
-        .map(
-          function(pier) {
-
-            return renderPierGroup(
-              pier,
-              groups[pier]
-            );
-          }
-        )
-        .join("");
-  }
+    let html = "";
 
 
-  function renderPierGroup(
-    pier,
-    items
-  ) {
+    groups.forEach(
+      function(groupName) {
 
-    return `
-      <section class="pier-group ${pier.toLowerCase()}">
-
-        <div class="pier-title">
-
-          <div class="pier-title-text">
-            ${escapeHTML(pier)}
-          </div>
-
-          <div class="pier-count">
-            ${items.length}
-          </div>
-
-        </div>
-
-        ${
-          items.map(
+        const items =
+          filtered.filter(
             function(item) {
-              return renderSampleCard(item);
+
+              return (
+                normalizePier(
+                  item.pier
+                ) ===
+                groupName
+              );
             }
-          ).join("")
+          );
+
+
+        if (!items.length) {
+          return;
         }
 
-      </section>
-    `;
+
+        html += `
+          <section class="pier-group">
+
+            <div class="group-title">
+
+              ${groupName}
+
+              <span class="group-count">
+                ${items.length}
+              </span>
+
+            </div>
+
+
+            <div class="card-list">
+
+              ${
+                items.map(
+                  function(item) {
+
+                    return renderCard(
+                      item
+                    );
+                  }
+                ).join("")
+              }
+
+            </div>
+
+          </section>
+        `;
+      }
+    );
+
+
+    sampleList.innerHTML =
+      html;
   }
 
 
-  function renderSampleCard(item) {
+  function renderCard(item) {
 
     const tugCount =
       Number(item.tugCount) === 2
@@ -1562,42 +1601,81 @@
         : 1;
 
 
+    const tugClass =
+      tugCount === 2
+        ? "tug-count two"
+        : "tug-count";
+
+
+    const tugText =
+      tugCount === 2
+        ? "2 TUGS"
+        : "1 TUG";
+
+
+    const remarkHTML =
+      item.remark
+        ? `
+          <div class="remark">
+
+            <span class="remark-label">
+              REMARK
+            </span>
+
+            ${escapeHTML(
+              item.remark
+            )}
+
+          </div>
+        `
+        : "";
+
+
     return `
       <article class="sample-card">
 
         <div class="sample-head">
 
-          <div class="grt-area">
+          <div>
 
             <div class="grt-label">
               GRT
             </div>
 
-            <h2 class="grt">
-              ${formatNumber(item.grt)}
+            <div class="grt-value">
+
+              ${formatNumber(
+                item.grt
+              )}
 
               <span class="grt-unit">
                 GRT
               </span>
-            </h2>
+
+            </div>
 
           </div>
 
 
-          <div class="sample-actions">
+          <div class="card-actions">
 
             <button
               class="small-btn"
               type="button"
-              onclick="editSample(${Number(item.id)})"
+              onclick="editSample(
+                ${Number(item.id)}
+              )"
             >
               EDIT
             </button>
 
+
             <button
               class="small-btn delete"
               type="button"
-              onclick="deleteSample(${Number(item.id)})"
+              onclick="deleteSample(
+                ${Number(item.id)}
+              )"
             >
               DELETE
             </button>
@@ -1609,60 +1687,69 @@
 
         <div class="cost-grid">
 
-          <div class="cost-item">
+          <div class="cost-box pilot">
 
             <div class="cost-label">
               PILOT
             </div>
 
             <div class="cost-value">
-              ${formatMoney(item.pilot)}
 
-              <span class="won">
+              ${formatNumber(
+                item.pilot
+              )}
+
+              <span class="cost-unit">
                 WON
               </span>
+
             </div>
 
           </div>
 
 
-          <div class="cost-item">
+          <div class="cost-box line">
 
             <div class="cost-label">
               LINE
             </div>
 
             <div class="cost-value">
-              ${formatMoney(item.line)}
 
-              <span class="won">
+              ${formatNumber(
+                item.line
+              )}
+
+              <span class="cost-unit">
                 WON
               </span>
+
             </div>
 
           </div>
 
 
-          <div class="cost-item">
+          <div class="cost-box tug">
 
             <div class="cost-label">
               TUG
             </div>
 
             <div class="cost-value">
-              ${formatMoney(item.tug)}
 
-              <span class="won">
+              ${formatNumber(
+                item.tug
+              )}
+
+              <span class="cost-unit">
                 WON
               </span>
+
             </div>
 
-            <div class="tug-count">
-              ${
-                tugCount === 2
-                  ? "2 TUGS"
-                  : "1 TUG"
-              }
+
+            <div class="${tugClass}">
+              ${tugText}
             </div>
 
           </div>
@@ -1670,32 +1757,16 @@
         </div>
 
 
-        ${
-          item.remark
-            ? `
-              <div class="remark">
-
-                <span class="remark-label">
-                  REMARK
-                </span>
-
-                <div class="remark-text">${escapeHTML(
-                  item.remark
-                )}</div>
-
-              </div>
-            `
-            : ""
-        }
+        ${remarkHTML}
 
       </article>
     `;
   }
 
 
-  /* =========================================
-     FILTER EVENTS
-     ========================================= */
+  /* ==========================================
+     SEARCH / FILTER
+     ========================================== */
 
   searchInput.addEventListener(
     "input",
@@ -1709,15 +1780,15 @@
   );
 
 
-  /* =========================================
-     MODAL
-     ========================================= */
+  /* ==========================================
+     OPEN MODAL
+     ========================================== */
 
-  function openSampleModal(item) {
+  function openModal(item) {
 
     if (item) {
 
-      editingSampleId =
+      editingId =
         Number(item.id);
 
 
@@ -1725,16 +1796,15 @@
         "EDIT SAMPLE";
 
 
-      pierInput.value =
-        ["MAIN", "ONSAN", "OTHER"]
-          .includes(item.pier)
-          ? item.pier
-          : "OTHER";
-
-
       grtInput.value =
         formatInputValue(
           item.grt
+        );
+
+
+      pierInput.value =
+        normalizePier(
+          item.pier
         );
 
 
@@ -1768,18 +1838,17 @@
 
     } else {
 
-      editingSampleId = null;
+      editingId = null;
 
 
       modalTitle.textContent =
         "ADD SAMPLE";
 
 
+      grtInput.value = "";
+
       pierInput.value =
         "MAIN";
-
-
-      grtInput.value = "";
 
       pilotInput.value = "";
 
@@ -1801,37 +1870,41 @@
 
     setTimeout(
       function() {
+
         grtInput.focus();
+
       },
       50
     );
   }
 
 
-  function closeSampleModal() {
+  function closeModal() {
+
     sampleModal.classList.remove(
       "show"
     );
   }
 
 
-  /* =========================================
+  /* ==========================================
      ADD
-     ========================================= */
+     ========================================== */
 
   document
     .getElementById("addSampleBtn")
     .addEventListener(
       "click",
       function() {
-        openSampleModal(null);
+
+        openModal(null);
       }
     );
 
 
-  /* =========================================
+  /* ==========================================
      EDIT
-     ========================================= */
+     ========================================== */
 
   window.editSample =
     function(id) {
@@ -1853,13 +1926,13 @@
       }
 
 
-      openSampleModal(item);
+      openModal(item);
     };
 
 
-  /* =========================================
+  /* ==========================================
      DELETE
-     ========================================= */
+     ========================================== */
 
   window.deleteSample =
     async function(id) {
@@ -1885,8 +1958,6 @@
         confirm(
           "Delete GRT " +
           formatNumber(item.grt) +
-          " / " +
-          item.pier +
           "?"
         );
 
@@ -1919,6 +1990,7 @@
 
         await saveAllSamples();
 
+
       } catch (error) {
 
         console.error(error);
@@ -1946,16 +2018,16 @@
     };
 
 
-  /* =========================================
+  /* ==========================================
      SAVE SAMPLE
-     ========================================= */
+     ========================================== */
 
   saveBtn.addEventListener(
     "click",
     async function() {
 
       const grt =
-        numberValue(
+        toNumber(
           grtInput.value
         );
 
@@ -1975,28 +2047,29 @@
       const newItem = {
 
         id:
-          editingSampleId !== null
-            ? editingSampleId
+          editingId !== null
+            ? editingId
             : nextId(),
 
-        pier:
-          pierInput.value,
+        grt: grt,
 
-        grt:
-          grt,
+        pier:
+          normalizePier(
+            pierInput.value
+          ),
 
         pilot:
-          numberValue(
+          toNumber(
             pilotInput.value
           ),
 
         line:
-          numberValue(
+          toNumber(
             lineInput.value
           ),
 
         tug:
-          numberValue(
+          toNumber(
             tugInput.value
           ),
 
@@ -2017,7 +2090,7 @@
 
 
       if (
-        editingSampleId !== null
+        editingId !== null
       ) {
 
         sampleData =
@@ -2026,14 +2099,17 @@
 
               if (
                 Number(item.id) ===
-                Number(editingSampleId)
+                Number(editingId)
               ) {
+
                 return newItem;
               }
+
 
               return item;
             }
           );
+
 
       } else {
 
@@ -2043,12 +2119,11 @@
       }
 
 
-      sortSampleData();
-
       renderSamples();
 
 
-      saveBtn.disabled = true;
+      saveBtn.disabled =
+        true;
 
       saveBtn.textContent =
         "SAVING...";
@@ -2058,7 +2133,7 @@
 
         await saveAllSamples();
 
-        closeSampleModal();
+        closeModal();
 
 
       } catch (error) {
@@ -2088,7 +2163,8 @@
 
       } finally {
 
-        saveBtn.disabled = false;
+        saveBtn.disabled =
+          false;
 
         saveBtn.textContent =
           "SAVE";
@@ -2097,15 +2173,15 @@
   );
 
 
-  /* =========================================
+  /* ==========================================
      CANCEL
-     ========================================= */
+     ========================================== */
 
   document
     .getElementById("cancelBtn")
     .addEventListener(
       "click",
-      closeSampleModal
+      closeModal
     );
 
 
@@ -2114,9 +2190,11 @@
     function(event) {
 
       if (
-        event.target === sampleModal
+        event.target ===
+        sampleModal
       ) {
-        closeSampleModal();
+
+        closeModal();
       }
     }
   );
@@ -2131,15 +2209,16 @@
         sampleModal.classList
           .contains("show")
       ) {
-        closeSampleModal();
+
+        closeModal();
       }
     }
   );
 
 
-  /* =========================================
+  /* ==========================================
      INITIAL LOAD
-     ========================================= */
+     ========================================== */
 
   loadSamples();
 </script>
