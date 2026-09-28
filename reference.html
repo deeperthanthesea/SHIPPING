@@ -9,130 +9,100 @@
 <style>
 :root{
   --bg:#f4f5f6;
-  --card:#ffffff;
+  --card:#fff;
   --text:#20262e;
   --muted:#858d96;
   --line:#dfe3e6;
+  --soft:#f4f5f6;
   --dark:#202730;
 
-  --remark-bg:#fff8e6;
-  --remark-text:#67500d;
+  --remark-bg:#fff6dc;
+  --remark-border:#e5ad35;
+  --remark-text:#5d480f;
 
   --radius:15px;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html{
-  -webkit-text-size-adjust:100%;
-}
+html{-webkit-text-size-adjust:100%}
 
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
-
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
-button,
-input,
-textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
 
 .app{
   width:100%;
-  max-width:900px;
-  margin:0 auto;
+  max-width:850px;
+  margin:auto;
   padding:18px;
 }
 
-/* =========================================
+/* =========================
    HEADER
-========================================= */
+========================= */
 
-.page-title-row{
+.header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:15px;
-
-  margin-bottom:18px;
+  margin-bottom:16px;
 }
 
-.page-title{
+h1{
   margin:0;
-
   font-size:28px;
   font-weight:950;
-  letter-spacing:-0.6px;
+  letter-spacing:-.5px;
 }
 
-.page-subtitle{
+.subtitle{
   margin:4px 0 0;
-
   color:var(--muted);
   font-size:12px;
 }
 
-.primary-btn{
-  flex:0 0 auto;
-
+.add-cargo{
+  flex:none;
   padding:11px 14px;
-
   border:0;
   border-radius:10px;
-
   background:var(--dark);
   color:#fff;
-
-  font-size:11px;
-  font-weight:900;
+  font-size:10px;
+  font-weight:950;
 }
 
-/* =========================================
+/* =========================
    SEARCH
-========================================= */
+========================= */
 
-.search-wrap{
-  margin-bottom:15px;
-}
-
-.search-input{
+.search{
   width:100%;
+  margin-bottom:15px;
   padding:13px 14px;
-
   border:1px solid var(--line);
   border-radius:11px;
-
+  outline:none;
   background:#fff;
   color:var(--text);
-
-  outline:none;
-
   font-size:13px;
 }
 
-.search-input:focus{
-  border-color:#939ba3;
+.search:focus{
+  border-color:#8b949d;
 }
 
-/* =========================================
-   CARGO LIST
-========================================= */
+/* =========================
+   CARDS
+========================= */
 
 #cargoList{
   display:flex;
@@ -142,194 +112,226 @@ button{
 
 .cargo-card{
   overflow:hidden;
-
-  background:var(--card);
-
+  background:#fff;
   border:1px solid var(--line);
   border-radius:var(--radius);
 }
 
 .cargo-head{
   display:flex;
-  align-items:flex-start;
   justify-content:space-between;
-
-  gap:15px;
-
+  align-items:flex-start;
+  gap:12px;
   padding:16px 17px 14px;
 }
 
-.cargo-pier-label{
-  margin-bottom:4px;
-
+.pier-label{
+  margin-bottom:3px;
   color:#9299a1;
-
   font-size:9px;
   font-weight:950;
   letter-spacing:.7px;
 }
 
-.cargo-pier{
+.pier{
   margin-bottom:5px;
-
-  color:#68717a;
-
+  color:#69727a;
   font-size:12px;
   font-weight:850;
 }
 
 .cargo-name{
   margin:0;
-
-  color:#20262e;
-
   font-size:20px;
   font-weight:950;
   line-height:1.2;
 }
 
-.cargo-actions{
+.actions{
   display:flex;
   gap:5px;
-
-  flex:0 0 auto;
+  flex:none;
 }
 
 .small-btn{
-  padding:7px 9px;
-
   border:0;
   border-radius:7px;
-
+  padding:7px 9px;
   background:#edf0f2;
   color:#59616a;
-
   font-size:9px;
   font-weight:950;
 }
 
-.small-btn.delete{
+.delete-btn{
   background:#fff0f0;
   color:#ad4a4a;
 }
 
-/* =========================================
-   CARGO TABLE
-========================================= */
+/* =========================
+   SECTION
+========================= */
 
-.table-scroll{
-  overflow-x:auto;
-
+.data-section{
   border-top:1px solid var(--line);
-
-  -webkit-overflow-scrolling:touch;
 }
 
-.cargo-table{
-  width:100%;
-  min-width:720px;
-
-  border-collapse:collapse;
-  table-layout:fixed;
-}
-
-.cargo-table th{
-  padding:8px 8px;
-
-  background:#f2f4f5;
-
-  border-right:1px solid var(--line);
+.section-label{
+  padding:8px 14px;
+  background:#f1f3f4;
   border-bottom:1px solid var(--line);
-
-  color:#818991;
-
+  color:#7e868e;
   font-size:9px;
   font-weight:950;
-  letter-spacing:.3px;
-
-  text-align:left;
+  letter-spacing:.6px;
 }
 
-.cargo-table td{
-  padding:10px 8px;
+/* =========================
+   WORKING TABLE
+========================= */
 
-  border-right:1px solid var(--line);
+.work-header,
+.work-row{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr;
+}
+
+.work-header{
+  background:#fafafa;
   border-bottom:1px solid var(--line);
-
-  color:#30373e;
-
-  font-size:12px;
-  font-weight:750;
-  line-height:1.4;
-
-  vertical-align:top;
-
-  overflow-wrap:anywhere;
 }
 
-.cargo-table th:last-child,
-.cargo-table td:last-child{
-  border-right:0;
+.work-header div{
+  padding:7px 14px;
+  color:#969da4;
+  font-size:9px;
+  font-weight:950;
 }
 
-.cargo-table tbody tr:last-child td{
+.work-row{
+  border-bottom:1px solid #edf0f2;
+}
+
+.work-row:last-child{
   border-bottom:0;
 }
 
-.col-time{width:100px;}
-.col-gang{width:80px;}
-.col-rate{width:75px;}
-.col-qty{width:75px;}
-.col-day{width:72px;}
-.col-remark{width:auto;}
+.work-row div{
+  min-width:0;
+  padding:10px 14px;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.3;
+}
 
-.rate-cell{
+.work-row div + div{
+  border-left:1px solid #edf0f2;
+}
+
+.rate{
   font-weight:950 !important;
 }
 
-.remark-cell.has-remark{
+/* =========================
+   QTY / DAY
+========================= */
+
+.qty-header,
+.qty-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+
+.qty-header{
+  background:#fafafa;
+  border-bottom:1px solid var(--line);
+}
+
+.qty-header div{
+  padding:7px 14px;
+  color:#969da4;
+  font-size:9px;
+  font-weight:950;
+}
+
+.qty-row{
+  border-bottom:1px solid #edf0f2;
+}
+
+.qty-row:last-child{
+  border-bottom:0;
+}
+
+.qty-row div{
+  padding:9px 14px;
+  font-size:13px;
+  font-weight:800;
+}
+
+.qty-row div + div{
+  border-left:1px solid #edf0f2;
+}
+
+/* =========================
+   REMARK
+========================= */
+
+.remark{
+  margin:13px;
+  padding:12px 13px;
   background:var(--remark-bg);
+  border:1px solid #efd693;
+  border-left:5px solid var(--remark-border);
+  border-radius:10px;
   color:var(--remark-text);
 }
 
-.empty-text{
-  color:#b0b6bb;
+.remark-label{
+  margin-bottom:5px;
+  color:#9e6d00;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.5px;
 }
 
-/* =========================================
+.remark-text{
+  font-size:12px;
+  font-weight:750;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.empty-value{
+  color:#b2b7bc;
+}
+
+/* =========================
    EMPTY
-========================================= */
+========================= */
 
 .empty{
   padding:35px 15px;
-
   background:#fff;
-
   border:1px solid var(--line);
   border-radius:15px;
-
-  color:#90979e;
+  color:#9299a0;
   text-align:center;
-
   font-size:13px;
 }
 
-/* =========================================
+/* =========================
    MODAL
-========================================= */
+========================= */
 
 .modal-bg{
   position:fixed;
   inset:0;
   z-index:100;
-
   display:none;
   align-items:center;
   justify-content:center;
-
-  padding:15px;
-
-  background:rgba(20,25,30,.58);
+  padding:14px;
+  background:rgba(18,23,28,.6);
 }
 
 .modal-bg.show{
@@ -338,21 +340,16 @@ button{
 
 .modal{
   width:100%;
-  max-width:760px;
-  max-height:92vh;
-
+  max-width:700px;
+  max-height:93vh;
   overflow-y:auto;
-
   padding:20px;
-
   background:#fff;
-
   border-radius:17px;
 }
 
-.modal-title{
+.modal h2{
   margin:0 0 18px;
-
   font-size:21px;
   font-weight:950;
 }
@@ -360,8 +357,7 @@ button{
 .top-fields{
   display:grid;
   grid-template-columns:160px 1fr;
-
-  gap:9px;
+  gap:8px;
 }
 
 .field{
@@ -371,2017 +367,21 @@ button{
 
 .field span{
   display:block;
-
   margin-bottom:5px;
-
-  color:#737b83;
-
+  color:#747c84;
   font-size:9px;
   font-weight:950;
-  letter-spacing:.4px;
 }
 
-.field input{
+.field input,
+.field textarea{
   width:100%;
-
   padding:11px;
+  border
 
-  border:1px solid #d8dde1;
-  border-radius:9px;
 
-  outline:none;
 
-  color:var(--text);
-  background:#fff;
-}
-
-.field input:focus{
-  border-color:#77818b;
-}
-
-/* =========================================
-   EDIT ROWS
-========================================= */
-
-.condition-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:10px;
-
-  margin:12px 0 8px;
-}
-
-.condition-title{
-  font-size:12px;
-  font-weight:950;
-}
-
-.add-row-btn{
-  padding:8px 10px;
-
-  border:0;
-  border-radius:8px;
-
-  background:#e9edef;
-  color:#414950;
-
-  font-size:9px;
-  font-weight:950;
-}
-
-.condition-list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.condition-row{
-  position:relative;
-
-  display:grid;
-  grid-template-columns:
-    1fr
-    .8fr
-    .8fr
-    .8fr
-    .75fr
-    2fr;
-
-  gap:6px;
-
-  padding:10px;
-
-  background:#f6f7f8;
-
-  border:1px solid #e1e5e7;
-  border-radius:10px;
-}
-
-.condition-field{
-  min-width:0;
-}
-
-.condition-field label{
-  display:block;
-
-  margin-bottom:4px;
-
-  color:#8b939a;
-
-  font-size:8px;
-  font-weight:950;
-}
-
-.condition-field input{
-  width:100%;
-  min-width:0;
-
-  padding:9px 7px;
-
-  border:1px solid #d7dce0;
-  border-radius:7px;
-
-  background:#fff;
-
-  font-size:11px;
-}
-
-.remove-row-btn{
-  position:absolute;
-
-  top:-7px;
-  right:-7px;
-
-  width:24px;
-  height:24px;
-
-  padding:0;
-
-  border:0;
-  border-radius:50%;
-
-  background:#d96161;
-  color:#fff;
-
-  font-size:14px;
-  font-weight:900;
-}
-
-/* =========================================
-   MODAL BUTTONS
-========================================= */
-
-.modal-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-
-  gap:8px;
-
-  margin-top:18px;
-}
-
-.modal-buttons button{
-  padding:13px;
-
-  border:0;
-  border-radius:10px;
-
-  font-size:11px;
-  font-weight:950;
-}
-
-.cancel-btn{
-  background:#eceff1;
-  color:#596169;
-}
-
-.save-btn{
-  background:var(--dark);
-  color:#fff;
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media(max-width:600px){
-
-  .app{
-    padding:12px;
-  }
-
-  .page-title{
-    font-size:25px;
-  }
-
-  .primary-btn{
-    padding:10px 11px;
-    font-size:9px;
-  }
-
-  .cargo-name{
-    font-size:18px;
-  }
-
-  /*
-    On mobile, table can be horizontally
-    scrolled without destroying layout.
-  */
-
-  .cargo-table{
-    min-width:670px;
-  }
-
-  .cargo-table th{
-    font-size:8px;
-  }
-
-  .cargo-table td{
-    font-size:11px;
-  }
-
-  .modal{
-    padding:15px;
-  }
-
-  .top-fields{
-    grid-template-columns:1fr;
-    gap:0;
-  }
-
-  .condition-row{
-    grid-template-columns:1fr 1fr;
-    gap:7px;
-  }
-
-  .condition-field.remark-editor{
-    grid-column:1 / -1;
-  }
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-  <div class="page-title-row">
-
-    <div>
-      <h1 class="page-title">Cargo</h1>
-
-      <p class="page-subtitle">
-        Ulsan cargo working reference
-      </p>
-    </div>
-
-    <button
-      id="addCargoBtn"
-      class="primary-btn"
-      type="button"
-    >
-      + ADD CARGO
-    </button>
-
-  </div>
-
-
-  <div class="search-wrap">
-
-    <input
-      id="searchInput"
-      class="search-input"
-      type="search"
-      placeholder="Search cargo or pier..."
-    >
-
-  </div>
-
-
-  <div id="cargoList"></div>
-
-</div>
-
-
-<!-- ======================================
-     EDIT MODAL
-====================================== -->
-
-<div
-  id="cargoModal"
-  class="modal-bg"
->
-
-  <div class="modal">
-
-    <h2
-      id="modalTitle"
-      class="modal-title"
-    >
-      EDIT CARGO
-    </h2>
-
-
-    <div class="top-fields">
-
-      <label class="field">
-
-        <span>PIER</span>
-
-        <input
-          id="pierInput"
-          type="text"
-          placeholder="e.g. 12-22"
-        >
-
-      </label>
-
-
-      <label class="field">
-
-        <span>CARGO</span>
-
-        <input
-          id="cargoInput"
-          type="text"
-          placeholder="e.g. BENTONITE"
-        >
-
-      </label>
-
-    </div>
-
-
-    <div class="condition-header">
-
-      <div class="condition-title">
-        WORKING CONDITIONS
-      </div>
-
-      <button
-        id="addRowBtn"
-        class="add-row-btn"
-        type="button"
-      >
-        + ADD ROW
-      </button>
-
-    </div>
-
-
-    <div id="conditionList"></div>
-
-
-    <div class="modal-buttons">
-
-      <button
-        id="cancelBtn"
-        class="cancel-btn"
-        type="button"
-      >
-        CANCEL
-      </button>
-
-      <button
-        id="saveBtn"
-        class="save-btn"
-        type="button"
-      >
-        SAVE
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script>
-
-/* =========================================
-   DEFAULT CARGO DATA
-
-   Structure:
-   PIER
-   CARGO
-   TIME
-   GANG
-   RATE
-   QTY
-   DAY
-   REMARK
-
-   ADDITIONAL + old REMARK are merged.
-========================================= */
-
-const DEFAULT_CARGO = [
-
-{
-  id:1,
-  pier:"12-22",
-  name:"BENTONITE",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,800",
-      qty:"3,000",
-      day:"2 day",
-      remark:"할증불가 / 분진이 너무 심함. 입고지가 경주쪽인데 그쪽 주민들과 협의한 내용 확인 필요"
-    },
-    {
-      time:"",
-      gang:"",
-      rate:"",
-      qty:"5,000",
-      day:"3 day",
-      remark:"할증불가"
-    },
-    {
-      time:"",
-      gang:"",
-      rate:"",
-      qty:"10,000",
-      day:"6 day",
-      remark:"할증불가"
-    }
-  ]
-},
-
-{
-  id:2,
-  pier:"12-22",
-  name:"MAGNESITE",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,700",
-      qty:"2,000",
-      day:"1 day",
-      remark:"리시버 컨펌 후 할증가능. 거의 안 됨. 2,900원"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"800",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:3,
-  pier:"12-31",
-  name:"CGF",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,500",
-      qty:"2,200",
-      day:"2 day",
-      remark:"할증 2,900원 / 더블 5,800원"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"700",
-      qty:"4,400",
-      day:"3 day",
-      remark:"HARBOR 크레인 작업시 2,000톤 야간으로 하루 작업"
-    },
-    {
-      time:"2200-2400",
-      gang:"",
-      rate:"700",
-      qty:"",
-      day:"",
-      remark:""
-    },
-    {
-      time:"1300-1700",
-      gang:"1 gang",
-      rate:"350",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:4,
-  pier:"12-31",
-  name:"CANOLA",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"",
-      rate:"1,500",
-      qty:"4,000",
-      day:"3 day",
-      remark:"식검 2차 (펠렛은 1차만)"
-    }
-  ]
-},
-
-{
-  id:5,
-  pier:"12-31",
-  name:"WHEAT BRAN (WBP)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,500",
-      qty:"2,000",
-      day:"2 day",
-      remark:"식검 2차"
-    }
-  ]
-},
-
-{
-  id:6,
-  pier:"12-31",
-  name:"TIRE CHIP (LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"",
-      rate:"2,000",
-      qty:"1,800",
-      day:"1 day",
-      remark:"KG는 창고비용 없음. 단 야적/창고인지 확인"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"800",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:7,
-  pier:"21-82",
-  name:"UREA (BULK)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,700",
-      qty:"3,000",
-      day:"2 day",
-      remark:"할증 2,900원 / 더블 5,800원"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"800",
-      qty:"",
-      day:"",
-      remark:""
-    },
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"800",
-      qty:"6,600",
-      day:"4 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:8,
-  pier:"21-82",
-  name:"UREA (BAG)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,000",
-      qty:"5,000",
-      day:"5 day",
-      remark:"톤백 3,900원 / 4시간 창고 50만원 / 1,000-1,200"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"500",
-      qty:"3,000",
-      day:"3 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:9,
-  pier:"21-82",
-  name:"NPK FERTILIZER",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,700",
-      qty:"5,000",
-      day:"3 day",
-      remark:"500-600"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"800",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:10,
-  pier:"21-82",
-  name:"MOP",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"",
-      rate:"",
-      qty:"15,000",
-      day:"7 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:11,
-  pier:"21-82",
-  name:"WOOD PULP (BULK)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,500",
-      qty:"3,000",
-      day:"2 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:12,
-  pier:"21-82",
-  name:"WOOD PULP (BAG)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"2,000",
-      qty:"5,500",
-      day:"2 day",
-      remark:"할증 2,800원 / BT CHARGE 발생"
-    },
-    {
-      time:"",
-      gang:"",
-      rate:"",
-      qty:"15,000",
-      day:"4 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:13,
-  pier:"12-82 & GP",
-  name:"LIMESTONE (BULK)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,300",
-      qty:"5,000",
-      day:"4 day",
-      remark:""
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"650",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:14,
-  pier:"12-82 & GP",
-  name:"LIMESTONE (BAG)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,200",
-      qty:"5,000",
-      day:"3.5 day",
-      remark:""
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"600",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:15,
-  pier:"21-31 / 82-GP",
-  name:"AMSUL (BULK) DISCH",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,700",
-      qty:"3,300",
-      day:"2 day",
-      remark:"리시버 컨펌 후 할증가능"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"800",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:16,
-  pier:"64-82",
-  name:"AMSUL (BULK) LOAD",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,800",
-      qty:"6,000",
-      day:"4 day",
-      remark:""
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"800",
-      qty:"",
-      day:"",
-      remark:""
-    },
-    {
-      time:"0800-1700",
-      gang:"3 gang",
-      rate:"3,000",
-      qty:"25,000",
-      day:"9 day",
-      remark:""
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"1,000",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:17,
-  pier:"71-81",
-  name:"FLUORSPAR (BAG)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"4 gang",
-      rate:"3,500",
-      qty:"30,000",
-      day:"10 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:18,
-  pier:"GP",
-  name:"ALUMINUM OXIDE BAG",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,600",
-      qty:"3,000",
-      day:"2 day",
-      remark:"할증 3,900원 / 더블 7,800원"
-    }
-  ]
-},
-
-{
-  id:19,
-  pier:"GP",
-  name:"ALUMINA",
-  rows:[
-    {
-      time:"1800-2200",
-      gang:"1 gang",
-      rate:"1,000",
-      qty:"3,000",
-      day:"3 day",
-      remark:"야적 할인 / 산화알루미늄"
-    }
-  ]
-},
-
-{
-  id:20,
-  pier:"GP",
-  name:"SALT",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"",
-      rate:"",
-      qty:"",
-      day:"",
-      remark:"할증비 확인 필요 / 야간 야적 후 입고 톤당 4,000원"
-    }
-  ]
-},
-
-{
-  id:21,
-  pier:"HHI",
-  name:"STEEL PLATE",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"850",
-      qty:"5,000",
-      day:"7 day",
-      remark:"할증은 주공업 재량"
-    }
-  ]
-},
-
-{
-  id:22,
-  pier:"COAL",
-  name:"COAL",
-  rows:[
-    {
-      time:"0000-2400",
-      gang:"1 gang",
-      rate:"6,700",
-      qty:"44,000",
-      day:"7 day",
-      remark:"24시간 작업 / 06-08 휴게시간"
-    }
-  ]
-},
-
-{
-  id:23,
-  pier:"OP-01",
-  name:"ILMENITE",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"2,500",
-      qty:"10,000",
-      day:"4 day",
-      remark:"컨펌 후 할증 가능"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"1,200",
-      qty:"20,000",
-      day:"8 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:24,
-  pier:"OP-01",
-  name:"SODIUM SILICATE",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"",
-      qty:"2,000",
-      day:"1 day",
-      remark:"규산소다 / 규산나트륨 / 물유리"
-    }
-  ]
-},
-
-{
-  id:25,
-  pier:"OP-01",
-  name:"POTASHI (LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"",
-      qty:"1,500",
-      day:"1 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:26,
-  pier:"OP-01",
-  name:"FERROSAND (LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"3,000",
-      qty:"33,000",
-      day:"9 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:27,
-  pier:"OP-01",
-  name:"NPI (BULK)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"3,000",
-      qty:"25,000",
-      day:"7 day",
-      remark:""
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"1,500",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:28,
-  pier:"SP-08",
-  name:"SILICA SAND (LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"1,500",
-      qty:"2,000",
-      day:"1 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:29,
-  pier:"SP-08",
-  name:"SILICA SAND (DISCH)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"4 gang",
-      rate:"6,000",
-      qty:"50,000",
-      day:"9 day",
-      remark:"Ship's gear 아니면 작업 불가 여부 확인"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"3,000",
-      qty:"30,000",
-      day:"5 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:30,
-  pier:"SP-07",
-  name:"WOOD CHIP (LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"1,000",
-      qty:"2,000",
-      day:"2 day",
-      remark:""
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"500",
-      qty:"4,000",
-      day:"4 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:31,
-  pier:"SP-07",
-  name:"WOOD CHIP (DISCH)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"4 gang",
-      rate:"5,000",
-      qty:"44,000",
-      day:"7 day",
-      remark:"4,000-5,000 / shore unloader"
-    },
-    {
-      time:"1800-2200",
-      gang:"",
-      rate:"2,500",
-      qty:"25,000",
-      day:"5 day",
-      remark:"2,000-2,500 / shore unloader"
-    }
-  ]
-},
-
-{
-  id:32,
-  pier:"SILO",
-  name:"WHEAT (소맥)",
-  rows:[
-    {
-      time:"0000-2400",
-      gang:"2 gang",
-      rate:"5,000",
-      qty:"20,000",
-      day:"2.5 day",
-      remark:"5,000-25,000 / shore unloader"
-    }
-  ]
-},
-
-{
-  id:33,
-  pier:"SILO",
-  name:"CORN",
-  rows:[
-    {
-      time:"0000-2400",
-      gang:"2 gang",
-      rate:"15,000",
-      qty:"60,000",
-      day:"4 day",
-      remark:"24시간 작업이지만 창고용량에 따라 달라짐"
-    }
-  ]
-},
-
-{
-  id:34,
-  pier:"IP-YY",
-  name:"SULPHUR (BAG, LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"2 gang",
-      rate:"2,000",
-      qty:"4,400",
-      day:"2 day",
-      remark:"야간할증 포함"
-    }
-  ]
-},
-
-{
-  id:35,
-  pier:"IP-YY",
-  name:"PIA (BAG, LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"",
-      qty:"600",
-      day:"1 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:36,
-  pier:"IP-YY",
-  name:"SODA ASH (BAG)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"900",
-      qty:"5,400",
-      day:"6 day",
-      remark:"BAG수 기준 / 할증 톤당 6,300원 협의 필요 / 주말주간 가능, 야간 불가"
-    }
-  ]
-},
-
-{
-  id:37,
-  pier:"",
-  name:"CABLE DRUM",
-  rows:[
-    {
-      time:"",
-      gang:"",
-      rate:"",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:38,
-  pier:"",
-  name:"CORPA (BULK)",
-  rows:[
-    {
-      time:"",
-      gang:"",
-      rate:"",
-      qty:"1,850",
-      day:"2 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:39,
-  pier:"64-71",
-  name:"STEEL PIPE (LOAD)",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"700",
-      qty:"23,592",
-      day:"9 day",
-      remark:""
-    }
-  ]
-},
-
-{
-  id:40,
-  pier:"64-71",
-  name:"SLAB",
-  rows:[
-    {
-      time:"0800-1700",
-      gang:"1 gang",
-      rate:"78",
-      qty:"",
-      day:"",
-      remark:"R.TON 당 5,000원 / 주말할증 가능. 첫날에는 지게차 작업으로 퍼져야 해서 할증 어려움"
-    },
-    {
-      time:"1800-2000",
-      gang:"1 gang",
-      rate:"50",
-      qty:"",
-      day:"",
-      remark:""
-    },
-    {
-      time:"2000-2300",
-      gang:"1 gang",
-      rate:"50",
-      qty:"",
-      day:"",
-      remark:""
-    }
-  ]
-}
-
-];
-
-
-/* =========================================
-   STORAGE
-========================================= */
-
-const STORAGE_KEY =
-  "ulsan-cargo-reference-v1";
-
-
-function cloneDefaultData(){
-
-  return JSON.parse(
-    JSON.stringify(DEFAULT_CARGO)
-  );
-
-}
-
-
-function loadCargo(){
-
-  try{
-
-    const saved =
-      localStorage.getItem(STORAGE_KEY);
-
-    if(!saved){
-      return cloneDefaultData();
-    }
-
-    return JSON.parse(saved);
-
-  }catch(error){
-
-    return cloneDefaultData();
-
-  }
-
-}
-
-
-function saveCargo(){
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(cargoData)
-  );
-
-}
-
-
-/* =========================================
-   HELPERS
-========================================= */
-
-function escapeHTML(value){
-
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-function displayValue(value){
-
-  if(
-    value === undefined ||
-    value === null ||
-    String(value).trim() === ""
-  ){
-
-    return `
-      <span class="empty-text">
-        —
-      </span>
-    `;
-
-  }
-
-  return escapeHTML(value);
-
-}
-
-
-/* =========================================
-   STATE
-========================================= */
-
-let cargoData = loadCargo();
-
-let editingId = null;
-
-
-/* =========================================
-   ELEMENTS
-========================================= */
-
-const cargoList =
-  document.getElementById("cargoList");
-
-const searchInput =
-  document.getElementById("searchInput");
-
-const modal =
-  document.getElementById("cargoModal");
-
-const modalTitle =
-  document.getElementById("modalTitle");
-
-const pierInput =
-  document.getElementById("pierInput");
-
-const cargoInput =
-  document.getElementById("cargoInput");
-
-const conditionList =
-  document.getElementById("conditionList");
-
-
-/* =========================================
-   RENDER CARGO
-========================================= */
-
-function renderCargo(){
-
-  const keyword =
-    searchInput.value
-      .trim()
-      .toLowerCase();
-
-
-  const filtered =
-    cargoData.filter(function(item){
-
-      if(!keyword){
-        return true;
-      }
-
-      return (
-        String(item.name)
-          .toLowerCase()
-          .includes(keyword)
-
-        ||
-
-        String(item.pier)
-          .toLowerCase()
-          .includes(keyword)
-      );
-
-    });
-
-
-  if(!filtered.length){
-
-    cargoList.innerHTML = `
-      <div class="empty">
-        No cargo found.
-      </div>
-    `;
-
-    return;
-  }
-
-
-  cargoList.innerHTML =
-    filtered.map(function(item){
-
-      const rows =
-        item.rows && item.rows.length
-          ? item.rows
-          : [{}];
-
-
-      const rowHTML =
-        rows.map(function(row){
-
-          const remark =
-            String(row.remark || "").trim();
-
-
-          return `
-            <tr>
-
-              <td>
-                ${displayValue(row.time)}
-              </td>
-
-              <td>
-                ${displayValue(row.gang)}
-              </td>
-
-              <td class="rate-cell">
-                ${displayValue(row.rate)}
-              </td>
-
-              <td>
-                ${displayValue(row.qty)}
-              </td>
-
-              <td>
-                ${displayValue(row.day)}
-              </td>
-
-              <td
-                class="
-                  remark-cell
-                  ${remark ? "has-remark" : ""}
-                "
-              >
-                ${displayValue(remark)}
-              </td>
-
-            </tr>
-          `;
-
-        }).join("");
-
-
-      return `
-        <article class="cargo-card">
-
-          <div class="cargo-head">
-
-            <div>
-
-              <div class="cargo-pier-label">
-                PIER
-              </div>
-
-              <div class="cargo-pier">
-                ${displayValue(item.pier)}
-              </div>
-
-              <h2 class="cargo-name">
-                ${escapeHTML(item.name)}
-              </h2>
-
-            </div>
-
-
-            <div class="cargo-actions">
-
-              <button
-                class="small-btn"
-                type="button"
-                onclick="editCargo(${item.id})"
-              >
-                EDIT
-              </button>
-
-              <button
-                class="small-btn delete"
-                type="button"
-                onclick="deleteCargo(${item.id})"
-              >
-                DELETE
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <div class="table-scroll">
-
-            <table class="cargo-table">
-
-              <thead>
-
-                <tr>
-
-                  <th class="col-time">
-                    TIME
-                  </th>
-
-                  <th class="col-gang">
-                    GANG
-                  </th>
-
-                  <th class="col-rate">
-                    RATE
-                  </th>
-
-                  <th class="col-qty">
-                    QTY
-                  </th>
-
-                  <th class="col-day">
-                    DAY
-                  </th>
-
-                  <th class="col-remark">
-                    REMARK
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody>
-                ${rowHTML}
-              </tbody>
-
-            </table>
-
-          </div>
-
-        </article>
-      `;
-
-    }).join("");
-
-}
-
-
-/* =========================================
-   EDITOR ROW
-========================================= */
-
-function createConditionRow(data = {}){
-
-  const wrapper =
-    document.createElement("div");
-
-  wrapper.className =
-    "condition-row";
-
-
-  wrapper.innerHTML = `
-
-    <div class="condition-field">
-
-      <label>TIME</label>
-
-      <input
-        class="edit-time"
-        type="text"
-        placeholder="0800-1700"
-        value="${escapeHTML(data.time || "")}"
-      >
-
-    </div>
-
-
-    <div class="condition-field">
-
-      <label>GANG</label>
-
-      <input
-        class="edit-gang"
-        type="text"
-        placeholder="2 gang"
-        value="${escapeHTML(data.gang || "")}"
-      >
-
-    </div>
-
-
-    <div class="condition-field">
-
-      <label>RATE</label>
-
-      <input
-        class="edit-rate"
-        type="text"
-        placeholder="1,800"
-        value="${escapeHTML(data.rate || "")}"
-      >
-
-    </div>
-
-
-    <div class="condition-field">
-
-      <label>QTY</label>
-
-      <input
-        class="edit-qty"
-        type="text"
-        placeholder="3,000"
-        value="${escapeHTML(data.qty || "")}"
-      >
-
-    </div>
-
-
-    <div class="condition-field">
-
-      <label>DAY</label>
-
-      <input
-        class="edit-day"
-        type="text"
-        placeholder="2 day"
-        value="${escapeHTML(data.day || "")}"
-      >
-
-    </div>
-
-
-    <div
-      class="
-        condition-field
-        remark-editor
-      "
-    >
-
-      <label>REMARK</label>
-
-      <input
-        class="edit-remark"
-        type="text"
-        placeholder="Remark..."
-        value="${escapeHTML(data.remark || "")}"
-      >
-
-    </div>
-
-
-    <button
-      class="remove-row-btn"
-      type="button"
-      title="Delete row"
-    >
-      ×
-    </button>
-
-  `;
-
-
-  wrapper
-    .querySelector(".remove-row-btn")
-    .addEventListener(
-      "click",
-      function(){
-
-        wrapper.remove();
-
-        if(
-          !conditionList.children.length
-        ){
-
-          conditionList.appendChild(
-            createConditionRow()
-          );
-
-        }
-
-      }
-    );
-
-
-  return wrapper;
-
-}
-
-
-/* =========================================
-   OPEN / CLOSE MODAL
-========================================= */
-
-function openModal(item){
-
-  conditionList.innerHTML = "";
-
-
-  if(item){
-
-    editingId = item.id;
-
-    modalTitle.textContent =
-      "EDIT CARGO";
-
-    pierInput.value =
-      item.pier || "";
-
-    cargoInput.value =
-      item.name || "";
-
-
-    const rows =
-      item.rows && item.rows.length
-        ? item.rows
-        : [{}];
-
-
-    rows.forEach(function(row){
-
-      conditionList.appendChild(
-        createConditionRow(row)
-      );
-
-    });
-
-  }else{
-
-    editingId = null;
-
-    modalTitle.textContent =
-      "ADD CARGO";
-
-    pierInput.value = "";
-    cargoInput.value = "";
-
-    conditionList.appendChild(
-      createConditionRow()
-    );
-
-  }
-
-
-  modal.classList.add("show");
-
-}
-
-
-function closeModal(){
-
-  modal.classList.remove("show");
-
-}
-
-
-/* =========================================
-   EDIT
-========================================= */
-
-window.editCargo =
-  function(id){
-
-    const item =
-      cargoData.find(function(cargo){
-        return cargo.id === id;
-      });
-
-    if(item){
-      openModal(item);
-    }
-
-  };
-
-
-/* =========================================
-   DELETE
-========================================= */
-
-window.deleteCargo =
-  function(id){
-
-    const item =
-      cargoData.find(function(cargo){
-        return cargo.id === id;
-      });
-
-
-    if(!item){
-      return;
-    }
-
-
-    const confirmed =
-      confirm(
-        "Delete " +
-        item.name +
-        "?"
-      );
-
-
-    if(!confirmed){
-      return;
-    }
-
-
-    cargoData =
-      cargoData.filter(function(cargo){
-        return cargo.id !== id;
-      });
-
-
-    saveCargo();
-
-    renderCargo();
-
-  };
-
-
-/* =========================================
-   SAVE
-========================================= */
-
-function collectRows(){
-
-  return Array.from(
-    conditionList
-      .querySelectorAll(".condition-row")
-  ).map(function(row){
-
-    return {
-
-      time:
-        row
-          .querySelector(".edit-time")
-          .value
-          .trim(),
-
-      gang:
-        row
-          .querySelector(".edit-gang")
-          .value
-          .trim(),
-
-      rate:
-        row
-          .querySelector(".edit-rate")
-          .value
-          .trim(),
-
-      qty:
-        row
-          .querySelector(".edit-qty")
-          .value
-          .trim(),
-
-      day:
-        row
-          .querySelector(".edit-day")
-          .value
-          .trim(),
-
-      remark:
-        row
-          .querySelector(".edit-remark")
-          .value
-          .trim()
-
-    };
-
-  });
-
-}
-
-
-document
-  .getElementById("saveBtn")
-  .addEventListener(
-    "click",
-    function(){
-
-      const name =
-        cargoInput.value.trim();
-
-
-      if(!name){
-
-        alert(
-          "Please enter cargo name."
-        );
-
-        cargoInput.focus();
-
-        return;
-
-      }
-
-
-      const newItem = {
-
-        id:
-          editingId !== null
-            ? editingId
-            : Date.now(),
-
-        pier:
-          pierInput.value.trim(),
-
-        name:name,
-
-        rows:collectRows()
-
-      };
-
-
-      if(editingId !== null){
-
-        cargoData =
-          cargoData.map(function(item){
-
-            if(item.id === editingId){
-              return newItem;
-            }
-
-            return item;
-
-          });
-
-      }else{
-
-        cargoData.push(newItem);
-
-      }
-
-
-      saveCargo();
-
-      closeModal();
-
-      renderCargo();
-
-    }
-  );
-
-
-/* =========================================
-   BUTTON EVENTS
-========================================= */
-
-document
-  .getElementById("addCargoBtn")
-  .addEventListener(
-    "click",
-    function(){
-
-      openModal(null);
-
-    }
-  );
-
-
-document
-  .getElementById("addRowBtn")
-  .addEventListener(
-    "click",
-    function(){
-
-      conditionList.appendChild(
-        createConditionRow()
-      );
-
-    }
-  );
-
-
-document
-  .getElementById("cancelBtn")
-  .addEventListener(
-    "click",
-    closeModal
-  );
-
-
-modal.addEventListener(
-  "click",
-  function(event){
-
-    if(event.target === modal){
-      closeModal();
-    }
-
-  }
-);
-
-
-searchInput.addEventListener(
-  "input",
-  renderCargo
-);
-
-
-/* =========================================
-   INITIAL RENDER
-========================================= */
-
-renderCargo();
-
-</script>
+  </script>
 
 </body>
 </html>
