@@ -11,11 +11,11 @@
   },
   {
     "id": 2,
-    "pier": "MAIN",
     "grt": 2900,
+    "pier": "MAIN",
     "pilot": 1200000,
     "line": 500000,
-    "tug": 1100000,
+    "tug": 1200000,
     "tugCount": 1,
     "remark": ""
   },
