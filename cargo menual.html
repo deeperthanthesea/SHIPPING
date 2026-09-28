@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ulsan Cargo Reference</title>
+
+<style>
+:root {
+  --bg: #f4f5f6;
+  --card: #ffffff;
+  --text: #20262e;
+  --muted: #858d96;
+  --line: #dfe3e6;
+  --soft: #f2f4f5;
+  --dark: #202730;
+
+  --remark-bg: #fff6dc;
+  --remark-border: #e5ad35;
+  --remark-text: #5d480f;
+
+  --radius: 15px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 950;
+  letter-spacing: -0.6px;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.add-cargo-btn {
+  flex: 0 0 auto;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--dark);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 950;
+}
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  outline: none;
+  background: #fff;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.search:focus {
+  border-color: #8a949d;
+}
+
+/* =====================================================
+   CARGO CARD
+===================================================== */
+
+#cargoList {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.cargo-card {
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.cargo-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 17px 14px;
+}
+
+.pier-label {
+  margin-bottom: 3px;
+  color: #9299a1;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.7px;
+}
+
+.pier {
+  margin-bottom: 5px;
+  color: #68717a;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.cargo-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.actions {
+  display: flex;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+
+.small-btn {
+  border: 0;
+  border-radius: 7px;
+  padding: 7px 9px;
+  background: #edf0f2;
+  color: #59616a;
+  font-size: 9px;
+  font-weight: 950;
+}
+
+.delete-btn {
+  background: #fff0f0;
+  color: #ad4a4a;
+}
+
+/* =====================================================
+   DATA SECTIONS
+===================================================== */
+
+.data-section {
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  padding: 8px 14px;
+  background: #f1f3f4;
+  border-bottom: 1px solid var(--line);
+  color: #7e868e;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.6px;
+}
+
+/* WORKING */
+
+.work-header,
+.work-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+}
+
+.work-header {
+  background: #fafafa;
+  border-bottom: 1px solid var(--line);
+}
+
+.work-header div {
+  padding: 7px 14px;
+  color: #969da4;
+  font-size: 9px;
+  font-weight: 950;
+}
+
+.work-row {
+  border-bottom: 1px solid #edf0f2;
+}
+
+.work-row:last-child {
+  border-bottom: 0;
+}
+
+.work-row div {
+  min-width: 0;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.work-row div + div {
+  border-left: 1px solid #edf0f2;
+}
+
+.rate-value {
+  font-weight: 950 !important;
+}
+
+/* QTY / DAY */
+
+.qty-header,
+.qty-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.qty-header {
+  background: #fafafa;
+  border-bottom: 1px solid var(--line);
+}
+
+.qty-header div {
+  padding: 7px 14px;
+  color: #969da4;
+  font-size: 9px;
+  font-weight: 950;
+}
+
+.qty-row {
+  border-bottom: 1px solid #edf0f2;
+}
+
+.qty-row:last-child {
+  border-bottom: 0;
+}
+
+.qty-row div {
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.qty-row div + div {
+  border-left: 1px solid #edf0f2;
+}
+
+/* REMARK */
+
+.remark {
+  margin: 13px;
+  padding: 12px 13px;
+  background: var(--remark-bg);
+  border: 1px solid #efd693;
+  border-left: 5px solid var(--remark-border);
+  border-radius: 10px;
+  color: var(--remark-text);
+}
+
+.remark-label {
+  margin-bottom: 5px;
+  color: #9e6d00;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.5px;
+}
+
+.remark-text {
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.empty-value {
+  color: #b2b7bc;
+}
+
+.empty {
+  padding: 35px 15px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  color: #9299a0;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(18, 23, 28, 0.6);
+}
+
+.modal-bg.show {
+  display: flex;
+}
+
+.modal {
+  width: 100%;
+  max-width: 700px;
+  max-height: 93vh;
+  overflow-y: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 17px;
+}
+
+.modal-title {
+  margin: 0 0 18px;
+  font-size: 21px;
+  font-weight: 950;
+}
+
+.top-fields {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 8px;
+}
+
+.field {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.field span {
+  display: block;
+  margin-bottom: 5px;
+  color: #747c84;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.4px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #d8dde1;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: var(--text);
+}
+
+.field textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: #75808a;
+}
+
+/* EDIT SECTIONS */
+
+.editor-section {
+  margin-top: 15px;
+}
+
+.editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+
+.editor-title {
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.add-row-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #e9edef;
+  color: #414950;
+  font-size: 9px;
+  font-weight: 950;
+}
+
+.editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* WORK EDIT ROW */
+
+.work-edit-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 6px;
+  padding: 10px 36px 10px 10px;
+  background: #f6f7f8;
+  border: 1px solid #e1e5e7;
+  border-radius: 10px;
+}
+
+/* QTY EDIT ROW */
+
+.qty-edit-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 10px 36px 10px 10px;
+  background: #f6f7f8;
+  border: 1px solid #e1e5e7;
+  border-radius: 10px;
+}
+
+.edit-field {
+  min-width: 0;
+}
+
+.edit-field label {
+  display: block;
+  margin-bottom: 4px;
+  color: #8b939a;
+  font-size: 8px;
+  font-weight: 950;
+}
+
+.edit-field input {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 7px;
+  border: 1px solid #d7dce0;
+  border-radius: 7px;
+  background: #fff;
+  font-size: 11px;
+}
+
+.remove-row {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background: #e2e5e7;
+  color: #747c84;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+/* MODAL BUTTONS */
+
+.modal-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 19px;
+}
+
+.modal-buttons button {
+  border: 0;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.cancel-btn {
+  background: #eceff1;
+  color: #596169;
+}
+
+.save-btn {
+  background: var(--dark);
+  color: #fff;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+  .app {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 25px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+  }
+
+  .add-cargo-btn {
+    padding: 10px 11px;
+    font-size: 9px;
+  }
+
+  .cargo-head {
+    padding: 14px 14px 12px;
+  }
+
+  .cargo-name {
+    font-size: 18px;
+  }
+
+  .work-header div,
+  .work-row div {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .qty-header div,
+  .qty-row div {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .work-row div,
+  .qty-row div {
+    font-size: 12px;
+  }
+
+  .top-fields {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .modal {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 370px) {
+  .work-header div {
+    font-size: 8px;
+  }
+
+  .work-row div {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 11px;
+  }
+
+  .qty-row div {
+    font-size: 11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <div>
+      <h1 class="title">Cargo</h1>
+      <p class="subtitle">Ulsan cargo working reference</p>
+    </div>
+
+    <button
+      id="addCargoBtn"
+      class="add-cargo-btn"
+      type="button"
+    >
+      + ADD CARGO
+    </button>
+  </div>
+
+  <input
+    id="searchInput"
+    class="search"
+    type="search"
+    placeholder="Search cargo or pier..."
+  >
+
+  <div id="cargoList"></div>
+
+</div>
+
+
+<!-- =====================================================
+     EDIT MODAL
+===================================================== -->
+
+<div id="cargoModal" class="modal-bg">
+
+  <div class="modal">
+
+    <h2 id="modalTitle" class="modal-title">
+      EDIT CARGO
+    </h2>
+
+    <div class="top-fields">
+
+      <label class="field">
+        <span>PIER</span>
+        <input
+          id="pierInput"
+          type="text"
+          placeholder="e.g. 12-22"
+        >
+      </label>
+
+      <label class="field">
+        <span>CARGO</span>
+        <input
+          id="cargoInput"
+          type="text"
+          placeholder="e.g. BENTONITE"
+        >
+      </label>
+
+    </div>
+
+
+    <!-- TIME / GANG / RATE -->
+
+    <div class="editor-section">
+
+      <div class="editor-head">
+        <div class="editor-title">
+          TIME / GANG / RATE
+        </div>
+
+        <button
+          id="addWorkRowBtn"
+          class="add-row-btn"
+          type="button"
+        >
+          + ADD ROW
+        </button>
+      </div>
+
+      <div
+        id="workEditor"
+        class="editor-list"
+      ></div>
+
+    </div>
+
+
+    <!-- QTY / DAY -->
+
+    <div class="editor-section">
+
+      <div class="editor-head">
+        <div class="editor-title">
+          QTY / DAY
+        </div>
+
+        <button
+          id="addQtyRowBtn"
+          class="add-row-btn"
+          type="button"
+        >
+          + ADD ROW
+        </button>
+      </div>
+
+      <div
+        id="qtyEditor"
+        class="editor-list"
+      ></div>
+
+    </div>
+
+
+    <!-- REMARK -->
+
+    <div class="editor-section">
+
+      <label class="field">
+
+        <span>CHECK REMARK</span>
+
+        <textarea
+          id="remarkInput"
+          placeholder="Enter all remarks for this cargo..."
+        ></textarea>
+
+      </label>
+
+    </div>
+
+
+    <div class="modal-buttons">
+
+      <button
+        id="cancelBtn"
+        class="cancel-btn"
+        type="button"
+      >
+        CANCEL
+      </button>
+
+      <button
+        id="saveBtn"
+        class="save-btn"
+        type="button"
+      >
+        SAVE
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   DEFAULT DATA
+===================================================== */
+
+const DEFAULT_CARGO = [
+
+  {
+    id: 1,
+    pier: "12-22",
+    name: "BENTONITE",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,800" }
+    ],
+    quantities: [
+      { qty: "3,000", day: "2 day" },
+      { qty: "5,000", day: "3 day" },
+      { qty: "10,000", day: "6 day" }
+    ],
+    remark:
+      "할증불가 / 분진이 너무 심함 / 입고지가 경주쪽인데 그쪽 주민들이랑 협의한 내용 확인 필요"
+  },
+
+  {
+    id: 2,
+    pier: "12-22",
+    name: "MAGNESITE",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,700" },
+      { time: "1800-2200", gang: "", rate: "800" }
+    ],
+    quantities: [
+      { qty: "2,000", day: "1 day" }
+    ],
+    remark:
+      "리시버 컨펌 후 할증가능 / 거의 안 됨 / 2,900원"
+  },
+
+  {
+    id: 3,
+    pier: "12-31",
+    name: "CGF",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,500" },
+      { time: "1800-2200", gang: "", rate: "700" },
+      { time: "2200-2400", gang: "", rate: "700" },
+      { time: "1300-1700", gang: "1 gang", rate: "350" }
+    ],
+    quantities: [
+      { qty: "2,200", day: "2 day" },
+      { qty: "4,400", day: "3 day" }
+    ],
+    remark:
+      "할증 2,900원 / 더블 5,800원 / HARBOR 크레인 작업시 2,000톤 야간으로 하루 작업"
+  },
+
+  {
+    id: 4,
+    pier: "12-31",
+    name: "CANOLA",
+    working: [
+      { time: "0800-1700", gang: "", rate: "1,500" }
+    ],
+    quantities: [
+      { qty: "4,000", day: "3 day" }
+    ],
+    remark:
+      "식검 2차 (펠렛은 1차만)"
+  },
+
+  {
+    id: 5,
+    pier: "12-31",
+    name: "WHEAT BRAN (WBP)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,500" }
+    ],
+    quantities: [
+      { qty: "2,000", day: "2 day" }
+    ],
+    remark:
+      "식검 2차"
+  },
+
+  {
+    id: 6,
+    pier: "12-31",
+    name: "TIRE CHIP (LOAD)",
+    working: [
+      { time: "0800-1700", gang: "", rate: "2,000" },
+      { time: "1800-2200", gang: "", rate: "800" }
+    ],
+    quantities: [
+      { qty: "1,800", day: "1 day" }
+    ],
+    remark:
+      "KG는 창고비용 없음 / 단 야적·창고인지 확인 필요"
+  },
+
+  {
+    id: 7,
+    pier: "21-82",
+    name: "UREA (BULK)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,700" },
+      { time: "1800-2200", gang: "", rate: "800" },
+      { time: "0800-1700", gang: "1 gang", rate: "800" }
+    ],
+    quantities: [
+      { qty: "3,000", day: "2 day" },
+      { qty: "6,600", day: "4 day" }
+    ],
+    remark:
+      "할증 2,900원 / 더블 5,800원"
+  },
+
+  {
+    id: 8,
+    pier: "21-82",
+    name: "UREA (BAG)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,000" },
+      { time: "1800-2200", gang: "", rate: "500" }
+    ],
+    quantities: [
+      { qty: "5,000", day: "5 day" },
+      { qty: "3,000", day: "3 day" }
+    ],
+    remark:
+      "톤백 3,900원 / 4시간 창고 50만원 / 작업량 참고 1,000-1,200"
+  },
+
+  {
+    id: 9,
+    pier: "21-82",
+    name: "NPK FERTILIZER",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,700" },
+      { time: "1800-2200", gang: "", rate: "800" }
+    ],
+    quantities: [
+      { qty: "5,000", day: "3 day" }
+    ],
+    remark:
+      "작업량 참고 500-600"
+  },
+
+  {
+    id: 10,
+    pier: "21-82",
+    name: "MOP",
+    working: [
+      { time: "0800-1700", gang: "", rate: "" }
+    ],
+    quantities: [
+      { qty: "15,000", day: "7 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 11,
+    pier: "21-82",
+    name: "WOOD PULP (BULK)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,500" }
+    ],
+    quantities: [
+      { qty: "3,000", day: "2 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 12,
+    pier: "21-82",
+    name: "WOOD PULP (BAG)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "2,000" }
+    ],
+    quantities: [
+      { qty: "5,500", day: "2 day" },
+      { qty: "15,000", day: "4 day" }
+    ],
+    remark:
+      "할증 2,800원 / BT CHARGE 발생"
+  },
+
+  {
+    id: 13,
+    pier: "12-82 & GP",
+    name: "LIMESTONE (BULK)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,300" },
+      { time: "1800-2200", gang: "", rate: "650" }
+    ],
+    quantities: [
+      { qty: "5,000", day: "4 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 14,
+    pier: "12-82 & GP",
+    name: "LIMESTONE (BAG)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,200" },
+      { time: "1800-2200", gang: "", rate: "600" }
+    ],
+    quantities: [
+      { qty: "5,000", day: "3.5 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 15,
+    pier: "21-31 / 82-GP",
+    name: "AMSUL (BULK) DISCH",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,700" },
+      { time: "1800-2200", gang: "", rate: "800" }
+    ],
+    quantities: [
+      { qty: "3,300", day: "2 day" }
+    ],
+    remark:
+      "리시버 컨펌 후 할증가능"
+  },
+
+  {
+    id: 16,
+    pier: "64-82",
+    name: "AMSUL (BULK) LOAD",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,800" },
+      { time: "1800-2200", gang: "", rate: "800" },
+      { time: "0800-1700", gang: "3 gang", rate: "3,000" },
+      { time: "1800-2200", gang: "", rate: "1,000" }
+    ],
+    quantities: [
+      { qty: "6,000", day: "4 day" },
+      { qty: "25,000", day: "9 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 17,
+    pier: "71-81",
+    name: "FLUORSPAR (BAG)",
+    working: [
+      { time: "0800-1700", gang: "4 gang", rate: "3,500" }
+    ],
+    quantities: [
+      { qty: "30,000", day: "10 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 18,
+    pier: "GP",
+    name: "ALUMINUM OXIDE BAG",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,600" }
+    ],
+    quantities: [
+      { qty: "3,000", day: "2 day" }
+    ],
+    remark:
+      "할증 3,900원 / 더블 7,800원"
+  },
+
+  {
+    id: 19,
+    pier: "GP",
+    name: "ALUMINA",
+    working: [
+      { time: "1800-2200", gang: "1 gang", rate: "1,000" }
+    ],
+    quantities: [
+      { qty: "3,000", day: "3 day" }
+    ],
+    remark:
+      "야적 할인 / 산화알루미늄"
+  },
+
+  {
+    id: 20,
+    pier: "GP",
+    name: "SALT",
+    working: [
+      { time: "0800-1700", gang: "", rate: "" }
+    ],
+    quantities: [],
+    remark:
+      "할증비 확인 필요 / 야간 야적 후 입고 톤당 4,000원"
+  },
+
+  {
+    id: 21,
+    pier: "HHI",
+    name: "STEEL PLATE",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "850" }
+    ],
+    quantities: [
+      { qty: "5,000", day: "7 day" }
+    ],
+    remark:
+      "할증은 주공업 재량"
+  },
+
+  {
+    id: 22,
+    pier: "COAL",
+    name: "COAL",
+    working: [
+      { time: "0000-2400", gang: "1 gang", rate: "6,700" }
+    ],
+    quantities: [
+      { qty: "44,000", day: "7 day" }
+    ],
+    remark:
+      "24시간 작업 / 06-08 휴게시간"
+  },
+
+  {
+    id: 23,
+    pier: "OP-01",
+    name: "ILMENITE",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "2,500" },
+      { time: "1800-2200", gang: "", rate: "1,200" }
+    ],
+    quantities: [
+      { qty: "10,000", day: "4 day" },
+      { qty: "20,000", day: "8 day" }
+    ],
+    remark:
+      "컨펌 후 할증 가능"
+  },
+
+  {
+    id: 24,
+    pier: "OP-01",
+    name: "SODIUM SILICATE",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "" }
+    ],
+    quantities: [
+      { qty: "2,000", day: "1 day" }
+    ],
+    remark:
+      "규산소다 / 규산나트륨 / 물유리"
+  },
+
+  {
+    id: 25,
+    pier: "OP-01",
+    name: "POTASHI (LOAD)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "" }
+    ],
+    quantities: [
+      { qty: "1,500", day: "1 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 26,
+    pier: "OP-01",
+    name: "FERROSAND (LOAD)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "3,000" }
+    ],
+    quantities: [
+      { qty: "33,000", day: "9 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 27,
+    pier: "OP-01",
+    name: "NPI (BULK)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "3,000" },
+      { time: "1800-2200", gang: "", rate: "1,500" }
+    ],
+    quantities: [
+      { qty: "25,000", day: "7 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 28,
+    pier: "SP-08",
+    name: "SILICA SAND (LOAD)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "1,500" }
+    ],
+    quantities: [
+      { qty: "2,000", day: "1 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 29,
+    pier: "SP-08",
+    name: "SILICA SAND (DISCH)",
+    working: [
+      { time: "0800-1700", gang: "4 gang", rate: "6,000" },
+      { time: "1800-2200", gang: "", rate: "3,000" }
+    ],
+    quantities: [
+      { qty: "50,000", day: "9 day" },
+      { qty: "30,000", day: "5 day" }
+    ],
+    remark:
+      "Ship's gear 아니면 작업 불가 여부 확인"
+  },
+
+  {
+    id: 30,
+    pier: "SP-07",
+    name: "WOOD CHIP (LOAD)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "1,000" },
+      { time: "1800-2200", gang: "", rate: "500" }
+    ],
+    quantities: [
+      { qty: "2,000", day: "2 day" },
+      { qty: "4,000", day: "4 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 31,
+    pier: "SP-07",
+    name: "WOOD CHIP (DISCH)",
+    working: [
+      { time: "0800-1700", gang: "4 gang", rate: "5,000" },
+      { time: "1800-2200", gang: "", rate: "2,500" }
+    ],
+    quantities: [
+      { qty: "44,000", day: "7 day" },
+      { qty: "25,000", day: "5 day" }
+    ],
+    remark:
+      "44,000MT: 4,000-5,000 / shore unloader · 25,000MT: 2,000-2,500 / shore unloader"
+  },
+
+  {
+    id: 32,
+    pier: "SILO",
+    name: "WHEAT (소맥)",
+    working: [
+      { time: "0000-2400", gang: "2 gang", rate: "5,000" }
+    ],
+    quantities: [
+      { qty: "20,000", day: "2.5 day" }
+    ],
+    remark:
+      "5,000-25,000 / shore unloader"
+  },
+
+  {
+    id: 33,
+    pier: "SILO",
+    name: "CORN",
+    working: [
+      { time: "0000-2400", gang: "2 gang", rate: "15,000" }
+    ],
+    quantities: [
+      { qty: "60,000", day: "4 day" }
+    ],
+    remark:
+      "24시간 작업이지만 창고용량에 따라 달라짐"
+  },
+
+  {
+    id: 34,
+    pier: "IP-YY",
+    name: "SULPHUR (BAG, LOAD)",
+    working: [
+      { time: "0800-1700", gang: "2 gang", rate: "2,000" }
+    ],
+    quantities: [
+      { qty: "4,400", day: "2 day" }
+    ],
+    remark:
+      "야간할증 포함"
+  },
+
+  {
+    id: 35,
+    pier: "IP-YY",
+    name: "PIA (BAG, LOAD)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "" }
+    ],
+    quantities: [
+      { qty: "600", day: "1 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 36,
+    pier: "IP-YY",
+    name: "SODA ASH (BAG)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "900" }
+    ],
+    quantities: [
+      { qty: "5,400", day: "6 day" }
+    ],
+    remark:
+      "BAG수 기준 / 할증 톤당 6,300원 협의 필요 / 주말 주간 가능 / 야간 불가"
+  },
+
+  {
+    id: 37,
+    pier: "",
+    name: "CABLE DRUM",
+    working: [],
+    quantities: [],
+    remark: ""
+  },
+
+  {
+    id: 38,
+    pier: "",
+    name: "CORPA (BULK)",
+    working: [],
+    quantities: [
+      { qty: "1,850", day: "2 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 39,
+    pier: "64-71",
+    name: "STEEL PIPE (LOAD)",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "700" }
+    ],
+    quantities: [
+      { qty: "23,592", day: "9 day" }
+    ],
+    remark: ""
+  },
+
+  {
+    id: 40,
+    pier: "64-71",
+    name: "SLAB",
+    working: [
+      { time: "0800-1700", gang: "1 gang", rate: "78" },
+      { time: "1800-2000", gang: "1 gang", rate: "50" },
+      { time: "2000-2300", gang: "1 gang", rate: "50" }
+    ],
+    quantities: [],
+    remark:
+      "R.TON 당 5,000원 / 주말할증 가능 / 첫날에는 지게차 작업으로 퍼져야 해서 할증 어려움"
+  }
+
+];
+
+
+/* =====================================================
+   STORAGE
+===================================================== */
+
+const STORAGE_KEY =
+  "ulsan-cargo-page1-v3";
+
+
+function cloneDefaultData() {
+  return JSON.parse(
+    JSON.stringify(DEFAULT_CARGO)
+  );
+}
+
+
+function loadCargo() {
+  try {
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
+
+    if (!saved) {
+      return cloneDefaultData();
+    }
+
+    return JSON.parse(saved);
+
+  } catch (error) {
+    return cloneDefaultData();
+  }
+}
+
+
+function saveCargo() {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(cargoData)
+  );
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function displayValue(value) {
+  const text =
+    String(value ?? "").trim();
+
+  if (!text) {
+    return `
+      <span class="empty-value">—</span>
+    `;
+  }
+
+  return escapeHTML(text);
+}
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let cargoData = loadCargo();
+
+let editingId = null;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const cargoList =
+  document.getElementById("cargoList");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const modal =
+  document.getElementById("cargoModal");
+
+const modalTitle =
+  document.getElementById("modalTitle");
+
+const pierInput =
+  document.getElementById("pierInput");
+
+const cargoInput =
+  document.getElementById("cargoInput");
+
+const remarkInput =
+  document.getElementById("remarkInput");
+
+const workEditor =
+  document.getElementById("workEditor");
+
+const qtyEditor =
+  document.getElementById("qtyEditor");
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderCargo() {
+
+  const keyword =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+
+  const filtered =
+    cargoData.filter(function(item) {
+
+      if (!keyword) {
+        return true;
+      }
+
+      const cargoText =
+        String(item.name || "")
+          .toLowerCase();
+
+      const pierText =
+        String(item.pier || "")
+          .toLowerCase();
+
+      const remarkText =
+        String(item.remark || "")
+          .toLowerCase();
+
+      return (
+        cargoText.includes(keyword) ||
+        pierText.includes(keyword) ||
+        remarkText.includes(keyword)
+      );
+
+    });
+
+
+  if (!filtered.length) {
+    cargoList.innerHTML = `
+      <div class="empty">
+        No cargo found.
+      </div>
+    `;
+    return;
+  }
+
+
+  cargoList.innerHTML =
+    filtered.map(function(item) {
+
+      const working =
+        Array.isArray(item.working)
+          ? item.working
+          : [];
+
+      const quantities =
+        Array.isArray(item.quantities)
+          ? item.quantities
+          : [];
+
+
+      let workingHTML = "";
+
+      if (working.length) {
+
+        workingHTML =
+          working.map(function(row) {
+
+            return `
+              <div class="work-row">
+
+                <div>
+                  ${displayValue(row.time)}
+                </div>
+
+                <div>
+                  ${displayValue(row.gang)}
+                </div>
+
+                <div class="rate-value">
+                  ${displayValue(row.rate)}
+                </div>
+
+              </div>
+            `;
+
+          }).join("");
+
+      } else {
+
+        workingHTML = `
+          <div class="work-row">
+            <div>—</div>
+            <div>—</div>
+            <div>—</div>
+          </div>
+        `;
+
+      }
+
+
+      let qtyHTML = "";
+
+      if (quantities.length) {
+
+        qtyHTML =
+          quantities.map(function(row) {
+
+            return `
+              <div class="qty-row">
+
+                <div>
+                  ${displayValue(row.qty)}
+                </div>
+
+                <div>
+                  ${displayValue(row.day)}
+                </div>
+
+              </div>
+            `;
+
+          }).join("");
+
+      } else {
+
+        qtyHTML = `
+          <div class="qty-row">
+            <div>—</div>
+            <div>—</div>
+          </div>
+        `;
+
+      }
+
+
+      const remarkHTML =
+        String(item.remark || "").trim()
+          ? `
+            <div class="remark">
+
+              <div class="remark-label">
+                CHECK REMARK
+              </div>
+
+              <div class="remark-text">${escapeHTML(item.remark)}</div>
+
+            </div>
+          `
+          : "";
+
+
+      return `
+        <article class="cargo-card">
+
+          <div class="cargo-head">
+
+            <div>
+
+              <div class="pier-label">
+                PIER
+              </div>
+
+              <div class="pier">
+                ${displayValue(item.pier)}
+              </div>
+
+              <h2 class="cargo-name">
+                ${escapeHTML(item.name)}
+              </h2>
+
+            </div>
+
+
+            <div class="actions">
+
+              <button
+                class="small-btn"
+                type="button"
+                onclick="editCargo(${item.id})"
+              >
+                EDIT
+              </button>
+
+              <button
+                class="small-btn delete-btn"
+                type="button"
+                onclick="deleteCargo(${item.id})"
+              >
+                DELETE
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="data-section">
+
+            <div class="section-label">
+              WORKING RATE
+            </div>
+
+            <div class="work-header">
+              <div>TIME</div>
+              <div>GANG</div>
+              <div>RATE</div>
+            </div>
+
+            ${workingHTML}
+
+          </div>
+
+
+          <div class="data-section">
+
+            <div class="section-label">
+              QUANTITY / WORKING DAYS
+            </div>
+
+            <div class="qty-header">
+              <div>QTY</div>
+              <div>DAY</div>
+            </div>
+
+            ${qtyHTML}
+
+          </div>
+
+
+          ${remarkHTML}
+
+        </article>
+      `;
+
+    }).join("");
+}
+
+
+/* =====================================================
+   WORK EDIT ROW
+===================================================== */
+
+function createWorkRow(data = {}) {
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "work-edit-row";
+
+
+  row.innerHTML = `
+
+    <div class="edit-field">
+
+      <label>TIME</label>
+
+      <input
+        class="edit-time"
+        type="text"
+        placeholder="0800-1700"
+        value="${escapeHTML(data.time || "")}"
+      >
+
+    </div>
+
+
+    <div class="edit-field">
+
+      <label>GANG</label>
+
+      <input
+        class="edit-gang"
+        type="text"
+        placeholder="2 gang"
+        value="${escapeHTML(data.gang || "")}"
+      >
+
+    </div>
+
+
+    <div class="edit-field">
+
+      <label>RATE</label>
+
+      <input
+        class="edit-rate"
+        type="text"
+        placeholder="1,800"
+        value="${escapeHTML(data.rate || "")}"
+      >
+
+    </div>
+
+
+    <button
+      class="remove-row"
+      type="button"
+      title="Delete row"
+    >
+      ×
+    </button>
+
+  `;
+
+
+  row
+    .querySelector(".remove-row")
+    .addEventListener(
+      "click",
+      function() {
+        row.remove();
+      }
+    );
+
+
+  return row;
+}
+
+
+/* =====================================================
+   QTY EDIT ROW
+===================================================== */
+
+function createQtyRow(data = {}) {
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "qty-edit-row";
+
+
+  row.innerHTML = `
+
+    <div class="edit-field">
+
+      <label>QTY</label>
+
+      <input
+        class="edit-qty"
+        type="text"
+        placeholder="3,000"
+        value="${escapeHTML(data.qty || "")}"
+      >
+
+    </div>
+
+
+    <div class="edit-field">
+
+      <label>DAY</label>
+
+      <input
+        class="edit-day"
+        type="text"
+        placeholder="2 day"
+        value="${escapeHTML(data.day || "")}"
+      >
+
+    </div>
+
+
+    <button
+      class="remove-row"
+      type="button"
+      title="Delete row"
+    >
+      ×
+    </button>
+
+  `;
+
+
+  row
+    .querySelector(".remove-row")
+    .addEventListener(
+      "click",
+      function() {
+        row.remove();
+      }
+    );
+
+
+  return row;
+}
+
+
+/* =====================================================
+   OPEN EDITOR
+===================================================== */
+
+function openModal(item) {
+
+  workEditor.innerHTML = "";
+  qtyEditor.innerHTML = "";
+
+
+  if (item) {
+
+    editingId = item.id;
+
+    modalTitle.textContent =
+      "EDIT CARGO";
+
+    pierInput.value =
+      item.pier || "";
+
+    cargoInput.value =
+      item.name || "";
+
+    remarkInput.value =
+      item.remark || "";
+
+
+    const working =
+      Array.isArray(item.working)
+        ? item.working
+        : [];
+
+    const quantities =
+      Array.isArray(item.quantities)
+        ? item.quantities
+        : [];
+
+
+    if (working.length) {
+
+      working.forEach(function(row) {
+        workEditor.appendChild(
+          createWorkRow(row)
+        );
+      });
+
+    } else {
+
+      workEditor.appendChild(
+        createWorkRow()
+      );
+
+    }
+
+
+    if (quantities.length) {
+
+      quantities.forEach(function(row) {
+        qtyEditor.appendChild(
+          createQtyRow(row)
+        );
+      });
+
+    } else {
+
+      qtyEditor.appendChild(
+        createQtyRow()
+      );
+
+    }
+
+  } else {
+
+    editingId = null;
+
+    modalTitle.textContent =
+      "ADD CARGO";
+
+    pierInput.value = "";
+    cargoInput.value = "";
+    remarkInput.value = "";
+
+    workEditor.appendChild(
+      createWorkRow()
+    );
+
+    qtyEditor.appendChild(
+      createQtyRow()
+    );
+
+  }
+
+
+  modal.classList.add("show");
+}
+
+
+function closeModal() {
+  modal.classList.remove("show");
+}
+
+
+/* =====================================================
+   EDIT / DELETE
+===================================================== */
+
+window.editCargo =
+  function(id) {
+
+    const item =
+      cargoData.find(function(cargo) {
+        return cargo.id === id;
+      });
+
+    if (item) {
+      openModal(item);
+    }
+
+  };
+
+
+window.deleteCargo =
+  function(id) {
+
+    const item =
+      cargoData.find(function(cargo) {
+        return cargo.id === id;
+      });
+
+
+    if (!item) {
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        "Delete " +
+        item.name +
+        "?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    cargoData =
+      cargoData.filter(function(cargo) {
+        return cargo.id !== id;
+      });
+
+
+    saveCargo();
+    renderCargo();
+
+  };
+
+
+/* =====================================================
+   COLLECT EDITOR DATA
+===================================================== */
+
+function collectWorking() {
+
+  return Array.from(
+    workEditor
+      .querySelectorAll(".work-edit-row")
+  )
+  .map(function(row) {
+
+    return {
+      time:
+        row
+          .querySelector(".edit-time")
+          .value
+          .trim(),
+
+      gang:
+        row
+          .querySelector(".edit-gang")
+          .value
+          .trim(),
+
+      rate:
+        row
+          .querySelector(".edit-rate")
+          .value
+          .trim()
+    };
+
+  })
+  .filter(function(row) {
+
+    return (
+      row.time ||
+      row.gang ||
+      row.rate
+    );
+
+  });
+}
+
+
+function collectQuantities() {
+
+  return Array.from(
+    qtyEditor
+      .querySelectorAll(".qty-edit-row")
+  )
+  .map(function(row) {
+
+    return {
+      qty:
+        row
+          .querySelector(".edit-qty")
+          .value
+          .trim(),
+
+      day:
+        row
+          .querySelector(".edit-day")
+          .value
+          .trim()
+    };
+
+  })
+  .filter(function(row) {
+
+    return (
+      row.qty ||
+      row.day
+    );
+
+  });
+}
+
+
+/* =====================================================
+   SAVE
+===================================================== */
+
+document
+  .getElementById("saveBtn")
+  .addEventListener(
+    "click",
+    function() {
+
+      const cargoName =
+        cargoInput.value.trim();
+
+
+      if (!cargoName) {
+
+        alert(
+          "Please enter cargo name."
+        );
+
+        cargoInput.focus();
+
+        return;
+      }
+
+
+      const newItem = {
+
+        id:
+          editingId !== null
+            ? editingId
+            : Date.now(),
+
+        pier:
+          pierInput.value.trim(),
+
+        name:
+          cargoName,
+
+        working:
+          collectWorking(),
+
+        quantities:
+          collectQuantities(),
+
+        remark:
+          remarkInput.value.trim()
+
+      };
+
+
+      if (editingId !== null) {
+
+        cargoData =
+          cargoData.map(function(item) {
+
+            if (item.id === editingId) {
+              return newItem;
+            }
+
+            return item;
+
+          });
+
+      } else {
+
+        cargoData.push(newItem);
+
+      }
+
+
+      saveCargo();
+
+      closeModal();
+
+      renderCargo();
+
+    }
+  );
+
+
+/* =====================================================
+   BUTTON EVENTS
+===================================================== */
+
+document
+  .getElementById("addCargoBtn")
+  .addEventListener(
+    "click",
+    function() {
+      openModal(null);
+    }
+  );
+
+
+document
+  .getElementById("addWorkRowBtn")
+  .addEventListener(
+    "click",
+    function() {
+
+      workEditor.appendChild(
+        createWorkRow()
+      );
+
+    }
+  );
+
+
+document
+  .getElementById("addQtyRowBtn")
+  .addEventListener(
+    "click",
+    function() {
+
+      qtyEditor.appendChild(
+        createQtyRow()
+      );
+
+    }
+  );
+
+
+document
+  .getElementById("cancelBtn")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+
+modal.addEventListener(
+  "click",
+ 
+      
