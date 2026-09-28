@@ -1,0 +1,126 @@
+[
+  {
+    "id": 1,
+    "pier": "MAIN",
+    "grt": 1400,
+    "pilot": 1200000,
+    "line": 500000,
+    "tug": 1100000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 2,
+    "pier": "MAIN",
+    "grt": 2900,
+    "pilot": 1200000,
+    "line": 500000,
+    "tug": 1100000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 3,
+    "pier": "MAIN",
+    "grt": 4000,
+    "pilot": 1300000,
+    "line": 550000,
+    "tug": 1200000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 4,
+    "pier": "MAIN",
+    "grt": 8000,
+    "pilot": 1500000,
+    "line": 650000,
+    "tug": 2500000,
+    "tugCount": 2,
+    "remark": ""
+  },
+  {
+    "id": 5,
+    "pier": "ONSAN",
+    "grt": 1400,
+    "pilot": 1200000,
+    "line": 500000,
+    "tug": 1100000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 6,
+    "pier": "ONSAN",
+    "grt": 2900,
+    "pilot": 1200000,
+    "line": 500000,
+    "tug": 1100000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 7,
+    "pier": "ONSAN",
+    "grt": 4000,
+    "pilot": 1300000,
+    "line": 550000,
+    "tug": 1200000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 8,
+    "pier": "ONSAN",
+    "grt": 8000,
+    "pilot": 1500000,
+    "line": 650000,
+    "tug": 2500000,
+    "tugCount": 2,
+    "remark": ""
+  },
+  {
+    "id": 9,
+    "pier": "OTHER",
+    "pierName": "HHI",
+    "grt": 1400,
+    "pilot": 1700000,
+    "line": 500000,
+    "tug": 2000000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 10,
+    "pier": "OTHER",
+    "pierName": "HHI",
+    "grt": 2900,
+    "pilot": 2000000,
+    "line": 550000,
+    "tug": 2200000,
+    "tugCount": 1,
+    "remark": ""
+  },
+  {
+    "id": 11,
+    "pier": "OTHER",
+    "pierName": "HHI",
+    "grt": 4000,
+    "pilot": 2200000,
+    "line": 600000,
+    "tug": 4200000,
+    "tugCount": 2,
+    "remark": ""
+  },
+  {
+    "id": 12,
+    "pier": "OTHER",
+    "pierName": "HHI",
+    "grt": 8000,
+    "pilot": 2800000,
+    "line": 650000,
+    "tug": 5000000,
+    "tugCount": 2,
+    "remark": ""
+  }
+]
