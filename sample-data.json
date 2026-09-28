@@ -81,14 +81,13 @@
   },
   {
     "id": 9,
-    "pier": "OTHER",
-    "pierName": "HHI",
     "grt": 1400,
+    "pier": "OTHER",
     "pilot": 1700000,
     "line": 500000,
     "tug": 2000000,
     "tugCount": 1,
-    "remark": ""
+    "remark": "MIPO"
   },
   {
     "id": 10,
