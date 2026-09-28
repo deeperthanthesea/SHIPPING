@@ -280,34 +280,365 @@ tbody tr:hover {
     display: block;
 }
 
-/* =========================
+/* =====================================================
    MOBILE
-========================= */
+===================================================== */
 
-@media(max-width: 650px) {
+@media (max-width: 650px) {
+
+    body {
+        background: #f4f6f8;
+    }
+
+    /* HEADER */
+
+    .header {
+        padding: 16px 14px;
+    }
 
     .header h1 {
-        font-size: 22px;
+        font-size: 20px;
+    }
+
+    .header p {
+        font-size: 11px;
+    }
+
+
+    /* =========================================
+       CATEGORY MENU
+    ========================================= */
+
+    .category-wrap {
+        top: 0;
+    }
+
+    .categories {
+        padding: 0 5px;
     }
 
     .category-btn {
-        padding: 14px 15px;
-        font-size: 12px;
+        flex: 0 0 auto;
+        padding: 13px 12px;
+        font-size: 11px;
     }
 
+
+    /* =========================================
+       MAIN
+    ========================================= */
+
     .container {
-        margin-top: 18px;
-        padding-left: 10px;
-        padding-right: 10px;
+        margin: 14px auto;
+        padding: 0 10px 40px;
+    }
+
+    .title-row {
+        margin-bottom: 10px;
+        align-items: center;
     }
 
     .section-title {
-        font-size: 19px;
+        font-size: 18px;
     }
 
-    td, th {
-        padding: 11px 10px;
+    .unit {
+        font-size: 10px;
+        text-align: right;
     }
+
+
+    /* =========================================
+       TABLE -> MOBILE CARD
+    ========================================= */
+
+    .table-scroll {
+        overflow: visible;
+    }
+
+    table {
+        min-width: 0;
+        width: 100%;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table,
+    tbody,
+    tr,
+    td {
+        display: block;
+        width: 100%;
+    }
+
+    tbody {
+        padding: 8px;
+    }
+
+    tbody tr {
+        position: relative;
+
+        margin-bottom: 10px;
+        padding: 12px 12px 11px;
+
+        background: #fff;
+
+        border: 1px solid #dde4eb;
+        border-radius: 9px;
+    }
+
+    tbody tr:last-child {
+        margin-bottom: 0;
+    }
+
+    tbody tr:hover {
+        background: #fff;
+    }
+
+    td {
+        border: 0;
+        padding: 0;
+    }
+
+
+    /* AREA */
+
+    td.area {
+        width: auto;
+
+        display: inline-block;
+
+        margin-bottom: 8px;
+        padding: 4px 8px;
+
+        background: #eaf3ff;
+        border-radius: 5px;
+
+        color: #0864bb;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+
+    /* LOCATION */
+
+    td.location,
+    td:not(.area):not(.amount) {
+
+        padding-right: 0;
+
+        font-size: 12px;
+        line-height: 1.55;
+
+        color: #475569;
+    }
+
+
+    /* =========================================
+       PRICE
+    ========================================= */
+
+    td.amount {
+
+        display: block;
+
+        margin-top: 10px;
+        padding-top: 9px;
+
+        border-top: 1px solid #edf0f3;
+
+        text-align: right;
+
+        color: #10263f;
+
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+
+    td.amount::before {
+        content: "RATE";
+
+        float: left;
+
+        padding-top: 4px;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+
+    td.amount.negotiation {
+        font-size: 13px;
+        color: #b45309;
+    }
+
+
+    /* =========================================
+       CARD WRAPPER
+    ========================================= */
+
+    .card {
+        border-radius: 9px;
+        margin-bottom: 15px;
+    }
+
+    .card .table-scroll {
+        padding: 0;
+    }
+
+
+    /* =========================================
+       ADDITIONAL CHARGES
+    ========================================= */
+
+    .card-title {
+        padding: 12px 13px;
+        font-size: 13px;
+    }
+
+    .charge-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .charge-item {
+        padding: 12px;
+    }
+
+    .charge-name {
+        font-size: 9px;
+        line-height: 1.35;
+    }
+
+    .charge-value {
+        font-size: 15px;
+    }
+
+    .note {
+        padding: 12px;
+        font-size: 10px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       LINE HANDLING SUB MENU
+    ========================================= */
+
+    .sub-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+
+    .sub-btn {
+        padding: 9px 4px;
+        font-size: 10px;
+    }
+
+
+    /* =========================================
+       LINE HANDLING MOBILE
+    ========================================= */
+
+    #line tbody tr {
+        padding: 11px;
+    }
+
+    #line td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 5px 0;
+
+        font-size: 12px;
+    }
+
+    #line td:first-child {
+        display: block;
+
+        padding-bottom: 8px;
+        margin-bottom: 5px;
+
+        border-bottom: 1px solid #edf0f3;
+
+        font-weight: 700;
+        color: #334155;
+    }
+
+    #line td.amount {
+        margin-top: 0;
+        padding-top: 6px;
+
+        border-top: 0;
+
+        font-size: 15px;
+    }
+
+    #line td.amount::before {
+        content: "";
+        display: none;
+    }
+
+
+    /* Mooring */
+
+    #line td:nth-child(2).amount::before {
+        content: "MOORING";
+
+        display: block;
+        float: none;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+    }
+
+
+    /* Unmooring */
+
+    #line td:nth-child(3).amount::before {
+        content: "UNMOORING";
+
+        display: block;
+        float: none;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+    }
+
+
+    /* =========================================
+       SBM TABLE
+    ========================================= */
+
+    #line-sbm td.area {
+        display: inline-block;
+
+        padding: 4px 8px;
+        margin-bottom: 8px;
+
+        background: #eaf3ff;
+        border: 0;
+    }
+
+    #line-sbm td:nth-child(3).amount::before {
+        content: "MOORING";
+        display: block;
+    }
+
+    #line-sbm td:nth-child(4).amount::before {
+        content: "UNMOORING";
+        display: block;
+    }
+
 }
 </style>
 </head>
