@@ -120,16 +120,6 @@
     "remark": ""
   },
   {
-    "id": 8,
-    "grt": 8000,
-    "pier": "OTHER",
-    "pilot": 1500000,
-    "line": 650000,
-    "tug": 2500000,
-    "tugCount": 2,
-    "remark": ""
-  },
-  {
     "id": 12,
     "grt": 8000,
     "pier": "HHI",
@@ -138,5 +128,15 @@
     "tug": 5000000,
     "tugCount": 2,
     "remark": ""
+  },
+  {
+    "id": 8,
+    "grt": 14000,
+    "pier": "OTHER",
+    "pilot": 2500000,
+    "line": 900000,
+    "tug": 4500000,
+    "tugCount": 2,
+    "remark": "ONSAN"
   }
 ]
