@@ -111,9 +111,8 @@
   },
   {
     "id": 12,
-    "pier": "OTHER",
-    "pierName": "HHI",
     "grt": 8000,
+    "pier": "HHI",
     "pilot": 2800000,
     "line": 650000,
     "tug": 5000000,
