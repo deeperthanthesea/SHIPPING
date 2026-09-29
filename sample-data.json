@@ -30,6 +30,16 @@
     "remark": ""
   },
   {
+    "id": 13,
+    "grt": 5200,
+    "pier": "MAIN",
+    "pilot": 1500000,
+    "line": 650000,
+    "tug": 2500000,
+    "tugCount": 2,
+    "remark": ""
+  },
+  {
     "id": 4,
     "pier": "MAIN",
     "grt": 8000,
