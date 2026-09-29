@@ -41,7 +41,7 @@
   },
   {
     "id": 5,
-    "pier": "ONSAN",
+    "pier": "HHI",
     "grt": 1400,
     "pilot": 1200000,
     "line": 500000,
@@ -51,7 +51,7 @@
   },
   {
     "id": 6,
-    "pier": "ONSAN",
+    "pier": "HHI",
     "grt": 2900,
     "pilot": 1200000,
     "line": 500000,
@@ -61,7 +61,7 @@
   },
   {
     "id": 7,
-    "pier": "ONSAN",
+    "pier": "HHI",
     "grt": 4000,
     "pilot": 1300000,
     "line": 550000,
@@ -71,7 +71,7 @@
   },
   {
     "id": 8,
-    "pier": "ONSAN",
+    "pier": "HHI",
     "grt": 8000,
     "pilot": 1500000,
     "line": 650000,
