@@ -51,10 +51,10 @@
   },
   {
     "id": 4,
-    "pier": "MAIN",
     "grt": 8000,
-    "pilot": 1500000,
-    "line": 650000,
+    "pier": "MAIN",
+    "pilot": 1800000,
+    "line": 700000,
     "tug": 2500000,
     "tugCount": 2,
     "remark": ""
