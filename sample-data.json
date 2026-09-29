@@ -110,6 +110,16 @@
     "remark": ""
   },
   {
+    "id": 14,
+    "grt": 5200,
+    "pier": "HHI",
+    "pilot": 1800000,
+    "line": 600000,
+    "tug": 5500000,
+    "tugCount": 2,
+    "remark": ""
+  },
+  {
     "id": 8,
     "grt": 8000,
     "pier": "OTHER",
