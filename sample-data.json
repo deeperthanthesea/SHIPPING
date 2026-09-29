@@ -21,11 +21,11 @@
   },
   {
     "id": 3,
-    "pier": "MAIN",
     "grt": 4000,
+    "pier": "MAIN",
     "pilot": 1300000,
-    "line": 550000,
-    "tug": 1200000,
+    "line": 600000,
+    "tug": 1300000,
     "tugCount": 1,
     "remark": ""
   },
