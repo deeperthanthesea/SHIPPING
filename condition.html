@@ -2,9 +2,10 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
 
-<title>Vessel Condition Report</title>
+<title>Vessel Condition</title>
 
 <style>
 * {
@@ -13,251 +14,404 @@
 
 body {
   margin: 0;
-  background: #f3f5f8;
-  color: #202936;
-  font-family: -apple-system, BlinkMacSystemFont,
-               "Segoe UI", Arial, sans-serif;
+  background: #edf3f9;
+  color: #102b50;
+  font-family: Arial, sans-serif;
 }
 
 .app {
-  max-width: 1100px;
+  max-width: 600px;
   margin: auto;
-  padding: 22px 16px 60px;
+  min-height: 100vh;
+  background: white;
 }
 
 header {
-  margin-bottom: 22px;
+  background: #15385e;
+  color: white;
+  text-align: center;
+  padding: 19px 10px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
-h1 {
-  margin: 0;
-  font-size: 29px;
-  font-weight: 900;
+main {
+  padding: 12px;
 }
 
-.subtitle {
-  color: #87909c;
-  font-size: 12px;
-  margin-top: 5px;
+button, input, select, textarea {
+  font-family: inherit;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
+button {
+  cursor: pointer;
 }
 
-.panel {
+.toolbar {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.toolbar select {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #c6d7e8;
+  border-radius: 6px;
   background: white;
-  border: 1px solid #e0e5eb;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
+  color: #102b50;
 }
 
-.panel-title {
-  font-size: 13px;
-  font-weight: 900;
-  margin-bottom: 17px;
-  color: #344256;
+.toolbar button {
+  padding: 10px;
+  background: #e1ebf6;
+  border: 0;
+  border-radius: 6px;
+  color: #15385e;
+  font-weight: bold;
+}
+
+.vessel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 13px;
+}
+
+.vessel span {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.vessel input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #c6d7e8;
+  border-radius: 6px;
+  padding: 11px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #102b50;
 }
 
 .tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 5px;
+  margin-bottom: 12px;
 }
 
-.tab {
-  padding: 15px;
-  border: 1px solid #d9e0e8;
-  border-radius: 10px;
-  background: #f4f6f8;
-  color: #677383;
-  font-size: 14px;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.tab.active {
-  background: #20334e;
-  color: white;
-  border-color: #20334e;
-}
-
-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 900;
-  color: #687586;
-  margin-bottom: 7px;
-}
-
-input, textarea, select {
-  width: 100%;
-  border: 1px solid #dce2e8;
-  border-radius: 9px;
-  padding: 12px;
+.tabs button {
+  padding: 13px;
+  border: 1px solid #d2e0ed;
+  border-radius: 6px;
+  background: #e9f1f8;
+  color: #526a83;
+  font-weight: bold;
   font-size: 15px;
-  background: white;
-  color: #202936;
-  outline: none;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #607d9d;
+.tabs button.active {
+  background: #15385e;
+  color: white;
 }
 
-.field {
-  margin-bottom: 16px;
-}
-
-textarea {
-  min-height: 75px;
-  resize: vertical;
-}
-
-.row {
+.event {
   display: grid;
-  grid-template-columns: 0.85fr 1.4fr 34px;
-  gap: 7px;
-  margin-bottom: 9px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 52%);
+  gap: 6px;
+  align-items: center;
+  min-height: 58px;
+  padding: 8px 2px;
+  border-bottom: 1px solid #dce6ef;
 }
 
-.row input {
+.event-label {
   min-width: 0;
   font-size: 13px;
-  padding: 11px 8px;
+  line-height: 1.35;
+  font-weight: bold;
+  overflow-wrap: break-word;
 }
 
-.remove {
-  border: 0;
-  border-radius: 8px;
-  background: #fff0f0;
-  color: #bc5555;
-  font-size: 19px;
-  cursor: pointer;
+.first-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
 }
 
-button {
-  cursor: pointer;
-  font-family: inherit;
+.port-input {
+  width: 58px;
+  min-width: 0;
+  padding: 7px 3px;
+  border: 1px solid #c6d7e8;
+  border-radius: 5px;
+  color: #102b50;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
 }
 
-.btn {
-  border: 0;
-  border-radius: 10px;
-  padding: 14px;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.dark {
-  background: #20334e;
-  color: white;
-}
-
-.light {
-  background: #edf1f5;
-  color: #455468;
-}
-
-.blue {
-  background: #3267a3;
-  color: white;
-}
-
-.red {
-  background: #fff0f0;
-  color: #b54747;
-}
-
-.full {
-  width: 100%;
-}
-
-.buttons {
+.date-fields {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.preview {
-  position: sticky;
-  top: 15px;
-}
-
-canvas {
-  display: block;
+  grid-template-columns: 1.05fr .52fr .9fr;
+  gap: 3px;
   width: 100%;
-  height: auto;
-  border-radius: 9px;
-  border: 1px solid #e0e5eb;
+  min-width: 0;
 }
 
-.hint {
-  color: #89939e;
-  font-size: 11px;
-  line-height: 1.6;
-  margin-top: 12px;
-}
-
-.saved-item {
-  padding: 13px;
-  background: #f6f8fa;
-  border-radius: 9px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  border: 1px solid transparent;
-}
-
-.saved-item:hover {
-  border-color: #aab9cb;
-}
-
-.saved-name {
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.saved-info {
-  font-size: 11px;
-  color: #87909c;
-  margin-top: 5px;
-}
-
-.status {
+.date-fields input,
+.date-fields select {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid #c6d7e8;
+  border-radius: 5px;
+  background: white;
+  color: #102b50;
+  text-align: center;
   font-size: 12px;
-  font-weight: 800;
-  color: #278348;
-  margin-top: 12px;
-  min-height: 18px;
+  font-weight: bold;
 }
 
-@media(max-width: 760px) {
-  .layout {
-    grid-template-columns: 1fr;
+.date-fields select {
+  font-size: 11px;
+}
+
+.section-title {
+  margin-top: 14px;
+  padding: 9px;
+  background: #15385e;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px 5px 0 0;
+}
+
+.data-grid {
+  display: grid;
+  gap: 5px;
+  padding: 8px;
+  background: #eaf2f9;
+  border-radius: 0 0 5px 5px;
+}
+
+.rob {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.draft {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.data-item {
+  text-align: center;
+  min-width: 0;
+}
+
+.data-item label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.data-item input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 3px;
+  border: 1px solid #c6d7e8;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+  color: #102b50;
+}
+
+.remark {
+  margin-top: 14px;
+}
+
+.remark textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  border: 1px solid #c6d7e8;
+  border-radius: 5px;
+  resize: vertical;
+  font-size: 14px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.actions button {
+  padding: 13px 3px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.save {
+  background: #1763b4;
+  color: white;
+}
+
+.export {
+  background: #15385e;
+  color: white;
+}
+
+.delete {
+  background: #e7edf3;
+  color: #a42b2b;
+}
+
+#status {
+  margin: 12px 0;
+  font-size: 12px;
+  color: #62768b;
+  text-align: center;
+}
+
+dialog {
+  border: 1px solid #c6d7e8;
+  border-radius: 12px;
+  padding: 24px;
+  width: min(90vw, 360px);
+}
+
+dialog input {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+dialog button {
+  width: 100%;
+  padding: 12px;
+  background: #15385e;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+}
+
+/* PNG export layout */
+
+#exportSheet {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 760px;
+  background: white;
+  padding: 22px;
+  color: #102b50;
+}
+
+.report-header {
+  padding: 18px;
+  background: #15385e;
+  color: white;
+  text-align: center;
+  font-size: 29px;
+  font-weight: bold;
+}
+
+.report-vessel {
+  padding: 16px;
+  background: #eaf2f9;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.report-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 245px;
+  gap: 12px;
+  align-items: center;
+  min-height: 65px;
+  padding: 13px 10px;
+  border-bottom: 1px solid #dce6ef;
+}
+
+.report-label {
+  font-size: 19px;
+  font-weight: bold;
+  overflow-wrap: break-word;
+}
+
+.report-date {
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.report-section {
+  margin-top: 18px;
+}
+
+.report-section-title {
+  background: #15385e;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.report-values {
+  display: grid;
+  background: #eaf2f9;
+  padding: 12px;
+  gap: 10px;
+}
+
+.report-value {
+  text-align: center;
+  font-size: 18px;
+}
+
+.report-value strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 22px;
+}
+
+.report-remark {
+  margin-top: 18px;
+  padding: 16px;
+  background: #eaf2f9;
+  font-size: 18px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+@media(max-width: 360px) {
+  main {
+    padding: 8px;
   }
 
-  .app {
-    padding: 17px 11px 40px;
+  .event-label {
+    font-size: 11.5px;
   }
 
-  h1 {
-    font-size: 25px;
+  .port-input {
+    width: 48px;
+    font-size: 10px;
   }
 
-  .panel {
-    padding: 16px;
-  }
-
-  .preview {
-    position: static;
+  .date-fields input,
+  .date-fields select {
+    font-size: 11px;
   }
 }
 </style>
@@ -267,698 +421,718 @@ canvas {
 
 <div class="app">
 
-<header>
-  <h1>Condition Report</h1>
-  <div class="subtitle">
-    Vessel Arrival & Sailing Information
-  </div>
-</header>
+<header>VESSEL CONDITION</header>
 
-<div class="layout">
+<main>
 
-<div>
+<div class="toolbar">
+  <select id="recordSelect"></select>
+  <button id="newRecord">+ 새 기록</button>
+</div>
 
-<section class="panel">
-
-<div class="panel-title">REPORT TYPE</div>
+<div class="vessel">
+  <span>VESSEL :</span>
+  <input id="vesselName" placeholder="선박명 입력">
+</div>
 
 <div class="tabs">
-  <button id="arrivalTab" class="tab active"
-          onclick="changeType('arrival')">
-    ARRIVAL
-  </button>
-
-  <button id="sailingTab" class="tab"
-          onclick="changeType('sailing')">
-    SAILING
-  </button>
+  <button id="arrivalTab" class="active">ARRIVAL</button>
+  <button id="sailingTab">SAILING</button>
 </div>
 
-<div class="field">
-  <label>VESSEL NAME</label>
-  <input id="vessel" placeholder="MV VESSEL NAME">
+<div id="events"></div>
+
+<div class="section-title">R.O.B. (MT)</div>
+
+<div class="data-grid rob">
+  <div class="data-item">
+    <label>FO</label>
+    <input id="fo" inputmode="decimal">
+  </div>
+
+  <div class="data-item">
+    <label>MGO</label>
+    <input id="mgo" inputmode="decimal">
+  </div>
+
+  <div class="data-item">
+    <label>FW</label>
+    <input id="fw" inputmode="decimal">
+  </div>
 </div>
 
-<div class="field">
-  <label>PORT</label>
-  <input id="port" value="ULSAN, KOREA">
+<div class="section-title">DRAFT (M)</div>
+
+<div class="data-grid draft">
+  <div class="data-item">
+    <label>FWD</label>
+    <input id="fwd" inputmode="decimal">
+  </div>
+
+  <div class="data-item">
+    <label>AFT</label>
+    <input id="aft" inputmode="decimal">
+  </div>
 </div>
 
-<div class="field">
-  <label>BERTH / PIER</label>
-  <input id="pier" placeholder="e.g. HHI / MAIN">
-</div>
+<div class="section-title">REMARK</div>
 
-<div class="panel-title">DATE & TIME INFORMATION</div>
-
-<div id="rows"></div>
-
-<button class="btn light full" onclick="addRow()">
-  + ADD ITEM
-</button>
-
-<div class="hint">
-  왼쪽에는 항목명, 오른쪽에는 날짜 또는 시간을 입력하세요.
-  입력한 숫자는 자동 변환하지 않고 그대로 표시합니다.
-  최대 8개 항목까지 이미지에 표시할 수 있습니다.
-</div>
-
-<div class="field" style="margin-top:20px">
-  <label>REMARK</label>
+<div class="remark">
   <textarea id="remark"
-    placeholder="Additional information..."></textarea>
+    placeholder="메모 입력"></textarea>
 </div>
 
-<div class="buttons">
-  <button class="btn light" onclick="newReport()">
-    NEW REPORT
-  </button>
-
-  <button class="btn dark" onclick="saveReport()">
-    SAVE REPORT
-  </button>
+<div class="actions">
+  <button class="delete" id="deleteRecord">삭제</button>
+  <button class="save" id="saveRecord">저장</button>
+  <button class="export" id="exportImage">PNG 내보내기</button>
 </div>
 
-<div id="status" class="status"></div>
+<p id="status"></p>
 
-</section>
-
-<section class="panel">
-
-<div class="panel-title">SAVED REPORTS</div>
-
-<div id="savedList"></div>
-
-<div class="buttons">
-  <button class="btn light" onclick="loadSelected()">
-    LOAD
-  </button>
-
-  <button class="btn red" onclick="deleteSelected()">
-    DELETE
-  </button>
+</main>
 </div>
 
-</section>
+<dialog id="authDialog">
+  <form id="authForm">
+    <strong>온라인 저장 연결</strong>
+    <p>Cloudflare에 설정한 접속 암호를 입력하세요.</p>
+    <input id="password" type="password" required>
+    <button type="submit">연결</button>
+  </form>
+</dialog>
 
-</div>
+<div id="exportSheet"></div>
 
-<div>
-
-<section class="panel preview">
-
-<div class="panel-title">IMAGE PREVIEW</div>
-
-<canvas id="reportCanvas"
-        width="1080"
-        height="1920"></canvas>
-
-<button class="btn blue full"
-        style="margin-top:15px"
-        onclick="exportImage()">
-  ↓ EXPORT PNG IMAGE
-</button>
-
-<div class="hint">
-  이미지 크기: 1080 × 1920px<br>
-  ARRIVAL 또는 SAILING 정보가 한 장에 저장됩니다.
-</div>
-
-</section>
-
-</div>
-
-</div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <script>
 
-const STORAGE_KEY = "shipping_condition_reports_v1";
+const MONTHS = [
+  "JAN","FEB","MAR","APR","MAY","JUN",
+  "JUL","AUG","SEP","OCT","NOV","DEC"
+];
 
-const DEFAULTS = {
+const LABELS = {
   arrival: [
-    "ETA",
-    "SBE / EOSP",
-    "NOR TENDERED",
-    "ANCHOR DROPPED",
-    "POB",
-    "ALL FAST",
-    "ETB"
+    "Arrived Ulsan (Drop Anchor)",
+    "Arrived Ulsan (Drifting)",
+    "N/R Tendered",
+    "N/R Accepted",
+    "Free Pratique Granted",
+    "Hove Anchor (Anchor Aweigh)",
+    "Pilot Onboarding",
+    "First Line To",
+    "All Made Fast",
+    "Commenced Loading / Discharging"
   ],
 
   sailing: [
-    "ETC",
+    "Complete Loading / Discharge",
     "POB",
-    "LAST LINE",
-    "ETD",
-    "DLOSP",
-    "NEXT PORT"
+    "Sailed Ulsan"
   ]
 };
 
 const $ = id => document.getElementById(id);
 
-function uid() {
-  if (window.crypto && crypto.randomUUID) {
-    return crypto.randomUUID();
-  }
-  return Date.now() + "-" + Math.random();
-}
-
-function blankReport(type = "arrival") {
+function blankSection(type) {
   return {
-    id: uid(),
-    type: type,
-    vessel: "",
-    port: "ULSAN, KOREA",
-    pier: "",
-    remark: "",
-    rows: DEFAULTS[type].map(label => ({
-      label: label,
-      value: ""
-    }))
+    times: LABELS[type].map(() => ({
+      time: "",
+      day: "",
+      month: ""
+    })),
+    port: "",
+    rob: { fo:"", mgo:"", fw:"" },
+    draft: { fwd:"", aft:"" },
+    remark: ""
   };
 }
 
-function readStorage() {
-  try {
-    const value = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
-    return Array.isArray(value) ? value : [];
-  } catch {
-    return [];
+function blankData() {
+  return {
+    arrival: blankSection("arrival"),
+    sailing: blankSection("sailing")
+  };
+}
+
+function exampleRecord() {
+  const data = blankData();
+
+  const times = [
+    "0100","",
+    "0100","0130","0200",
+    "0530","0600","0645",
+    "0700","0800"
+  ];
+
+  data.arrival.times.forEach((item, i) => {
+    item.time = times[i];
+    item.day = times[i] ? "09" : "";
+    item.month = times[i] ? "OCT" : "";
+  });
+
+  data.arrival.port = "ULSAN";
+
+  data.arrival.rob = {
+    fo: "268.58",
+    mgo: "24.24",
+    fw: "101"
+  };
+
+  data.arrival.draft = {
+    fwd: "7.2",
+    aft: "7.3"
+  };
+
+  data.arrival.remark = "-";
+
+  return {
+    id: crypto.randomUUID(),
+    vessel: "SHUN CHI",
+    data,
+    updated_at: ""
+  };
+}
+
+let records = [];
+let current = exampleRecord();
+let tab = "arrival";
+let dirty = false;
+
+function setStatus(message) {
+  $("status").textContent = message;
+}
+
+function markDirty() {
+  dirty = true;
+  setStatus("수정 중 · 저장되지 않음");
+}
+
+function make(tag, className, value) {
+  const el = document.createElement(tag);
+
+  if (className) el.className = className;
+  if (value !== undefined) el.textContent = value;
+
+  return el;
+}
+
+function renderList() {
+  const select = $("recordSelect");
+  select.replaceChildren();
+
+  const list = [...records];
+
+  if (!list.some(r => r.id === current.id)) {
+    list.unshift(current);
   }
+
+  list.forEach(r => {
+    const option = document.createElement("option");
+
+    option.value = r.id;
+
+    const date = r.updated_at
+      ? " · " + r.updated_at.slice(0,10)
+      : " · 작성 중";
+
+    option.textContent = (r.vessel || "새 선박") + date;
+
+    select.appendChild(option);
+  });
+
+  select.value = current.id;
 }
 
-let reports = readStorage();
-let current = blankReport();
-let selectedId = null;
+function render() {
+  $("vesselName").value = current.vessel;
 
-function message(text) {
-  $("status").textContent = text;
-
-  setTimeout(() => {
-    if ($("status").textContent === text) {
-      $("status").textContent = "";
-    }
-  }, 3500);
-}
-
-function updateTabs() {
   $("arrivalTab").classList.toggle(
-    "active", current.type === "arrival"
+    "active", tab === "arrival"
   );
 
   $("sailingTab").classList.toggle(
-    "active", current.type === "sailing"
-  );
-}
-
-function changeType(type) {
-  if (current.type === type) return;
-
-  const hasValues = current.rows.some(
-    row => row.value.trim() !== ""
+    "active", tab === "sailing"
   );
 
-  if (hasValues) {
-    if (!confirm(
-      "보고서 종류를 변경하면 날짜/시간 항목이 초기화됩니다. 계속할까요?"
-    )) return;
-  }
+  const section = current.data[tab];
+  const container = $("events");
 
-  current.type = type;
-
-  current.rows = DEFAULTS[type].map(label => ({
-    label: label,
-    value: ""
-  }));
-
-  updateTabs();
-  renderRows();
-  renderPreview();
-}
-
-function renderRows() {
-  const container = $("rows");
   container.replaceChildren();
 
-  current.rows.forEach((row, index) => {
+  LABELS[tab].forEach((name, i) => {
+    const row = make("div", "event");
+    const label = make("div", "event-label", name);
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "row";
+    if (tab === "arrival" && i === 7) {
+      label.classList.add("first-label");
 
-    const label = document.createElement("input");
-    label.placeholder = "ITEM";
-    label.value = row.label;
+      const port = make("input", "port-input");
 
-    label.addEventListener("input", e => {
-      current.rows[index].label = e.target.value;
-      renderPreview();
+      port.placeholder = "PORT";
+      port.value = section.port || "";
+      port.id = "firstLinePort";
+      port.maxLength = 30;
+
+      label.appendChild(port);
+    }
+
+    const date = make("div", "date-fields");
+    date.classList.add("dateSet");
+    date.dataset.index = i;
+
+    const time = document.createElement("input");
+    time.inputMode = "numeric";
+    time.maxLength = 4;
+    time.placeholder = "0000";
+    time.dataset.part = "time";
+    time.value = section.times[i].time || "";
+
+    const day = document.createElement("input");
+    day.inputMode = "numeric";
+    day.maxLength = 2;
+    day.placeholder = "DD";
+    day.dataset.part = "day";
+    day.value = section.times[i].day || "";
+
+    const month = document.createElement("select");
+    month.dataset.part = "month";
+
+    const empty = document.createElement("option");
+    empty.value = "";
+    empty.textContent = "MON";
+    month.appendChild(empty);
+
+    MONTHS.forEach(m => {
+      const option = document.createElement("option");
+      option.value = m;
+      option.textContent = m;
+      month.appendChild(option);
     });
 
-    const value = document.createElement("input");
-    value.placeholder = "DATE / TIME";
-    value.value = row.value;
+    month.value = section.times[i].month || "";
 
-    value.addEventListener("input", e => {
-      current.rows[index].value = e.target.value;
-      renderPreview();
-    });
-
-    const remove = document.createElement("button");
-    remove.className = "remove";
-    remove.textContent = "×";
-
-    remove.addEventListener("click", () => {
-      current.rows.splice(index, 1);
-      renderRows();
-      renderPreview();
-    });
-
-    wrapper.append(label, value, remove);
-    container.appendChild(wrapper);
-
+    date.append(time, day, month);
+    row.append(label, date);
+    container.appendChild(row);
   });
+
+  ["fo","mgo","fw"].forEach(key => {
+    $(key).value = section.rob[key] || "";
+  });
+
+  ["fwd","aft"].forEach(key => {
+    $(key).value = section.draft[key] || "";
+  });
+
+  $("remark").value = section.remark || "";
+
+  renderList();
 }
 
-function addRow() {
-  if (current.rows.length >= 8) {
-    alert("이미지 가독성을 위해 최대 8개 항목까지 가능합니다.");
+function readForm() {
+  current.vessel = $("vesselName").value.trim();
+
+  const section = current.data[tab];
+
+  document.querySelectorAll(".dateSet").forEach(el => {
+    const i = Number(el.dataset.index);
+
+    const time = el.querySelector('[data-part="time"]')
+      .value.replace(/\D/g,"").slice(0,4);
+
+    const day = el.querySelector('[data-part="day"]')
+      .value.replace(/\D/g,"").slice(0,2);
+
+    const month = el.querySelector('[data-part="month"]').value;
+
+    section.times[i] = { time, day, month };
+  });
+
+  if (tab === "arrival") {
+    section.port = $("firstLinePort").value.trim();
+  }
+
+  ["fo","mgo","fw"].forEach(key => {
+    section.rob[key] = $(key).value.trim();
+  });
+
+  ["fwd","aft"].forEach(key => {
+    section.draft[key] = $(key).value.trim();
+  });
+
+  section.remark = $("remark").value;
+}
+
+function switchTab(next) {
+  readForm();
+  tab = next;
+  render();
+}
+
+$("arrivalTab").onclick = () => switchTab("arrival");
+$("sailingTab").onclick = () => switchTab("sailing");
+
+document.querySelector("main").addEventListener(
+  "input", markDirty
+);
+
+document.querySelector("main").addEventListener(
+  "change", e => {
+    if (e.target.id !== "recordSelect") markDirty();
+  }
+);
+
+$("newRecord").onclick = () => {
+  if (dirty && !confirm("저장하지 않은 수정 내용이 있습니다. 새 기록을 만들까요?")) {
     return;
   }
 
-  current.rows.push({
-    label: "",
-    value: ""
-  });
+  const vessel = current.vessel;
 
-  renderRows();
-  renderPreview();
-}
+  current = {
+    id: crypto.randomUUID(),
+    vessel,
+    data: blankData(),
+    updated_at: ""
+  };
 
-function syncForm() {
-  current.vessel = $("vessel").value;
-  current.port = $("port").value;
-  current.pier = $("pier").value;
-  current.remark = $("remark").value;
-}
+  tab = "arrival";
+  dirty = false;
 
-function fillForm() {
-  $("vessel").value = current.vessel || "";
-  $("port").value = current.port || "";
-  $("pier").value = current.pier || "";
-  $("remark").value = current.remark || "";
+  render();
+  setStatus("새 기록 작성 중");
+};
 
-  updateTabs();
-  renderRows();
-  renderPreview();
-}
+$("recordSelect").onchange = e => {
+  const id = e.target.value;
 
-function newReport() {
-  current = blankReport();
-  selectedId = null;
-  fillForm();
-  renderSaved();
-  message("New report created.");
-}
-
-function saveReport() {
-  syncForm();
-
-  if (!current.vessel.trim()) {
-    alert("VESSEL NAME을 입력하세요.");
+  if (dirty && !confirm("저장하지 않은 수정 내용이 사라집니다. 계속할까요?")) {
+    e.target.value = current.id;
     return;
   }
 
-  const index = reports.findIndex(
-    report => report.id === current.id
+  const found = records.find(r => r.id === id);
+
+  if (found) {
+    current = structuredClone(found);
+  }
+
+  tab = "arrival";
+  dirty = false;
+  render();
+
+  setStatus("기록을 불러왔습니다.");
+};
+
+function getPassword() {
+  return sessionStorage.getItem("condition_password");
+}
+
+async function api(method, body) {
+  const password = getPassword();
+
+  if (!password) {
+    $("authDialog").showModal();
+    throw new Error("먼저 접속 암호를 입력하세요.");
+  }
+
+  const response = await fetch("/api/records", {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + password
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+
+  const result = await response.json();
+
+  if (response.status === 401) {
+    sessionStorage.removeItem("condition_password");
+    $("authDialog").showModal();
+  }
+
+  if (!response.ok) {
+    throw new Error(result.error || "서버 오류");
+  }
+
+  return result;
+}
+
+async function loadRecords() {
+  try {
+    const result = await api("GET");
+
+    records = result.records.map(r => ({
+      ...r,
+      data: JSON.parse(r.data)
+    }));
+
+    if (records.length) {
+      current = structuredClone(records[0]);
+    }
+
+    dirty = false;
+    render();
+
+    setStatus("온라인 데이터베이스 연결 완료");
+  } catch (error) {
+    setStatus(error.message);
+  }
+}
+
+$("authForm").onsubmit = async e => {
+  e.preventDefault();
+
+  sessionStorage.setItem(
+    "condition_password",
+    $("password").value
   );
 
-  const copy = JSON.parse(JSON.stringify(current));
-  copy.updated = new Date().toISOString();
+  $("authDialog").close();
+  $("password").value = "";
 
-  const next = [...reports];
+  await loadRecords();
+};
 
-  if (index >= 0) {
-    next[index] = copy;
-  } else {
-    next.unshift(copy);
+$("saveRecord").onclick = async () => {
+  readForm();
+
+  if (!current.vessel) {
+    alert("선박명을 입력하세요.");
+    return;
   }
 
   try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(next)
-    );
+    const result = await api("POST", current);
 
-    reports = next;
-    selectedId = current.id;
+    current.updated_at = result.updated_at;
 
-    renderSaved();
-    message("Report saved successfully.");
+    records = records.filter(r => r.id !== current.id);
+    records.unshift(structuredClone(current));
 
+    dirty = false;
+    renderList();
+
+    setStatus("온라인 저장 완료");
+    alert("저장되었습니다.");
   } catch (error) {
-    alert("저장하지 못했습니다: " + error.message);
+    setStatus(error.message);
+    alert("저장 실패: " + error.message);
   }
-}
+};
 
-function renderSaved() {
-  const container = $("savedList");
-  container.replaceChildren();
+$("deleteRecord").onclick = async () => {
+  if (!confirm("이 기록을 삭제할까요?")) return;
 
-  if (!reports.length) {
-    const empty = document.createElement("div");
-    empty.className = "hint";
-    empty.textContent = "No saved reports.";
-    container.appendChild(empty);
-    return;
-  }
-
-  reports.forEach(report => {
-    const item = document.createElement("div");
-    item.className = "saved-item";
-
-    if (selectedId === report.id) {
-      item.style.borderColor = "#3267a3";
-      item.style.background = "#edf4fb";
-    }
-
-    const name = document.createElement("div");
-    name.className = "saved-name";
-    name.textContent = report.vessel || "UNTITLED";
-
-    const info = document.createElement("div");
-    info.className = "saved-info";
-    info.textContent =
-      (report.type || "").toUpperCase() +
-      " · " + (report.port || "");
-
-    item.append(name, info);
-
-    item.onclick = () => {
-      selectedId = report.id;
-      renderSaved();
-      loadSelected();
-    };
-
-    container.appendChild(item);
-  });
-}
-
-function loadSelected() {
-  if (!selectedId) {
-    alert("불러올 보고서를 선택하세요.");
-    return;
-  }
-
-  const report = reports.find(
-    item => item.id === selectedId
-  );
-
-  if (!report) return;
-
-  current = JSON.parse(JSON.stringify(report));
-  fillForm();
-  message("Report loaded.");
-}
-
-function deleteSelected() {
-  if (!selectedId) {
-    alert("삭제할 보고서를 선택하세요.");
-    return;
-  }
-
-  if (!confirm("선택한 보고서를 삭제할까요?")) {
-    return;
-  }
-
-  const next = reports.filter(
-    item => item.id !== selectedId
-  );
+  const saved = records.some(r => r.id === current.id);
 
   try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(next)
-    );
+    if (saved) {
+      await api("DELETE", { id: current.id });
+    }
 
-    reports = next;
-    selectedId = null;
-    current = blankReport();
+    records = records.filter(r => r.id !== current.id);
 
-    fillForm();
-    renderSaved();
-    message("Report deleted.");
+    current = records.length
+      ? structuredClone(records[0])
+      : {
+          id: crypto.randomUUID(),
+          vessel: "",
+          data: blankData(),
+          updated_at: ""
+        };
 
+    tab = "arrival";
+    dirty = false;
+    render();
+
+    setStatus("기록이 삭제되었습니다.");
   } catch (error) {
-    alert("삭제하지 못했습니다: " + error.message);
+    alert("삭제 실패: " + error.message);
   }
+};
+
+function ordinal(day) {
+  const n = Number(day);
+
+  if (!n) return "";
+
+  const suffix =
+    n % 100 >= 11 && n % 100 <= 13
+      ? "TH"
+      : n % 10 === 1
+      ? "ST"
+      : n % 10 === 2
+      ? "ND"
+      : n % 10 === 3
+      ? "RD"
+      : "TH";
+
+  return String(n).padStart(2,"0") + suffix;
 }
 
-/* IMAGE DRAWING */
-
-const canvas = $("reportCanvas");
-const ctx = canvas.getContext("2d");
-
-function fitText(text, maxWidth, startSize, minSize, weight = 900) {
-  let size = startSize;
-
-  while (size > minSize) {
-    ctx.font = weight + " " + size + "px Arial";
-
-    if (ctx.measureText(text).width <= maxWidth) {
-      break;
-    }
-
-    size -= 2;
+function formatDate(item) {
+  if (!item.time || !item.day || !item.month) {
+    return "-";
   }
 
-  ctx.font = weight + " " + size + "px Arial";
-  return size;
+  return item.time.padStart(4,"0")
+    + "/"
+    + ordinal(item.day)
+    + " "
+    + item.month;
 }
 
-function drawText(text, x, y, maxWidth, size, minSize, color, weight = 900) {
-  const value = String(text || "");
+function buildExport() {
+  const sheet = $("exportSheet");
+  sheet.replaceChildren();
 
-  fitText(value, maxWidth, size, minSize, weight);
+  const section = current.data[tab];
 
-  ctx.fillStyle = color;
-  ctx.fillText(value, x, y);
-}
+  const title = tab === "arrival"
+    ? "ARRIVAL CONDITION"
+    : "SAILING CONDITION";
 
-function drawWrapped(text, x, y, maxWidth, lineHeight, maxLines = 3) {
-  const words = String(text || "").split(/\s+/);
-  let line = "";
-  let lines = [];
+  sheet.appendChild(
+    make("div","report-header",title)
+  );
 
-  ctx.font = "500 31px Arial";
+  sheet.appendChild(
+    make("div","report-vessel",
+      "VESSEL : " + current.vessel)
+  );
 
-  words.forEach(word => {
-    const test = line ? line + " " + word : word;
+  LABELS[tab].forEach((name,i) => {
+    const row = make("div","report-row");
 
-    if (ctx.measureText(test).width > maxWidth && line) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = test;
+    let labelText = name;
+
+    if (tab === "arrival" && i === 7 && section.port) {
+      labelText += " (" + section.port + ")";
     }
-  });
 
-  if (line) lines.push(line);
-
-  lines.slice(0, maxLines).forEach((line, index) => {
-    drawText(
-      line,
-      x,
-      y + index * lineHeight,
-      maxWidth,
-      31,
-      22,
-      "#475569",
-      500
+    row.appendChild(
+      make("div","report-label",labelText)
     );
+
+    row.appendChild(
+      make("div","report-date",
+        formatDate(section.times[i]))
+    );
+
+    sheet.appendChild(row);
   });
+
+  function addSection(title, values, columns) {
+    const wrap = make("div","report-section");
+
+    wrap.appendChild(
+      make("div","report-section-title",title)
+    );
+
+    const grid = make("div","report-values");
+
+    grid.style.gridTemplateColumns =
+      `repeat(${columns}, minmax(0, 1fr))`;
+
+    values.forEach(([label,value]) => {
+      const item = make("div","report-value");
+
+      item.appendChild(make("div","",label));
+      item.appendChild(make("strong","",value || "-"));
+
+      grid.appendChild(item);
+    });
+
+    wrap.appendChild(grid);
+    sheet.appendChild(wrap);
+  }
+
+  addSection("R.O.B. (MT)", [
+    ["FO",section.rob.fo],
+    ["MGO",section.rob.mgo],
+    ["FW",section.rob.fw]
+  ],3);
+
+  addSection("DRAFT (M)", [
+    ["FWD",section.draft.fwd],
+    ["AFT",section.draft.aft]
+  ],2);
+
+  sheet.appendChild(
+    make("div","report-remark",
+      "REMARK\n" + (section.remark || "-"))
+  );
+
+  return sheet;
 }
 
-function renderPreview() {
-  syncForm();
+$("exportImage").onclick = async () => {
+  readForm();
 
-  const W = 1080;
-  const H = 1920;
+  if (typeof html2canvas === "undefined") {
+    alert("이미지 변환 기능을 불러오지 못했습니다.");
+    return;
+  }
 
-  canvas.width = W;
-  canvas.height = H;
+  const button = $("exportImage");
+  button.disabled = true;
+  button.textContent = "변환 중...";
 
-  ctx.clearRect(0, 0, W, H);
+  try {
+    const sheet = buildExport();
 
-  ctx.fillStyle = "#f5f7fa";
-  ctx.fillRect(0, 0, W, H);
+    const canvas = await html2canvas(sheet, {
+      backgroundColor: "#ffffff",
+      scale: 2,
+      windowWidth: 800,
+      logging: false
+    });
 
-  /* HEADER */
+    const blob = await new Promise(resolve => {
+      canvas.toBlob(resolve,"image/png");
+    });
 
-  ctx.fillStyle = "#20334e";
-  ctx.fillRect(0, 0, W, 335);
-
-  ctx.textAlign = "left";
-  ctx.textBaseline = "alphabetic";
-
-  drawText(
-    current.type === "arrival"
-      ? "ARRIVAL CONDITION"
-      : "SAILING CONDITION",
-    75, 95, 930, 65, 42, "#ffffff"
-  );
-
-  drawText(
-    "VESSEL INFORMATION REPORT",
-    75, 145, 900, 28, 24, "#b8c8db", 700
-  );
-
-  drawText(
-    current.vessel || "MV VESSEL NAME",
-    75, 240, 930, 72, 38, "#ffffff"
-  );
-
-  const location = [
-    current.port,
-    current.pier
-  ].filter(Boolean).join("  |  ");
-
-  drawText(
-    location || "PORT / BERTH",
-    75, 297, 930, 31, 22, "#d5e1ef", 700
-  );
-
-  /* INFORMATION ROWS */
-
-  const rows = current.rows.filter(
-    row => row.label.trim() || row.value.trim()
-  );
-
-  const count = Math.max(rows.length, 1);
-
-  const startY = 370;
-  const endY = 1690;
-  const rowHeight = Math.min(
-    185,
-    (endY - startY) / count
-  );
-
-  rows.forEach((row, index) => {
-    const top = startY + index * rowHeight;
-
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(
-      45,
-      top,
-      990,
-      rowHeight - 11
-    );
-
-    ctx.fillStyle = "#dce4ed";
-    ctx.fillRect(
-      45,
-      top,
-      9,
-      rowHeight - 11
-    );
-
-    drawText(
-      (row.label || "ITEM").toUpperCase(),
-      85,
-      top + 49,
-      900,
-      31,
-      22,
-      "#738196",
-      800
-    );
-
-    drawText(
-      row.value || "—",
-      85,
-      top + Math.min(rowHeight - 34, 127),
-      905,
-      76,
-      32,
-      "#15263d"
-    );
-  });
-
-  /* REMARK */
-
-  ctx.fillStyle = "#e8edf3";
-  ctx.fillRect(45, 1730, 990, 130);
-
-  drawText(
-    "REMARK",
-    75, 1770, 900, 27, 22, "#738196"
-  );
-
-  drawWrapped(
-    current.remark || "—",
-    75,
-    1815,
-    925,
-    35,
-    2
-  );
-
-  /* FOOTER */
-
-  ctx.fillStyle = "#20334e";
-  ctx.fillRect(0, 1880, W, 40);
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "700 21px Arial";
-  ctx.fillText("VESSEL CONDITION REPORT", 75, 1908);
-}
-
-function exportImage() {
-  renderPreview();
-
-  const name = (current.vessel || "VESSEL")
-    .replace(/[^a-zA-Z0-9가-힣_-]/g, "_");
-
-  const type = current.type.toUpperCase();
-
-  const filename = name + "_" + type + ".png";
-
-  canvas.toBlob(blob => {
-    if (!blob) {
-      alert("이미지를 생성하지 못했습니다.");
-      return;
-    }
+    if (!blob) throw new Error("이미지 생성 실패");
 
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
 
-    link.href = url;
-    link.download = filename;
+    const a = document.createElement("a");
 
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+    a.href = url;
+    a.download =
+      (current.vessel || "VESSEL").replace(/[^\w-]/g,"_")
+      + "_"
+      + tab.toUpperCase()
+      + ".png";
 
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-    }, 10000);
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
 
-  }, "image/png");
+    setTimeout(() => URL.revokeObjectURL(url),60000);
+
+    setStatus("PNG 이미지 생성 완료");
+
+  } catch (error) {
+    alert("이미지 생성 실패: " + error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = "PNG 내보내기";
+  }
+};
+
+render();
+
+if (getPassword()) {
+  loadRecords();
+} else {
+  $("authDialog").showModal();
 }
-
-/* LIVE UPDATE */
-
-["vessel", "port", "pier", "remark"].forEach(id => {
-  $(id).addEventListener("input", renderPreview);
-});
-
-/* INITIALIZE */
-
-fillForm();
-renderSaved();
 
 </script>
 
