@@ -357,23 +357,38 @@ dialog button {
 }
 
 .report-section {
-  margin-top: 18px;
+  margin-top: 22px;
+  width: 100%;
 }
 
 .report-section-title {
+  display: block;
+  width: 100%;
+  background: #15385e !important;
+  color: #ffffff !important;
+  text-align: center;
+  padding: 16px;
   font-size: 30px;
   font-weight: 800;
-  padding: 16px;
 }
 
 .report-values {
-  padding: 20px 12px;
-  gap: 12px;
+  display: table !important;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: #eaf2f9 !important;
+  padding: 0;
 }
 
 .report-value {
+  display: table-cell !important;
+  text-align: center;
+  vertical-align: middle;
+  padding: 22px 8px;
   font-size: 28px;
   font-weight: 700;
+  color: #102b50;
 }
 
 .report-value strong {
@@ -381,6 +396,7 @@ dialog button {
   margin-top: 12px;
   font-size: 36px;
   font-weight: 800;
+  color: #102b50;
 }
 
 .report-remark {
@@ -1029,31 +1045,54 @@ function buildExport() {
 
     sheet.appendChild(row);
   });
+function addSection(title, values, columns) {
 
-  function addSection(title, values, columns) {
-    const wrap = make("div","report-section");
+  const wrap = make("div", "report-section");
 
-    wrap.appendChild(
-      make("div","report-section-title",title)
+  const heading = make(
+    "div",
+    "report-section-title",
+    title
+  );
+
+  wrap.appendChild(heading);
+
+  const table = document.createElement("table");
+  table.className = "report-values";
+
+  const row = document.createElement("tr");
+
+  values.forEach(([label, value]) => {
+
+    const cell = document.createElement("td");
+    cell.className = "report-value";
+
+    cell.style.width = (100 / columns) + "%";
+
+    const labelElement = make(
+      "div",
+      "",
+      label
     );
 
-    const grid = make("div","report-values");
+    const valueElement = make(
+      "strong",
+      "",
+      value || "-"
+    );
 
-    grid.style.gridTemplateColumns =
-      `repeat(${columns}, minmax(0, 1fr))`;
+    cell.appendChild(labelElement);
+    cell.appendChild(valueElement);
 
-    values.forEach(([label,value]) => {
-      const item = make("div","report-value");
+    row.appendChild(cell);
 
-      item.appendChild(make("div","",label));
-      item.appendChild(make("strong","",value || "-"));
+  });
 
-      grid.appendChild(item);
-    });
+  table.appendChild(row);
+  wrap.appendChild(table);
 
-    wrap.appendChild(grid);
-    sheet.appendChild(wrap);
-  }
+  sheet.appendChild(wrap);
+}
 
   addSection("R.O.B. (MT)", [
     ["FO",section.rob.fo],
