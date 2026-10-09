@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vessel Condition Report</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f3f5f8;
+  color: #202936;
+  font-family: -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Arial, sans-serif;
+}
+
+.app {
+  max-width: 1100px;
+  margin: auto;
+  padding: 22px 16px 60px;
+}
+
+header {
+  margin-bottom: 22px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 29px;
+  font-weight: 900;
+}
+
+.subtitle {
+  color: #87909c;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #e0e5eb;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 17px;
+  color: #344256;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 15px;
+  border: 1px solid #d9e0e8;
+  border-radius: 10px;
+  background: #f4f6f8;
+  color: #677383;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #20334e;
+  color: white;
+  border-color: #20334e;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  color: #687586;
+  margin-bottom: 7px;
+}
+
+input, textarea, select {
+  width: 100%;
+  border: 1px solid #dce2e8;
+  border-radius: 9px;
+  padding: 12px;
+  font-size: 15px;
+  background: white;
+  color: #202936;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #607d9d;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+textarea {
+  min-height: 75px;
+  resize: vertical;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 0.85fr 1.4fr 34px;
+  gap: 7px;
+  margin-bottom: 9px;
+}
+
+.row input {
+  min-width: 0;
+  font-size: 13px;
+  padding: 11px 8px;
+}
+
+.remove {
+  border: 0;
+  border-radius: 8px;
+  background: #fff0f0;
+  color: #bc5555;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.dark {
+  background: #20334e;
+  color: white;
+}
+
+.light {
+  background: #edf1f5;
+  color: #455468;
+}
+
+.blue {
+  background: #3267a3;
+  color: white;
+}
+
+.red {
+  background: #fff0f0;
+  color: #b54747;
+}
+
+.full {
+  width: 100%;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.preview {
+  position: sticky;
+  top: 15px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 9px;
+  border: 1px solid #e0e5eb;
+}
+
+.hint {
+  color: #89939e;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.saved-item {
+  padding: 13px;
+  background: #f6f8fa;
+  border-radius: 9px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.saved-item:hover {
+  border-color: #aab9cb;
+}
+
+.saved-name {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.saved-info {
+  font-size: 11px;
+  color: #87909c;
+  margin-top: 5px;
+}
+
+.status {
+  font-size: 12px;
+  font-weight: 800;
+  color: #278348;
+  margin-top: 12px;
+  min-height: 18px;
+}
+
+@media(max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .app {
+    padding: 17px 11px 40px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .preview {
+    position: static;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <h1>Condition Report</h1>
+  <div class="subtitle">
+    Vessel Arrival & Sailing Information
+  </div>
+</header>
+
+<div class="layout">
+
+<div>
+
+<section class="panel">
+
+<div class="panel-title">REPORT TYPE</div>
+
+<div class="tabs">
+  <button id="arrivalTab" class="tab active"
+          onclick="changeType('arrival')">
+    ARRIVAL
+  </button>
+
+  <button id="sailingTab" class="tab"
+          onclick="changeType('sailing')">
+    SAILING
+  </button>
+</div>
+
+<div class="field">
+  <label>VESSEL NAME</label>
+  <input id="vessel" placeholder="MV VESSEL NAME">
+</div>
+
+<div class="field">
+  <label>PORT</label>
+  <input id="port" value="ULSAN, KOREA">
+</div>
+
+<div class="field">
+  <label>BERTH / PIER</label>
+  <input id="pier" placeholder="e.g. HHI / MAIN">
+</div>
+
+<div class="panel-title">DATE & TIME INFORMATION</div>
+
+<div id="rows"></div>
+
+<button class="btn light full" onclick="addRow()">
+  + ADD ITEM
+</button>
+
+<div class="hint">
+  왼쪽에는 항목명, 오른쪽에는 날짜 또는 시간을 입력하세요.
+  입력한 숫자는 자동 변환하지 않고 그대로 표시합니다.
+  최대 8개 항목까지 이미지에 표시할 수 있습니다.
+</div>
+
+<div class="field" style="margin-top:20px">
+  <label>REMARK</label>
+  <textarea id="remark"
+    placeholder="Additional information..."></textarea>
+</div>
+
+<div class="buttons">
+  <button class="btn light" onclick="newReport()">
+    NEW REPORT
+  </button>
+
+  <button class="btn dark" onclick="saveReport()">
+    SAVE REPORT
+  </button>
+</div>
+
+<div id="status" class="status"></div>
+
+</section>
+
+<section class="panel">
+
+<div class="panel-title">SAVED REPORTS</div>
+
+<div id="savedList"></div>
+
+<div class="buttons">
+  <button class="btn light" onclick="loadSelected()">
+    LOAD
+  </button>
+
+  <button class="btn red" onclick="deleteSelected()">
+    DELETE
+  </button>
+</div>
+
+</section>
+
+</div>
+
+<div>
+
+<section class="panel preview">
+
+<div class="panel-title">IMAGE PREVIEW</div>
+
+<canvas id="reportCanvas"
+        width="1080"
+        height="1920"></canvas>
+
+<button class="btn blue full"
+        style="margin-top:15px"
+        onclick="exportImage()">
+  ↓ EXPORT PNG IMAGE
+</button>
+
+<div class="hint">
+  이미지 크기: 1080 × 1920px<br>
+  ARRIVAL 또는 SAILING 정보가 한 장에 저장됩니다.
+</div>
+
+</section>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+const STORAGE_KEY = "shipping_condition_reports_v1";
+
+const DEFAULTS = {
+  arrival: [
+    "ETA",
+    "SBE / EOSP",
+    "NOR TENDERED",
+    "ANCHOR DROPPED",
+    "POB",
+    "ALL FAST",
+    "ETB"
+  ],
+
+  sailing: [
+    "ETC",
+    "POB",
+    "LAST LINE",
+    "ETD",
+    "DLOSP",
+    "NEXT PORT"
+  ]
+};
+
+const $ = id => document.getElementById(id);
+
+function uid() {
+  if (window.crypto && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return Date.now() + "-" + Math.random();
+}
+
+function blankReport(type = "arrival") {
+  return {
+    id: uid(),
+    type: type,
+    vessel: "",
+    port: "ULSAN, KOREA",
+    pier: "",
+    remark: "",
+    rows: DEFAULTS[type].map(label => ({
+      label: label,
+      value: ""
+    }))
+  };
+}
+
+function readStorage() {
+  try {
+    const value = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+let reports = readStorage();
+let current = blankReport();
+let selectedId = null;
+
+function message(text) {
+  $("status").textContent = text;
+
+  setTimeout(() => {
+    if ($("status").textContent === text) {
+      $("status").textContent = "";
+    }
+  }, 3500);
+}
+
+function updateTabs() {
+  $("arrivalTab").classList.toggle(
+    "active", current.type === "arrival"
+  );
+
+  $("sailingTab").classList.toggle(
+    "active", current.type === "sailing"
+  );
+}
+
+function changeType(type) {
+  if (current.type === type) return;
+
+  const hasValues = current.rows.some(
+    row => row.value.trim() !== ""
+  );
+
+  if (hasValues) {
+    if (!confirm(
+      "보고서 종류를 변경하면 날짜/시간 항목이 초기화됩니다. 계속할까요?"
+    )) return;
+  }
+
+  current.type = type;
+
+  current.rows = DEFAULTS[type].map(label => ({
+    label: label,
+    value: ""
+  }));
+
+  updateTabs();
+  renderRows();
+  renderPreview();
+}
+
+function renderRows() {
+  const container = $("rows");
+  container.replaceChildren();
+
+  current.rows.forEach((row, index) => {
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "row";
+
+    const label = document.createElement("input");
+    label.placeholder = "ITEM";
+    label.value = row.label;
+
+    label.addEventListener("input", e => {
+      current.rows[index].label = e.target.value;
+      renderPreview();
+    });
+
+    const value = document.createElement("input");
+    value.placeholder = "DATE / TIME";
+    value.value = row.value;
+
+    value.addEventListener("input", e => {
+      current.rows[index].value = e.target.value;
+      renderPreview();
+    });
+
+    const remove = document.createElement("button");
+    remove.className = "remove";
+    remove.textContent = "×";
+
+    remove.addEventListener("click", () => {
+      current.rows.splice(index, 1);
+      renderRows();
+      renderPreview();
+    });
+
+    wrapper.append(label, value, remove);
+    container.appendChild(wrapper);
+
+  });
+}
+
+function addRow() {
+  if (current.rows.length >= 8) {
+    alert("이미지 가독성을 위해 최대 8개 항목까지 가능합니다.");
+    return;
+  }
+
+  current.rows.push({
+    label: "",
+    value: ""
+  });
+
+  renderRows();
+  renderPreview();
+}
+
+function syncForm() {
+  current.vessel = $("vessel").value;
+  current.port = $("port").value;
+  current.pier = $("pier").value;
+  current.remark = $("remark").value;
+}
+
+function fillForm() {
+  $("vessel").value = current.vessel || "";
+  $("port").value = current.port || "";
+  $("pier").value = current.pier || "";
+  $("remark").value = current.remark || "";
+
+  updateTabs();
+  renderRows();
+  renderPreview();
+}
+
+function newReport() {
+  current = blankReport();
+  selectedId = null;
+  fillForm();
+  renderSaved();
+  message("New report created.");
+}
+
+function saveReport() {
+  syncForm();
+
+  if (!current.vessel.trim()) {
+    alert("VESSEL NAME을 입력하세요.");
+    return;
+  }
+
+  const index = reports.findIndex(
+    report => report.id === current.id
+  );
+
+  const copy = JSON.parse(JSON.stringify(current));
+  copy.updated = new Date().toISOString();
+
+  const next = [...reports];
+
+  if (index >= 0) {
+    next[index] = copy;
+  } else {
+    next.unshift(copy);
+  }
+
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(next)
+    );
+
+    reports = next;
+    selectedId = current.id;
+
+    renderSaved();
+    message("Report saved successfully.");
+
+  } catch (error) {
+    alert("저장하지 못했습니다: " + error.message);
+  }
+}
+
+function renderSaved() {
+  const container = $("savedList");
+  container.replaceChildren();
+
+  if (!reports.length) {
+    const empty = document.createElement("div");
+    empty.className = "hint";
+    empty.textContent = "No saved reports.";
+    container.appendChild(empty);
+    return;
+  }
+
+  reports.forEach(report => {
+    const item = document.createElement("div");
+    item.className = "saved-item";
+
+    if (selectedId === report.id) {
+      item.style.borderColor = "#3267a3";
+      item.style.background = "#edf4fb";
+    }
+
+    const name = document.createElement("div");
+    name.className = "saved-name";
+    name.textContent = report.vessel || "UNTITLED";
+
+    const info = document.createElement("div");
+    info.className = "saved-info";
+    info.textContent =
+      (report.type || "").toUpperCase() +
+      " · " + (report.port || "");
+
+    item.append(name, info);
+
+    item.onclick = () => {
+      selectedId = report.id;
+      renderSaved();
+      loadSelected();
+    };
+
+    container.appendChild(item);
+  });
+}
+
+function loadSelected() {
+  if (!selectedId) {
+    alert("불러올 보고서를 선택하세요.");
+    return;
+  }
+
+  const report = reports.find(
+    item => item.id === selectedId
+  );
+
+  if (!report) return;
+
+  current = JSON.parse(JSON.stringify(report));
+  fillForm();
+  message("Report loaded.");
+}
+
+function deleteSelected() {
+  if (!selectedId) {
+    alert("삭제할 보고서를 선택하세요.");
+    return;
+  }
+
+  if (!confirm("선택한 보고서를 삭제할까요?")) {
+    return;
+  }
+
+  const next = reports.filter(
+    item => item.id !== selectedId
+  );
+
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(next)
+    );
+
+    reports = next;
+    selectedId = null;
+    current = blankReport();
+
+    fillForm();
+    renderSaved();
+    message("Report deleted.");
+
+  } catch (error) {
+    alert("삭제하지 못했습니다: " + error.message);
+  }
+}
+
+/* IMAGE DRAWING */
+
+const canvas = $("reportCanvas");
+const ctx = canvas.getContext("2d");
+
+function fitText(text, maxWidth, startSize, minSize, weight = 900) {
+  let size = startSize;
+
+  while (size > minSize) {
+    ctx.font = weight + " " + size + "px Arial";
+
+    if (ctx.measureText(text).width <= maxWidth) {
+      break;
+    }
+
+    size -= 2;
+  }
+
+  ctx.font = weight + " " + size + "px Arial";
+  return size;
+}
+
+function drawText(text, x, y, maxWidth, size, minSize, color, weight = 900) {
+  const value = String(text || "");
+
+  fitText(value, maxWidth, size, minSize, weight);
+
+  ctx.fillStyle = color;
+  ctx.fillText(value, x, y);
+}
+
+function drawWrapped(text, x, y, maxWidth, lineHeight, maxLines = 3) {
+  const words = String(text || "").split(/\s+/);
+  let line = "";
+  let lines = [];
+
+  ctx.font = "500 31px Arial";
+
+  words.forEach(word => {
+    const test = line ? line + " " + word : word;
+
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  });
+
+  if (line) lines.push(line);
+
+  lines.slice(0, maxLines).forEach((line, index) => {
+    drawText(
+      line,
+      x,
+      y + index * lineHeight,
+      maxWidth,
+      31,
+      22,
+      "#475569",
+      500
+    );
+  });
+}
+
+function renderPreview() {
+  syncForm();
+
+  const W = 1080;
+  const H = 1920;
+
+  canvas.width = W;
+  canvas.height = H;
+
+  ctx.clearRect(0, 0, W, H);
+
+  ctx.fillStyle = "#f5f7fa";
+  ctx.fillRect(0, 0, W, H);
+
+  /* HEADER */
+
+  ctx.fillStyle = "#20334e";
+  ctx.fillRect(0, 0, W, 335);
+
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+
+  drawText(
+    current.type === "arrival"
+      ? "ARRIVAL CONDITION"
+      : "SAILING CONDITION",
+    75, 95, 930, 65, 42, "#ffffff"
+  );
+
+  drawText(
+    "VESSEL INFORMATION REPORT",
+    75, 145, 900, 28, 24, "#b8c8db", 700
+  );
+
+  drawText(
+    current.vessel || "MV VESSEL NAME",
+    75, 240, 930, 72, 38, "#ffffff"
+  );
+
+  const location = [
+    current.port,
+    current.pier
+  ].filter(Boolean).join("  |  ");
+
+  drawText(
+    location || "PORT / BERTH",
+    75, 297, 930, 31, 22, "#d5e1ef", 700
+  );
+
+  /* INFORMATION ROWS */
+
+  const rows = current.rows.filter(
+    row => row.label.trim() || row.value.trim()
+  );
+
+  const count = Math.max(rows.length, 1);
+
+  const startY = 370;
+  const endY = 1690;
+  const rowHeight = Math.min(
+    185,
+    (endY - startY) / count
+  );
+
+  rows.forEach((row, index) => {
+    const top = startY + index * rowHeight;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(
+      45,
+      top,
+      990,
+      rowHeight - 11
+    );
+
+    ctx.fillStyle = "#dce4ed";
+    ctx.fillRect(
+      45,
+      top,
+      9,
+      rowHeight - 11
+    );
+
+    drawText(
+      (row.label || "ITEM").toUpperCase(),
+      85,
+      top + 49,
+      900,
+      31,
+      22,
+      "#738196",
+      800
+    );
+
+    drawText(
+      row.value || "—",
+      85,
+      top + Math.min(rowHeight - 34, 127),
+      905,
+      76,
+      32,
+      "#15263d"
+    );
+  });
+
+  /* REMARK */
+
+  ctx.fillStyle = "#e8edf3";
+  ctx.fillRect(45, 1730, 990, 130);
+
+  drawText(
+    "REMARK",
+    75, 1770, 900, 27, 22, "#738196"
+  );
+
+  drawWrapped(
+    current.remark || "—",
+    75,
+    1815,
+    925,
+    35,
+    2
+  );
+
+  /* FOOTER */
+
+  ctx.fillStyle = "#20334e";
+  ctx.fillRect(0, 1880, W, 40);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "700 21px Arial";
+  ctx.fillText("VESSEL CONDITION REPORT", 75, 1908);
+}
+
+function exportImage() {
+  renderPreview();
+
+  const name = (current.vessel || "VESSEL")
+    .replace(/[^a-zA-Z0-9가-힣_-]/g, "_");
+
+  const type = current.type.toUpperCase();
+
+  const filename = name + "_" + type + ".png";
+
+  canvas.toBlob(blob => {
+    if (!blob) {
+      alert("이미지를 생성하지 못했습니다.");
+      return;
+    }
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 10000);
+
+  }, "image/png");
+}
+
+/* LIVE UPDATE */
+
+["vessel", "port", "pier", "remark"].forEach(id => {
+  $(id).addEventListener("input", renderPreview);
+});
+
+/* INITIALIZE */
+
+fillForm();
+renderSaved();
+
+</script>
+
+</body>
+</html>
