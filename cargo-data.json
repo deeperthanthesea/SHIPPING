@@ -894,5 +894,24 @@
     ],
     "quantities": [],
     "remark": "R.TON 당 5,000원 · 주말할증가능\n첫날엔 지게차 작업으로 퍼져야하니까 안됨"
+  },
+  {
+    "id": 41,
+    "pier": "YEOMPO",
+    "name": "STEEL COIL",
+    "working": [
+      {
+        "time": "0800-1700",
+        "gang": "1",
+        "rate": "5000"
+      }
+    ],
+    "quantities": [
+      {
+        "qty": "5000",
+        "day": "1"
+      }
+    ],
+    "remark": "3,000원 / 주말 할증은 확인해야됨"
   }
 ]
